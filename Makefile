@@ -1,3 +1,6 @@
+PIP_TOOLS_VERSION = 6.13.0
+SETUPTOOLS_VERSION = 67.7.2
+
 USE_CONDA ?= 1
 INSTALL_SCRIPT = install_with_conda.sh
 ifeq (false,$(USE_CONDA))
@@ -13,6 +16,18 @@ help:
 .PHONY: install
 install:
 	@bash bin/$(INSTALL_SCRIPT)
+
+# help: install_pip_tools		- Install piptools and setuptools
+.PHONY: install_pip_tools
+install_pip_tools:
+	@echo "Installing pip-tools"
+	@pip install pip-tools==$(PIP_TOOLS_VERSION) setuptools==$(SETUPTOOLS_VERSION)
+
+# help: install_project_requirements		- Install prohect requirements
+.PHONY: install_project_requirements
+install_project_requirements: install_pip_tools
+	@pip-compile requirements.in
+	@pip install -r requirements.txt
 
 # help: install_precommit			- Install pre-commit hooks
 .PHONY: install_precommit
