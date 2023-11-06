@@ -10,11 +10,15 @@ class Sequence:
     """This class represents a sequence of frames and detections and make the data iterable."""
 
     frame_paths: List[str]
-    detection_path: str
+
+    def __post_init__(self):
+        self.detection_paths: List[str] = [
+            f.replace("frames", "detections").replace(".jpg", ".txt") for f in self.frame_paths
+        ]
 
     def __repr__(self):
         return (
-            f"Sequence(n_frames={len(self.frame_paths)}, n_detections={len(self.detection_path)})"
+            f"Sequence(n_frames={len(self.frame_paths)}, n_detections={len(self.detection_paths)})"
         )
 
     def __iter__(self):
@@ -26,8 +30,10 @@ class Sequence:
             raise StopIteration
 
         frame = Image.open(self.frame_paths[self.index])
-        detection_file = self.detection_path[self.index]
-        detection = np.loadtxt(detection_file, dtype="float")
+        try:
+            detection = np.loadtxt(self.detection_paths[self.index], dtype="float")
+        except OSError:  # file doesn't exist not detection return empty file
+            detection = np.array([])
 
         self.index += 1
         return frame, detection
