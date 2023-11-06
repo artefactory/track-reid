@@ -137,4 +137,7 @@ secrets/*
 # Mac OS
 .DS_Store
 
-data/
+
+# Data ignore everythin data/detections and data/frames
+data/detections/*
+data/frames/*
