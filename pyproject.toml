@@ -26,8 +26,6 @@ select = [
   "F",
   "I",
   "N",
-  "D",
-  "ANN",
   "Q",
   "RET",
   "ARG",
