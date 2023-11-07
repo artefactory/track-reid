@@ -18,8 +18,7 @@ jobs:
 
       - name: Install requirements
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-developer.txt
+          make install_project_requirements
       - name: Deploying MkDocs documentation
         run: |
           mkdocs build
