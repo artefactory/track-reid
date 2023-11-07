@@ -120,9 +120,6 @@ class ReidProcessor:
 
         self.candidates = self.drop_candidates(
             self.candidates,
-            current_tracker_ids,
-            max_attempt_to_rematch=self.max_attempt_to_rematch,
-            frame_id=self.frame_id,
         )
 
         self.last_tracker_ids = current_tracker_ids.copy()
