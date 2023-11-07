@@ -1,4 +1,4 @@
-# dev
+-r requirements.txt
 black==22.10.0
 ruff==0.0.272
 isort==5.12.0
@@ -10,13 +10,3 @@ mkdocstrings-python==1.1.2
 bandit==1.7.5
 nbstripout==0.6.1
 ipykernel==6.24.0
-
-# features
-
-pandas==1.5.3
-numpy==1.24.2
-llist==0.7.1
-pydantic==2.4.2
-
-# custom bytetrack
-git+https://github.com/TomDarmon/bytetrack-pip.git@main#egg=bytetracker
