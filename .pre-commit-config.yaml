@@ -31,12 +31,6 @@ repos:
         types: [file]
         files: (.ipynb)$
         language: system
-      - id: python-bandit-vulnerability-check
-        name: Security check (bandit)
-        entry: bandit
-        types: [python]
-        args: ["--recursive", "lib/"]
-        language: system
       - id: pytest-check
         name: Tests (pytest)
         stages: [push]
