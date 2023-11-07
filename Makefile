@@ -1,6 +1,3 @@
-PIP_TOOLS_VERSION = 6.13.0
-SETUPTOOLS_VERSION = 67.7.2
-
 USE_CONDA ?= 1
 INSTALL_SCRIPT = install_with_conda.sh
 ifeq (false,$(USE_CONDA))
@@ -20,8 +17,7 @@ install:
 # help: install_project_requirements		- Install prohect requirements
 .PHONY: install_project_requirements
 install_project_requirements:
-	@pip install numpy==${NUMPY_VERSION}
-	@pip install -r requirements.txt
+	@pip install -r requirements-dev.txt
 
 # help: install_precommit			- Install pre-commit hooks
 .PHONY: install_precommit
