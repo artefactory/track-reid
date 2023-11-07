@@ -7,7 +7,7 @@ if [ "$answer" = "y" ]; then
   source $(conda info --base)/etc/profile.d/conda.sh
   conda activate track-reid
   echo "Installing requirements..."
-  pip install -r requirements-developer.txt
+  make install_project_requirements
   python3 -m ipykernel install --user --name=track-reid
   conda install -c conda-forge --name track-reid notebook -y
   echo "Installing pre-commit..."

@@ -10,7 +10,7 @@ if [ "$answer" = "y" ]; then
 
     source $VENV_DIR/bin/activate
     echo "Installing requirements..."
-    pip install -r requirements-developer.txt
+    make install_project_requirements
     python3 -m ipykernel install --user --name=venv
     echo "Installing pre-commit..."
     make install_precommit
