@@ -1,7 +1,3 @@
-PIP_TOOLS_VERSION = 6.13.0
-SETUPTOOLS_VERSION = 67.7.2
-NUMPY_VERSION = $(shell cat requirements.in | sed 's/ /\n/g' | grep "numpy==" | sed 's/numpy==//g')
-
 USE_CONDA ?= 1
 INSTALL_SCRIPT = install_with_conda.sh
 ifeq (false,$(USE_CONDA))
@@ -20,9 +16,8 @@ install:
 
 # help: install_project_requirements		- Install prohect requirements
 .PHONY: install_project_requirements
-install_project_requirements: install_pip_tools
-	@pip install numpy==${NUMPY_VERSION}
-	@pip install -r requirements.txt
+install_project_requirements:
+	@pip install -r requirements-dev.txt
 
 # help: install_precommit			- Install pre-commit hooks
 .PHONY: install_precommit
