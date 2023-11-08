@@ -9,21 +9,38 @@ endif
 help:
 	@grep "^# help\:" Makefile | grep -v grep | sed 's/\# help\: //' | sed 's/\# help\://'
 
-# help: install					- Create a virtual environment and install dependencies
+# help: download-poetry			- Download poetry
+download-poetry:
+	curl -sSL https://install.python-poetry.org | python3 -
+
+# help: install					- Install python dependencies using poetry
 .PHONY: install
 install:
-	@bash bin/$(INSTALL_SCRIPT)
+	@poetry env use $(PYTHON_VERSION)
+	@poetry lock -n
+	@poetry install -n
+	@poetry run pre-commit install -t pre-commit -t pre-push
 
-# help: install_project_requirements		- Install prohect requirements
-.PHONY: install_project_requirements
-install_project_requirements:
-	@pip install -r requirements-dev.txt
+.PHONY: install-requirements
+# help: requirements					- Install Python Dependencies
+install-requirements:
+	@poetry install -n
 
-# help: install_precommit			- Install pre-commit hooks
-.PHONY: install_precommit
-install_precommit:
-	@pre-commit install -t pre-commit
-	@pre-commit install -t pre-push
+
+.PHONY: install-dev-requirements
+# help : install-dev-requirements 		- Install Python Dependencies for development
+install-dev-requirements:
+	@poetry install -n --with dev
+
+.PHONY: update-requirements
+#help: update-requirements				- Update Python Dependencies (requirements.txt and requirements-dev.txt)
+update-requirements:
+	@poetry lock -n
+
+.PHONY: format-code
+#help: format-code						- Format/lint all-files using pre-commit hooks (black, flake8, isort, ...)
+format-code:
+	@poetry run pre-commit run -a
 
 # help: deploy_docs				- Deploy documentation to GitHub Pages
 .PHONY: deploy_docs
