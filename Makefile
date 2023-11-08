@@ -1,3 +1,4 @@
+PYTHON_VERSION = 3.10
 USE_CONDA ?= 1
 INSTALL_SCRIPT = install_with_conda.sh
 ifeq (false,$(USE_CONDA))
