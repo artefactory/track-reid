@@ -105,6 +105,6 @@ class TrackedObjectMetaData:
     def __str__(self):
         return (
             f"First frame seen: {self.first_frame_id}, nb observations: {self.observations}, "
-            + "class Proportions: {self.class_proportions()}, Bounding Box: {self.bbox}, "
-            + "Mean Confidence: {self.mean_confidence()}"
+            + f"class Proportions: {self.class_proportions()}, Bounding Box: {self.bbox}, "
+            + f"Mean Confidence: {self.mean_confidence()}"
         )

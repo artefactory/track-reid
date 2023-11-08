@@ -13,14 +13,14 @@ from track_reid.utils import split_list_around_value
 class TrackedObject:
     def __init__(
         self,
-        object_ids: Union[int, sllist],
+        object_ids: Union[Union[float, int], sllist],
         state: int,
         metadata: Union[np.ndarray, TrackedObjectMetaData],
     ):
 
         self.state = state
 
-        if isinstance(object_ids, int):
+        if isinstance(object_ids, Union[float, int]):
             self.re_id_chain = sllist([object_ids])
         elif isinstance(object_ids, sllist):
             self.re_id_chain = object_ids
@@ -92,7 +92,7 @@ class TrackedObject:
         self.metadata.update(data_line)
 
     def __eq__(self, other):
-        if isinstance(other, int):
+        if isinstance(other, Union[float, int]):
             return other in self.re_id_chain
         elif isinstance(other, TrackedObject):
             return self.re_id_chain == other.re_id_chain
