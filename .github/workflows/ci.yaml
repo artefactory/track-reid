@@ -11,15 +11,33 @@ jobs:
         python-version: ['3.10']
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install poetry
+        run: make download-poetry
+
+      - name: Set up pip cache
+        uses: actions/cache@v3.3.2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+
+      - name: Set Poetry Path
+        run: |
+          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
+
+
       - name: Install requirements
         run: |
-          python -m pip install --upgrade pip
-          make install_project_requirements
-      - name: Run Pre commit hook (formatting, linting & tests)
-        run: pre-commit run --all-files --hook-stage pre-push --show-diff-on-failure
+          poetry run pip install --upgrade pip
+          poetry install
+
+      - name: Run Pre commit hooks
+        run: make format-code
+
+      - name: Run tests
+        run: make run-tests
