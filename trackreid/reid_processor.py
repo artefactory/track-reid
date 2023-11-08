@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Dict, List, Set
 
 import numpy as np
-
 from track_reid.constants.reid_constants import reid_constants
 from track_reid.matcher import Matcher
 from track_reid.tracked_object import TrackedObject
@@ -21,7 +20,6 @@ class ReidProcessor:
         max_frames_to_rematch: int = 100,
         max_attempt_to_rematch: int = 1,
     ) -> None:
-
         self.matcher = Matcher(cost_function=cost_function, selection_function=selection_function)
 
         self.tracked_filter = TrackedObjectFilter(
@@ -52,7 +50,6 @@ class ReidProcessor:
         self.all_tracked_objects = self._apply_filtering()
 
     def _update_tracked_objects(self, tracker_output: np.ndarray):
-
         self.frame_id = tracker_output[0, 0]
         for object_id, data_line in zip(tracker_output[:, 1], tracker_output):
             if object_id not in self.all_tracked_objects:
@@ -80,7 +77,6 @@ class ReidProcessor:
         return self.all_tracked_objects
 
     def _perform_reid_process(self, tracker_output: np.ndarray):
-
         tracked_ids = filter_objects_by_state(
             self.all_tracked_objects, states=reid_constants.BYETRACK_OUTPUT, exclusion=True
         )
@@ -151,13 +147,11 @@ class ReidProcessor:
 
     @staticmethod
     def compute_stable_objects(tracked_ids: list, current_tracker_ids: Set[int]):
-
         top_list_correction = get_top_list_correction(tracked_ids)
 
         for current_object in current_tracker_ids:
             tracked_id = tracked_ids[tracked_ids.index(current_object)]
             if current_object not in top_list_correction:
-
                 tracked_ids.remove(tracked_id)
                 new_object, tracked_id = tracked_id.cut(current_object)
 
@@ -175,7 +169,6 @@ class ReidProcessor:
         candidates: List["TrackedObject"],
         current_tracker_ids: Set[int],
     ):
-
         for match in matches:
             candidate_match, switcher_match = match.popitem()
 
@@ -194,7 +187,6 @@ class ReidProcessor:
         max_frames_to_rematch: int,
         frame_id: int,
     ):
-
         switchers_to_drop = set(switchers).intersection(current_tracker_ids)
         filtered_switchers = switchers.copy()
 
