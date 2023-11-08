@@ -85,8 +85,9 @@ class ReidProcessor:
             self.all_tracked_objects, states=reid_constants.BYETRACK_OUTPUT, exclusion=True
         )
 
-        current_tracker_ids = set(tracker_output[:, 1]).intersection(set(tracked_ids))
-
+        current_tracker_ids = set(
+            [tracked_id for tracked_id in tracked_ids if tracked_id in tracker_output[:, 1]]
+        )
         self.compute_stable_objects(
             current_tracker_ids=current_tracker_ids, tracked_ids=self.all_tracked_objects
         )
@@ -180,6 +181,7 @@ class ReidProcessor:
             candidate_match, switcher_match = match.popitem()
 
             switcher_match.merge(candidate_match)
+            switcher_match.state = reid_constants.STABLE
             all_tracked_objects.remove(candidate_match)
             switchers.remove(switcher_match)
             candidates.remove(candidate_match)
