@@ -2,7 +2,6 @@ from typing import Callable, Dict, List
 
 import numpy as np
 from scipy.optimize import linear_sum_assignment
-
 from track_reid.tracked_object import TrackedObject
 
 

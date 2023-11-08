@@ -141,3 +141,6 @@ secrets/*
 # Data ignore everythin data/detections and data/frames
 data/detections/*
 data/frames/*
+
+# poetry
+poetry.lock

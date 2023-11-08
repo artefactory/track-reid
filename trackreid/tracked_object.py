@@ -4,7 +4,6 @@ from typing import Union
 
 import numpy as np
 from llist import sllist
-
 from track_reid.constants.reid_constants import reid_constants
 from track_reid.tracked_object_metadata import TrackedObjectMetaData
 from track_reid.utils import split_list_around_value
@@ -17,7 +16,6 @@ class TrackedObject:
         state: int,
         metadata: Union[np.ndarray, TrackedObjectMetaData],
     ):
-
         self.state = state
 
         if isinstance(object_ids, int):
@@ -99,7 +97,6 @@ class TrackedObject:
         return False
 
     def cut(self, object_id: int):
-
         if object_id not in self.re_id_chain:
             raise NameError(
                 f"Trying to cut object {self} with {object_id} that is not in the re-id chain."
