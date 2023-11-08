@@ -1,0 +1,39 @@
+# This workflow triggers the CI, updates the version, and uploads the release to GitHub and Google Cloud Storage when a push is made to either the 'main' or 'develop' branch.
+#
+# Workflow Steps:
+#
+# 1. Ci is triggered using the CI workflow defined in .github/workflows/ci.yaml
+# 2. If it succeeds, the version is updated using Python Semantic Release
+# 3. The release is uploaded to GitHub (same step and GitHub action)
+#
+# For more details on setting up Workload Identity Federation for GitHub, visit https://github.com/google-github-actions/auth#setting-up-workload-identity-federation
+# WIF service account must have roles/artifactregistry.write access to the Artifact Registry repository
+
+name: CI and Release on main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  CI:
+    uses: ./.github/workflows/ci.yaml
+
+  Release:
+    runs-on: ubuntu-latest
+    concurrency: Release
+    needs: CI
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Python Semantic Release
+      uses: python-semantic-release/python-semantic-release@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
