@@ -104,7 +104,7 @@ profile = "black"
 
 
 [tool.semantic_release]
-version_variables = ["deployer/__init__.py:__version__"]
+version_variables = ["trackreid/__init__.py:__version__"]
 version_toml = ["pyproject.toml:tool.poetry.version"]
 branch = "main"
 upload_to_pypi = false
