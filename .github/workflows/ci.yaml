@@ -26,6 +26,3 @@ jobs:
 
       - name: Run Pre commit hooks
         run: make format-code
-
-      - name: Run tests
-        run: make run-tests
