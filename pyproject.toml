@@ -115,3 +115,6 @@ tag_format = "{version}"
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = ['''^chore\(release\).*''']
+
+[tool.semantic_release.remote]
+token = { env = "GH_TOKEN" }
