@@ -36,4 +36,4 @@ jobs:
     - name: Python Semantic Release
       uses: python-semantic-release/python-semantic-release@master
       with:
-        github_token: ${{ secrets.RELEASE_TOKEN_GH }}
+        github_token: ${{ secrets.GH_TOKEN }}
