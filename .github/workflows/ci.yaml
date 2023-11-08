@@ -30,6 +30,9 @@ jobs:
         run: |
           echo "$HOME/.poetry/bin" >> $GITHUB_PATH
 
+      - name: Install Cython
+        run: |
+          poetry run pip install cython
 
       - name: Install requirements
         run: |
