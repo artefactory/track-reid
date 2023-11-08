@@ -1,9 +1,6 @@
 [tool.poetry]
 name = "trackreid"
-authors = [
-  { name = "tristanpepinartefact", email = "tristan.pepin@artefact.com" },
-  { name = "TomDarmon", email = "tom.darmon@artefact.com" }
-]
+authors = ["tristanpepinartefact <tristan.pepin@artefact.com>"]
 description = "This Git repository is dedicated to the development of a Python library aimed at correcting the results of tracking algorithms. The primary goal of this library is to reconcile and reassign lost or misidentified IDs, ensuring a consistent and accurate tracking of objects over time. "
 version = "0.0.1"
 readme = "README.md"
