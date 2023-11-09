@@ -12,8 +12,6 @@ pandas = "1.5.3"
 numpy = "1.24.2"
 llist = "0.7.1"
 pydantic = "2.4.2"
-torch = ">=1.13.1"
-Cython = ">=0.29.23"
 bytetracker = { git = "https://github.com/TomDarmon/bytetrack-pip.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
