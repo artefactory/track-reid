@@ -2,6 +2,23 @@
 
 
 
+## 0.0.2 (2023-11-09)
+
+### Fix
+
+* fix: remove useless dependencies (#11) (#12)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`c082c1c`](https://github.com/artefactory-fr/track-reid/commit/c082c1c8766840512a9c1ad58b6848ff560e4ec7))
+
+* fix: env in pyproject (#10)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`5e88ea0`](https://github.com/artefactory-fr/track-reid/commit/5e88ea04c00443b7202a2ff4dbaac09f2db01034))
+
+### Unknown
+
+* Update release.yaml ([`81695d5`](https://github.com/artefactory-fr/track-reid/commit/81695d5ac249df3b7dbbf2f2bdbe7075e42bea62))
+
+
 ## 0.0.1 (2023-11-08)
 
 ### Fix
