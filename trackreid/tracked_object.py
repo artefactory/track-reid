@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Optional, Union
 
 import numpy as np
@@ -127,3 +129,25 @@ class TrackedObject:
             self.bbox[3],
             self.confidence,
         ]
+
+    def to_dict(self):
+        data = {
+            "state": self.state,
+            "re_id_chain": list(self.re_id_chain),
+            "metadata": self.metadata.to_dict(),
+        }
+        return data
+
+    def save_to_json(self, filename):
+        with Path.open(filename, "w") as file:
+            json.dump(self.to_dict(), file)
+
+    @classmethod
+    def load_from_json(cls, filename):
+        with Path.open(filename, "r") as file:
+            data = json.load(file)
+            obj = cls.__new__(cls)
+            obj.state = data["state"]
+            obj.re_id_chain = sllist(data["re_id_chain"])
+            obj.metadata = TrackedObjectMetaData.load_from_json(data["metadata"])
+        return obj

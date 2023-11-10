@@ -1,8 +1,6 @@
 import json
 from pathlib import Path
 
-import numpy as np
-
 from trackreid.args.reid_args import INPUT_POSITIONS, POSSIBLE_CLASSES
 
 
@@ -42,19 +40,9 @@ class TrackedObjectMetaData:
     def copy(self):
         # Create a new instance of TrackedObjectMetaData
         # initialize with fake data
-
         # TODO: make something better here, input order might change
-        copy_obj = TrackedObjectMetaData(
-            data_line=np.array(
-                [
-                    0,
-                    list(self.class_counts.keys())[0],
-                    *self.bbox,
-                    self.confidence,
-                ]
-            ),
-            frame_id=self.first_frame_id,
-        )
+        print("HERE")
+        copy_obj = TrackedObjectMetaData.__new__(TrackedObjectMetaData)
         # Update the copied instance with the actual class counts and observations
         copy_obj.class_counts = self.class_counts.copy()
         copy_obj.observations = self.observations
@@ -66,7 +54,7 @@ class TrackedObjectMetaData:
 
         return copy_obj
 
-    def save_to_json(self, filename):
+    def to_dict(self):
         data = {
             "first_frame_id": self.first_frame_id,
             "class_counts": self.class_counts,
@@ -75,9 +63,11 @@ class TrackedObjectMetaData:
             "confidence_sum": self.confidence_sum,
             "observations": self.observations,
         }
+        return data
 
+    def save_to_json(self, filename):
         with Path.open(filename, "w") as file:
-            json.dump(data, file)
+            json.dump(self.to_dict(), file)
 
     @classmethod
     def load_from_json(cls, filename):
