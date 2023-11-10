@@ -49,3 +49,16 @@ def reshape_tracker_result(tracker_output: np.ndarray):
     if tracker_output.ndim == 1:
         tracker_output = np.expand_dims(tracker_output, 0)
     return tracker_output
+
+
+def get_nb_output_cols(output_positions: dict):
+    nb_cols = 0
+    for feature in output_positions.values():
+        if type(feature) is int:
+            nb_cols += 1
+        elif type(feature) is list:
+            nb_cols += len(feature)
+        else:
+            raise TypeError("Unkown type in required output positions.")
+
+    return nb_cols

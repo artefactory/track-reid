@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 from llist import sllist
@@ -16,6 +16,7 @@ class TrackedObject:
         object_ids: Union[Union[float, int], sllist],
         state: int,
         metadata: Union[np.ndarray, TrackedObjectMetaData],
+        frame_id: Optional[int] = None,
     ):
         self.state = state
 
@@ -26,7 +27,10 @@ class TrackedObject:
         else:
             raise NameError("unrocognized type for object_ids.")
         if isinstance(metadata, np.ndarray):
-            self.metadata = TrackedObjectMetaData(metadata)
+            assert (
+                frame_id is not None
+            ), "Please provide a frame_id for TrackedObject initialization"
+            self.metadata = TrackedObjectMetaData(metadata, frame_id)
         elif isinstance(metadata, TrackedObjectMetaData):
             self.metadata = metadata.copy()
         else:
@@ -38,16 +42,14 @@ class TrackedObject:
 
         # Merge the re_id_chains
         self.re_id_chain.extend(other_object.re_id_chain)
-
-        # Merge the metadata (you should implement a proper merge logic in TrackedObjectMetaData)
         self.metadata.merge(other_object.metadata)
-        self.state = reid_constants.STABLE
+        self.state = other_object.state
 
         # Return the merged object
         return self
 
     @property
-    def id(self):
+    def object_id(self):
         return self.re_id_chain.first.value
 
     @property
@@ -80,19 +82,19 @@ class TrackedObject:
         return self.state
 
     def __hash__(self):
-        return hash(self.id)
+        return hash(self.object_id)
 
     def __repr__(self):
         return (
-            f"TrackedObject(current_id={self.id}, re_id_chain={list(self.re_id_chain)}"
+            f"TrackedObject(current_id={self.object_id}, re_id_chain={list(self.re_id_chain)}"
             + f", state={self.state}: {reid_constants.DESCRIPTION[self.state]})"
         )
 
     def __str__(self):
         return f"{self.__repr__()}, metadata : {self.metadata}"
 
-    def update_metadata(self, data_line: np.ndarray):
-        self.metadata.update(data_line)
+    def update_metadata(self, data_line: np.ndarray, frame_id: int):
+        self.metadata.update(data_line=data_line, frame_id=frame_id)
 
     def __eq__(self, other):
         if isinstance(other, Union[float, int]):
@@ -117,7 +119,7 @@ class TrackedObject:
 
     def format_data(self):
         return [
-            self.id,
+            self.object_id,
             self.category,
             self.bbox[0],
             self.bbox[1],

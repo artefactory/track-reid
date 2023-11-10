@@ -4,12 +4,14 @@ from typing import Dict, List, Set, Union
 
 import numpy as np
 
+from trackreid.args.reid_args import INPUT_POSITIONS, OUTPUT_POSITIONS
 from trackreid.constants.reid_constants import reid_constants
 from trackreid.matcher import Matcher
 from trackreid.tracked_object import TrackedObject
 from trackreid.tracked_object_filter import TrackedObjectFilter
 from trackreid.utils import (
     filter_objects_by_state,
+    get_nb_output_cols,
     get_top_list_correction,
     reshape_tracker_result,
 )
@@ -42,15 +44,19 @@ class ReidProcessor:
         self.max_attempt_to_rematch = max_attempt_to_rematch
 
         self.frame_id = 0
+        self.nb_output_cols = get_nb_output_cols(output_positions=OUTPUT_POSITIONS)
 
-    def update(self, tracker_output: np.ndarray, frame_id: int):
-        reshaped_tracker_output = reshape_tracker_result(tracker_output=tracker_output)
-        self.all_tracked_objects = self._preprocess(
-            tracker_output=reshaped_tracker_output, frame_id=frame_id
-        )
-        self._perform_reid_process(tracker_output=reshaped_tracker_output)
-        reid_output = self._postprocess(tracker_output=tracker_output)
-        return reid_output
+    def process(self, tracker_output: np.ndarray, frame_id: int):
+        if tracker_output.size:  # empty tracking
+            reshaped_tracker_output = reshape_tracker_result(tracker_output=tracker_output)
+            self.all_tracked_objects = self._preprocess(
+                tracker_output=reshaped_tracker_output, frame_id=frame_id
+            )
+            self._perform_reid_process(tracker_output=reshaped_tracker_output)
+            reid_output = self._postprocess(tracker_output=tracker_output)
+            return reid_output
+        else:
+            return tracker_output
 
     def _preprocess(self, tracker_output: np.ndarray, frame_id: int) -> List["TrackedObject"]:
         self.all_tracked_objects = self._update_tracked_objects(
@@ -61,15 +67,20 @@ class ReidProcessor:
 
     def _update_tracked_objects(self, tracker_output: np.ndarray, frame_id: int):
         self.frame_id = frame_id
-        for object_id, data_line in zip(tracker_output[:, 1], tracker_output):
+        for object_id, data_line in zip(
+            tracker_output[:, INPUT_POSITIONS["object_id"]], tracker_output
+        ):
             if object_id not in self.all_tracked_objects:
                 new_tracked_object = TrackedObject(
-                    object_ids=object_id, state=reid_constants.TRACKER_OUTPUT, metadata=data_line
+                    object_ids=object_id,
+                    state=reid_constants.TRACKER_OUTPUT,
+                    frame_id=frame_id,
+                    metadata=data_line,
                 )
                 self.all_tracked_objects.append(new_tracked_object)
             else:
                 self.all_tracked_objects[self.all_tracked_objects.index(object_id)].update_metadata(
-                    data_line
+                    data_line, frame_id=frame_id
                 )
 
         return self.all_tracked_objects
@@ -92,7 +103,9 @@ class ReidProcessor:
         return self.all_tracked_objects
 
     def _perform_reid_process(self, tracker_output: np.ndarray):
-        current_tracker_ids: List[Union[int, float]] = list(tracker_output[:, 1])
+        current_tracker_ids: List[Union[int, float]] = list(
+            tracker_output[:, INPUT_POSITIONS["object_id"]]
+        )
 
         # TODO: we can get rid of self.switchers and self.candidates by
         # applying:
@@ -249,8 +262,9 @@ class ReidProcessor:
     def drop_candidates(
         candidates: List["TrackedObject"], max_attempt_to_rematch: int, frame_id: int
     ):
+        filtered_candidates = candidates.copy()
         # for now drop candidates if there was no match
-        for candidate in candidates:
+        for candidate in filtered_candidates:
             if candidate.get_age(frame_id) >= max_attempt_to_rematch:
                 candidate.state = reid_constants.STABLE
                 candidates.remove(candidate)
@@ -260,23 +274,25 @@ class ReidProcessor:
         filtered_objects = list(
             filter(
                 lambda obj: obj.get_state() == reid_constants.STABLE
-                and obj in tracker_output[:, 1],
+                and obj in tracker_output[:, INPUT_POSITIONS["object_id"]],
                 self.all_tracked_objects,
             )
         )
-        reid_output = []
-        for object in filtered_objects:
-            reid_output.append(
-                [
-                    self.frame_id,
-                    object.id,
-                    object.category,
-                    object.bbox[0],
-                    object.bbox[1],
-                    object.bbox[2],
-                    object.bbox[3],
-                    object.confidence,
-                ]
-            )
+
+        reid_output = np.zeros((len(filtered_objects), self.nb_output_cols))
+
+        for idx, object in enumerate(filtered_objects):
+            for required_variable in OUTPUT_POSITIONS:
+                if required_variable == "frame_id":
+                    output = self.frame_id
+                else:
+                    try:
+                        output = getattr(object, required_variable)
+                    except:  # noqa: E722
+                        raise NameError(
+                            f"Attribute {required_variable} not in TrackedObject.Check your required output names."
+                        )
+
+                reid_output[idx, OUTPUT_POSITIONS[required_variable]] = output
 
         return reid_output
