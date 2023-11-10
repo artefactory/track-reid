@@ -296,3 +296,17 @@ class ReidProcessor:
                 reid_output[idx, OUTPUT_POSITIONS[required_variable]] = output
 
         return reid_output
+
+    def to_dict(self):
+        data = dict()
+        for tracked_object in self.all_tracked_objects:
+            data[tracked_object.object_id] = tracked_object.to_dict()
+        return data
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls.__new__(cls)
+        obj.all_tracked_objects = [
+            TrackedObject.from_dict(data_object) for data_object in data.values()
+        ]
+        return obj
