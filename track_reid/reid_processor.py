@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections import Counter
 from typing import Dict, List, Set, Union
 
 import numpy as np
@@ -26,7 +25,6 @@ class ReidProcessor:
         max_frames_to_rematch: int = 100,
         max_attempt_to_rematch: int = 1,
     ) -> None:
-
         self.matcher = Matcher(cost_function=cost_function, selection_function=selection_function)
 
         self.tracked_filter = TrackedObjectFilter(
@@ -76,22 +74,7 @@ class ReidProcessor:
 
         return self.all_tracked_objects
 
-    def _apply_filtering(self):
-        for tracked_object in self.all_tracked_objects:
-            self.tracked_filter.update(tracked_object)
-
-        return self.all_tracked_objects
-
-    def _perform_reid_process(self, tracker_output: np.ndarray):
-
-        current_tracker_ids: List[Union[int, float]] = list(tracker_output[:, 1])
-
-        self.all_tracked_objects, self.switchers = self.correct_reid_chains(
-            all_tracked_objects=self.all_tracked_objects,
-            current_tracker_ids=current_tracker_ids,
-            switchers=self.switchers,
-        )
-
+    def _get_current_tracked_objects(self, current_tracker_ids: Set[Union[int, float]]):
         tracked_objects = filter_objects_by_state(
             self.all_tracked_objects, states=reid_constants.TRACKER_OUTPUT, exclusion=True
         )
@@ -100,11 +83,45 @@ class ReidProcessor:
             [tracked_id for tracked_id in tracked_objects if tracked_id in current_tracker_ids]
         )
 
+        return tracked_objects, current_tracked_objects
+
+    def _apply_filtering(self):
+        for tracked_object in self.all_tracked_objects:
+            self.tracked_filter.update(tracked_object)
+
+        return self.all_tracked_objects
+
+    def _perform_reid_process(self, tracker_output: np.ndarray):
+        current_tracker_ids: List[Union[int, float]] = list(tracker_output[:, 1])
+
+        # TODO: we can get rid of self.switchers and self.candidates by
+        # applying:
+        # candidates = filter_objects_by_state(
+        #     self.all_tracked_objects, states=reid_constants.CANDIDATE, exclusion=False
+        # )
+        # switchers = filter_objects_by_state(
+        #     self.all_tracked_objects, states=reid_constants.SWITCHER, exclusion=False
+        # )
+
+        self.all_tracked_objects, self.switchers = self.correct_reid_chains(
+            all_tracked_objects=self.all_tracked_objects,
+            current_tracker_ids=current_tracker_ids,
+            switchers=self.switchers,
+        )
+
+        tracked_objects, current_tracked_objects = self._get_current_tracked_objects(
+            current_tracker_ids=current_tracker_ids
+        )
+
         self.switchers = self.drop_switchers(
             switchers=self.switchers,
             current_tracked_objects=current_tracked_objects,
             max_frames_to_rematch=self.max_frames_to_rematch,
             frame_id=self.frame_id,
+        )
+
+        self.candidates = self.drop_candidates(
+            self.candidates, self.max_attempt_to_rematch, self.frame_id
         )
 
         self.candidates.extend(self.identify_candidates(tracked_objects=tracked_objects))
@@ -117,16 +134,6 @@ class ReidProcessor:
             )
         )
 
-        switchers_2 = filter_objects_by_state(
-            self.all_tracked_objects, states=reid_constants.SWITCHER, exclusion=False
-        )
-        candidates_2 = filter_objects_by_state(
-            self.all_tracked_objects, states=reid_constants.CANDIDATE, exclusion=False
-        )
-
-        assert set(switchers_2) == set(self.switchers), f"{switchers_2}, {self.switchers}"
-        assert set(candidates_2) == set(self.candidates), f"{candidates_2}, {self.candidates}"
-
         matches = self.matcher.match(self.candidates, self.switchers)
 
         self.all_tracked_objects, self.switchers, self.candidates = self.process_matches(
@@ -136,23 +143,9 @@ class ReidProcessor:
             switchers=self.switchers,
         )
 
-        self.candidates = self.drop_candidates(
-            self.candidates,
+        _, current_tracked_objects = self._get_current_tracked_objects(
+            current_tracker_ids=current_tracker_ids
         )
-
-        tracked_objects = filter_objects_by_state(
-            self.all_tracked_objects, states=reid_constants.TRACKER_OUTPUT, exclusion=True
-        )
-
-        current_tracked_objects = set(
-            [tracked_id for tracked_id in tracked_objects if tracked_id in current_tracker_ids]
-        )
-
-        def has_duplicates(lst):
-            return any(value > 1 for value in Counter(lst).values())
-
-        if has_duplicates([o.id for o in self.all_tracked_objects]):
-            raise NameError("HE")
 
         self.last_frame_tracked_objects = current_tracked_objects.copy()
 
@@ -187,14 +180,12 @@ class ReidProcessor:
         current_tracker_ids: List[Union[int, float]],
         switchers: List["TrackedObject"],
     ):
-
         top_list_correction = get_top_list_correction(all_tracked_objects)
 
         for current_object in current_tracker_ids:
             tracked_id = all_tracked_objects[all_tracked_objects.index(current_object)]
             object_state = tracked_id.state
             if current_object not in top_list_correction:
-
                 all_tracked_objects.remove(tracked_id)
                 if object_state == reid_constants.SWITCHER:
                     switchers.remove(tracked_id)
@@ -223,7 +214,6 @@ class ReidProcessor:
         switchers: List["TrackedObject"],
         candidates: List["TrackedObject"],
     ):
-
         for match in matches:
             candidate_match, switcher_match = match.popitem()
 
@@ -242,7 +232,6 @@ class ReidProcessor:
         max_frames_to_rematch: int,
         frame_id: int,
     ):
-
         switchers_to_drop = set(switchers).intersection(current_tracked_objects)
         filtered_switchers = switchers.copy()
 
@@ -257,11 +246,15 @@ class ReidProcessor:
         return filtered_switchers
 
     @staticmethod
-    def drop_candidates(candidates: List["TrackedObject"]):
+    def drop_candidates(
+        candidates: List["TrackedObject"], max_attempt_to_rematch: int, frame_id: int
+    ):
         # for now drop candidates if there was no match
         for candidate in candidates:
-            candidate.state = reid_constants.STABLE
-        return []
+            if candidate.get_age(frame_id) >= max_attempt_to_rematch:
+                candidate.state = reid_constants.STABLE
+                candidates.remove(candidate)
+        return candidates
 
     def _postprocess(self, tracker_output: np.ndarray):
         filtered_objects = list(
