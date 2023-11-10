@@ -1,4 +1,4 @@
-from track_reid.constants.reid_constants import reid_constants
+from trackreid.constants.reid_constants import reid_constants
 
 
 class TrackedObjectFilter:
@@ -7,7 +7,7 @@ class TrackedObjectFilter:
         self.frames_seen_threshold = frames_seen_threshold
 
     def update(self, tracked_object):
-        if tracked_object.get_state() == reid_constants.BYETRACK_OUTPUT:
+        if tracked_object.get_state() == reid_constants.TRACKER_OUTPUT:
             if (
                 tracked_object.metadata.mean_confidence() > self.confidence_threshold
                 and tracked_object.metadata.observations >= self.frames_seen_threshold
@@ -15,4 +15,4 @@ class TrackedObjectFilter:
                 tracked_object.state = reid_constants.FILTERED_OUTPUT
 
         elif tracked_object.metadata.mean_confidence() < self.confidence_threshold:
-            tracked_object.state = reid_constants.BYETRACK_OUTPUT
+            tracked_object.state = reid_constants.TRACKER_OUTPUT

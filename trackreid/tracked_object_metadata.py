@@ -1,30 +1,32 @@
 import json
 from pathlib import Path
 
-from track_reid.args.reid_args import POSSIBLE_CLASSES
+import numpy as np
+
+from trackreid.args.reid_args import INPUT_POSITIONS, POSSIBLE_CLASSES
 
 
 class TrackedObjectMetaData:
-    def __init__(self, data_line):
-        self.first_frame_id = int(data_line[0])
+    def __init__(self, data_line, frame_id):
+        self.first_frame_id = frame_id
         self.class_counts = {class_name: 0 for class_name in POSSIBLE_CLASSES}
         self.observations = 0
         self.confidence_sum = 0
         self.confidence = 0
-        self.update(data_line)
+        self.update(data_line, frame_id)
 
-    def update(self, data_line):
-        self.last_frame_id = int(data_line[0])
-        class_name = data_line[2]
+    def update(self, data_line, frame_id):
+        self.last_frame_id = frame_id
+        class_name = data_line[INPUT_POSITIONS["category"]]
         self.class_counts[class_name] = self.class_counts.get(class_name, 0) + 1
-        self.bbox = list(map(int, data_line[3:7]))
-        confidence = float(data_line[7])
+        self.bbox = list(data_line[INPUT_POSITIONS["bbox"]].astype(int))
+        confidence = float(data_line[INPUT_POSITIONS["confidence"]])
         self.confidence = confidence
         self.confidence_sum += confidence
         self.observations += 1
 
     def merge(self, other_object):
-        if not isinstance(other_object, TrackedObjectMetaData):
+        if not isinstance(other_object, type(self)):
             raise TypeError("Can only merge with another TrackedObjectMetaData.")
 
         self.observations += other_object.observations
@@ -38,15 +40,29 @@ class TrackedObjectMetaData:
             ) + other_object.class_counts.get(class_name, 0)
 
     def copy(self):
-        # Create a new instance of TrackedObjectMetaData with the same data
+        # Create a new instance of TrackedObjectMetaData
+        # initialize with fake data
+
+        # TODO: make something better here, input order might change
         copy_obj = TrackedObjectMetaData(
-            [self.first_frame_id, 0, list(self.class_counts.keys())[0], *self.bbox, self.confidence]
+            data_line=np.array(
+                [
+                    0,
+                    list(self.class_counts.keys())[0],
+                    *self.bbox,
+                    self.confidence,
+                ]
+            ),
+            frame_id=self.first_frame_id,
         )
         # Update the copied instance with the actual class counts and observations
         copy_obj.class_counts = self.class_counts.copy()
         copy_obj.observations = self.observations
         copy_obj.confidence_sum = self.confidence_sum
         copy_obj.confidence = self.confidence
+        copy_obj.bbox = self.bbox
+        copy_obj.first_frame_id = self.first_frame_id
+        copy_obj.last_frame_id = self.last_frame_id
 
         return copy_obj
 
@@ -105,6 +121,6 @@ class TrackedObjectMetaData:
     def __str__(self):
         return (
             f"First frame seen: {self.first_frame_id}, nb observations: {self.observations}, "
-            + "class Proportions: {self.class_proportions()}, Bounding Box: {self.bbox}, "
-            + "Mean Confidence: {self.mean_confidence()}"
+            + f"class Proportions: {self.class_proportions()}, Bounding Box: {self.bbox}, "
+            + f"Mean Confidence: {self.mean_confidence()}"
         )

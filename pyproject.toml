@@ -2,7 +2,7 @@
 name = "trackreid"
 authors = ["tristanpepinartefact <tristan.pepin@artefact.com>"]
 description = "This Git repository is dedicated to the development of a Python library aimed at correcting the results of tracking algorithms. The primary goal of this library is to reconcile and reassign lost or misidentified IDs, ensuring a consistent and accurate tracking of objects over time. "
-version = "0.0.1"
+version = "0.0.2"
 readme = "README.md"
 
 
@@ -102,7 +102,7 @@ profile = "black"
 
 
 [tool.semantic_release]
-version_variables = ["deployer/__init__.py:__version__"]
+version_variables = ["trackreid/__init__.py:__version__"]
 version_toml = ["pyproject.toml:tool.poetry.version"]
 branch = "main"
 upload_to_pypi = false
@@ -113,3 +113,6 @@ tag_format = "{version}"
 
 [tool.semantic_release.changelog]
 exclude_commit_patterns = ['''^chore\(release\).*''']
+
+[tool.semantic_release.remote]
+token = { env = "GH_TOKEN" }
