@@ -67,6 +67,10 @@ class TrackedObject:
     def bbox(self):
         return self.metadata.bbox
 
+    @property
+    def nb_corrections(self):
+        return len(self.re_id_chain)
+
     def get_age(self, frame_id):
         return frame_id - self.metadata.first_frame_id
 
