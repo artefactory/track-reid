@@ -4,11 +4,11 @@ from typing import Dict, List, Set, Union
 
 import numpy as np
 
-from track_reid.constants.reid_constants import reid_constants
-from track_reid.matcher import Matcher
-from track_reid.tracked_object import TrackedObject
-from track_reid.tracked_object_filter import TrackedObjectFilter
-from track_reid.utils import (
+from trackreid.constants.reid_constants import reid_constants
+from trackreid.matcher import Matcher
+from trackreid.tracked_object import TrackedObject
+from trackreid.tracked_object_filter import TrackedObjectFilter
+from trackreid.utils import (
     filter_objects_by_state,
     get_top_list_correction,
     reshape_tracker_result,

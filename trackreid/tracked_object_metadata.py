@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from track_reid.args.reid_args import POSSIBLE_CLASSES
+from trackreid.args.reid_args import POSSIBLE_CLASSES
 
 
 class TrackedObjectMetaData:

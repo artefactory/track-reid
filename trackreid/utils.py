@@ -5,14 +5,12 @@ from llist import sllist
 
 
 def get_top_list_correction(tracked_ids: list):
-
     top_list_correction = [tracked_id.re_id_chain.last.value for tracked_id in tracked_ids]
 
     return top_list_correction
 
 
 def split_list_around_value(my_list: sllist, value_to_split: float):
-
     if value_to_split == my_list.last.value:
         raise NameError("split on the last")
     if value_to_split not in my_list:

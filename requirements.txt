@@ -1,9 +1,0 @@
-pandas==1.5.3
-numpy==1.24.2
-llist==0.7.1
-pydantic==2.4.2
-Pillow==10.1.0
-opencv-python==4.8.1
-
-# custom bytetrack
-git+https://github.com/TomDarmon/bytetrack-pip.git@main#egg=bytetracker
