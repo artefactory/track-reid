@@ -27,13 +27,23 @@ This Git repository is dedicated to the development of a Python library aimed at
 
 ## Installation
 
+First, install poetry:
+
+```bash
+make download-poetry
+```
+
 To install the required packages in a virtual environment, run the following command:
 
 ```bash
 make install
 ```
 
-TODO: Choose between conda and venv if necessary or let the Makefile as is and copy/paste the [MORE INFO installation section](MORE_INFO.md#eased-installation) to explain how to choose between conda and venv.
+You can then activate the env with the following command:
+
+```bash
+poetry shell
+```
 
 A complete list of available commands can be found using the following command:
 
