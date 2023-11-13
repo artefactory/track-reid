@@ -33,3 +33,9 @@ jobs:
 
       - name: Run Pre commit hooks
         run: make format-code
+
+      - name: Test with pytest
+        env:
+          PYTHONPATH: ./
+        run: |
+          pytest tests/
