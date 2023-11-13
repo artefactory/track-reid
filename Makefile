@@ -32,6 +32,12 @@ update-requirements:
 format-code:
 	@poetry run pre-commit run -a
 
+.PHONY: run-tests
+#help: run-tests						- Run all tests with pytest
+run-tests:
+	@export PYTHONPATH=.
+	@poetry run pytest
+
 # help: deploy_docs				- Deploy documentation to GitHub Pages
 .PHONY: deploy_docs
 deploy_docs:

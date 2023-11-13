@@ -35,7 +35,4 @@ jobs:
         run: make format-code
 
       - name: Test with pytest
-        env:
-          PYTHONPATH: ./
-        run: |
-          pytest tests/
+        run: make run-tests
