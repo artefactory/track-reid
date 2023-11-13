@@ -15,4 +15,5 @@ OUTPUT_POSITIONS = {
     "bbox": [3, 4, 5, 6],
     "confidence": 7,
     "mean_confidence": 8,
+    "tracker_id": 9,
 }
