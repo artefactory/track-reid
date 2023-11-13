@@ -1,0 +1,24 @@
+{
+    "object_id": 24.0,
+    "state": -2,
+    "re_id_chain": [
+        24.0
+    ],
+    "metadata": {
+        "first_frame_id": 154,
+        "last_frame_id": 251,
+        "class_counts": {
+            "shop_item": 2,
+            "personal_item": 0
+        },
+        "bbox": [
+            1430,
+            664,
+            1531,
+            830
+        ],
+        "confidence": 0.48447,
+        "confidence_sum": 1.108755,
+        "observations": 2
+    }
+}
