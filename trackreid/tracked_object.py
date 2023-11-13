@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Optional, Union
 
 import numpy as np
@@ -23,7 +24,7 @@ class TrackedObject:
         if isinstance(object_ids, Union[float, int]):
             self.re_id_chain = sllist([object_ids])
         elif isinstance(object_ids, sllist):
-            self.re_id_chain = object_ids
+            self.re_id_chain = sllist(object_ids)
         else:
             raise NameError("unrocognized type for object_ids.")
         if isinstance(metadata, np.ndarray):
@@ -35,6 +36,9 @@ class TrackedObject:
             self.metadata = metadata.copy()
         else:
             raise NameError("unrocognized type for metadata.")
+
+    def copy(self):
+        return TrackedObject(object_ids=self.re_id_chain, state=self.state, metadata=self.metadata)
 
     def merge(self, other_object):
         if not isinstance(other_object, TrackedObject):
@@ -53,6 +57,10 @@ class TrackedObject:
         return self.re_id_chain.first.value
 
     @property
+    def tracker_id(self):
+        return self.re_id_chain.last.value
+
+    @property
     def category(self):
         return max(self.metadata.class_counts, key=self.metadata.class_counts.get)
 
@@ -69,8 +77,12 @@ class TrackedObject:
         return self.metadata.bbox
 
     @property
-    def nb_corrections(self):
+    def nb_ids(self):
         return len(self.re_id_chain)
+
+    @property
+    def nb_corrections(self):
+        return self.nb_ids - 1
 
     def get_age(self, frame_id):
         return frame_id - self.metadata.first_frame_id
@@ -87,7 +99,7 @@ class TrackedObject:
     def __repr__(self):
         return (
             f"TrackedObject(current_id={self.object_id}, re_id_chain={list(self.re_id_chain)}"
-            + f", state={self.state}: {reid_constants.DESCRIPTION[self.state]})"
+            + f", state={self.state}: {reid_constants.STATES.DESCRIPTION[self.state]})"
         )
 
     def __str__(self):
@@ -113,7 +125,7 @@ class TrackedObject:
         self.re_id_chain = before
 
         new_object = TrackedObject(
-            state=reid_constants.STABLE, object_ids=after, metadata=self.metadata
+            state=reid_constants.STATES.STABLE, object_ids=after, metadata=self.metadata
         )
         return new_object, self
 
@@ -128,10 +140,27 @@ class TrackedObject:
             self.confidence,
         ]
 
-    def all_tracked_objects_to_dict(self):
+    def to_dict(self):
         data = {
-            "state": self.state,
+            "object_id": float(self.object_id),
+            "state": int(self.state),
             "re_id_chain": list(self.re_id_chain),
             "metadata": self.metadata.to_dict(),
         }
         return data
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        obj = cls.__new__(cls)
+        obj.state = data["state"]
+        obj.re_id_chain = sllist(data["re_id_chain"])
+        obj.metadata = TrackedObjectMetaData.from_dict(data["metadata"])
+        return obj
+
+    @classmethod
+    def from_json(cls, json_str: str):
+        data = json.loads(json_str)
+        return cls.from_dict(data)

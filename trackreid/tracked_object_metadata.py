@@ -1,10 +1,12 @@
+import json
+
 from trackreid.args.reid_args import INPUT_POSITIONS, MAPPING_CLASSES, POSSIBLE_CLASSES
 
 
 class TrackedObjectMetaData:
     def __init__(self, data_line, frame_id):
         self.first_frame_id = frame_id
-        self.class_counts = {class_name: 0 for class_name in POSSIBLE_CLASSES}
+        self.class_counts = {class_name: 0 for class_name in MAPPING_CLASSES.values()}
         self.observations = 0
         self.confidence_sum = 0
         self.confidence = 0
@@ -12,7 +14,7 @@ class TrackedObjectMetaData:
 
     def update(self, data_line, frame_id):
         self.last_frame_id = frame_id
-        class_name = data_line[INPUT_POSITIONS["category"]]
+        class_name = MAPPING_CLASSES.get(data_line[INPUT_POSITIONS["category"]])
         self.class_counts[class_name] = self.class_counts.get(class_name, 0) + 1
         self.bbox = list(data_line[INPUT_POSITIONS["bbox"]].astype(int))
         confidence = float(data_line[INPUT_POSITIONS["confidence"]])
@@ -29,7 +31,7 @@ class TrackedObjectMetaData:
         self.confidence = other_object.confidence
         self.bbox = other_object.bbox
         self.last_frame_id = other_object.last_frame_id
-        for class_name in POSSIBLE_CLASSES:
+        for class_name in MAPPING_CLASSES.values():
             self.class_counts[class_name] = self.class_counts.get(
                 class_name, 0
             ) + other_object.class_counts.get(class_name, 0)
@@ -49,19 +51,24 @@ class TrackedObjectMetaData:
 
     def to_dict(self):
         data = {
-            "first_frame_id": self.first_frame_id,
+            "first_frame_id": int(self.first_frame_id),
+            "last_frame_id": int(self.last_frame_id),
             "class_counts": self.class_counts,
-            "bbox": self.bbox,
-            "confidence": self.confidence,
-            "confidence_sum": self.confidence_sum,
-            "observations": self.observations,
+            "bbox": [int(i) for i in self.bbox],
+            "confidence": float(self.confidence),
+            "confidence_sum": float(self.confidence_sum),
+            "observations": int(self.observations),
         }
         return data
+
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
 
     @classmethod
     def from_dict(cls, data: dict):
         obj = cls.__new__(cls)
         obj.first_frame_id = data["first_frame_id"]
+        obj.last_frame_id = data["last_frame_id"]
         obj.class_counts = data["class_counts"]
         obj.bbox = data["bbox"]
         obj.confidence = data["confidence"]
@@ -69,10 +76,15 @@ class TrackedObjectMetaData:
         obj.observations = data["observations"]
         return obj
 
+    @classmethod
+    def from_json(cls, json_str: str):
+        data = json.loads(json_str)
+        return cls.from_dict(data)
+
     def class_proportions(self):
         if self.observations > 0:
             proportions = {
-                MAPPING_CLASSES[class_name]: count / self.observations
+                class_name: count / self.observations
                 for class_name, count in self.class_counts.items()
             }
         else:
