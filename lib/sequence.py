@@ -29,10 +29,7 @@ class Sequence:
         if self.index >= len(self.frame_paths):
             raise StopIteration
 
-        try:
-            frame = Image.open(self.frame_paths[self.index])
-        except OSError:  # file doesn't exist not detection return empty file
-            frame = np.array([])
+        frame = Image.open(self.frame_paths[self.index])
 
         try:
             detection = np.loadtxt(self.detection_paths[self.index], dtype="float")
