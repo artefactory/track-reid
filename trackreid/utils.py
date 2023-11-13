@@ -45,6 +45,18 @@ def filter_objects_by_state(tracked_objects: List, states: Union[int, list], exc
     return filtered_objects
 
 
+def filter_objects_by_category(
+    tracked_objects: List, category: Union[Union[float, int], list], exclusion=False
+):
+    if isinstance(category, Union[float, int]):
+        category = [category]
+    if exclusion:
+        filtered_objects = [obj for obj in tracked_objects if obj.category not in category]
+    else:
+        filtered_objects = [obj for obj in tracked_objects if obj.category in category]
+    return filtered_objects
+
+
 def reshape_tracker_result(tracker_output: np.ndarray):
     if tracker_output.ndim == 1:
         tracker_output = np.expand_dims(tracker_output, 0)
