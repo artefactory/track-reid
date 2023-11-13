@@ -1,10 +1,4 @@
-PYTHON_VERSION = 3.10
-USE_CONDA ?= 1
-INSTALL_SCRIPT = install_with_conda.sh
-ifeq (false,$(USE_CONDA))
-	INSTALL_SCRIPT = install_with_venv.sh
-endif
-
+PYTHON_VERSION = 3.10.13
 # help: help					- Display this makefile's help information
 .PHONY: help
 help:
@@ -17,6 +11,7 @@ download-poetry:
 # help: install					- Install python dependencies using poetry
 .PHONY: install
 install:
+	@poetry config virtualenvs.create true
 	@poetry env use $(PYTHON_VERSION)
 	@poetry lock -n
 	@poetry install -n
@@ -26,12 +21,6 @@ install:
 # help: requirements					- Install Python Dependencies
 install-requirements:
 	@poetry install -n
-
-
-.PHONY: install-dev-requirements
-# help : install-dev-requirements 		- Install Python Dependencies for development
-install-dev-requirements:
-	@poetry install -n --with dev
 
 .PHONY: update-requirements
 #help: update-requirements				- Update Python Dependencies (requirements.txt and requirements-dev.txt)
