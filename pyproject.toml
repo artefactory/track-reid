@@ -11,11 +11,11 @@ python = "3.10.13"
 numpy = "1.24.2"
 llist = "0.7.1"
 pydantic = "2.4.2"
-bytetracker = { git = "https://github.com/TomDarmon/bytetrack-pip.git", branch = "main" }
 lapx = "^0.5.5"
 opencv-python = "^4.8.1.78"
 tqdm = "^4.66.1"
 pillow = "^10.1.0"
+bytetracker = {git = "git@github.com:artefactory-fr/bytetrack.git", branch = "main"}
 
 
 [tool.poetry.group.dev.dependencies]
