@@ -1,15 +1,12 @@
 import json
-from pathlib import Path
 
-import numpy as np
-
-from trackreid.args.reid_args import INPUT_POSITIONS, POSSIBLE_CLASSES
+from trackreid.args.reid_args import INPUT_POSITIONS, MAPPING_CLASSES, POSSIBLE_CLASSES
 
 
 class TrackedObjectMetaData:
     def __init__(self, data_line, frame_id):
         self.first_frame_id = frame_id
-        self.class_counts = {class_name: 0 for class_name in POSSIBLE_CLASSES}
+        self.class_counts = {class_name: 0 for class_name in MAPPING_CLASSES.values()}
         self.observations = 0
         self.confidence_sum = 0
         self.confidence = 0
@@ -17,7 +14,7 @@ class TrackedObjectMetaData:
 
     def update(self, data_line, frame_id):
         self.last_frame_id = frame_id
-        class_name = data_line[INPUT_POSITIONS["category"]]
+        class_name = MAPPING_CLASSES.get(data_line[INPUT_POSITIONS["category"]])
         self.class_counts[class_name] = self.class_counts.get(class_name, 0) + 1
         self.bbox = list(data_line[INPUT_POSITIONS["bbox"]].astype(int))
         confidence = float(data_line[INPUT_POSITIONS["confidence"]])
@@ -34,63 +31,55 @@ class TrackedObjectMetaData:
         self.confidence = other_object.confidence
         self.bbox = other_object.bbox
         self.last_frame_id = other_object.last_frame_id
-        for class_name in POSSIBLE_CLASSES:
+        for class_name in MAPPING_CLASSES.values():
             self.class_counts[class_name] = self.class_counts.get(
                 class_name, 0
             ) + other_object.class_counts.get(class_name, 0)
 
     def copy(self):
-        # Create a new instance of TrackedObjectMetaData
-        # initialize with fake data
-
-        # TODO: make something better here, input order might change
-        copy_obj = TrackedObjectMetaData(
-            data_line=np.array(
-                [
-                    0,
-                    list(self.class_counts.keys())[0],
-                    *self.bbox,
-                    self.confidence,
-                ]
-            ),
-            frame_id=self.first_frame_id,
-        )
+        copy_obj = TrackedObjectMetaData.__new__(TrackedObjectMetaData)
         # Update the copied instance with the actual class counts and observations
+        copy_obj.bbox = self.bbox.copy()
         copy_obj.class_counts = self.class_counts.copy()
         copy_obj.observations = self.observations
         copy_obj.confidence_sum = self.confidence_sum
         copy_obj.confidence = self.confidence
-        copy_obj.bbox = self.bbox
         copy_obj.first_frame_id = self.first_frame_id
         copy_obj.last_frame_id = self.last_frame_id
 
         return copy_obj
 
-    def save_to_json(self, filename):
+    def to_dict(self):
         data = {
-            "first_frame_id": self.first_frame_id,
+            "first_frame_id": int(self.first_frame_id),
+            "last_frame_id": int(self.last_frame_id),
             "class_counts": self.class_counts,
-            "bbox": self.bbox,
-            "confidence": self.confidence,
-            "confidence_sum": self.confidence_sum,
-            "observations": self.observations,
+            "bbox": [int(i) for i in self.bbox],
+            "confidence": float(self.confidence),
+            "confidence_sum": float(self.confidence_sum),
+            "observations": int(self.observations),
         }
+        return data
 
-        with Path.open(filename, "w") as file:
-            json.dump(data, file)
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=4)
 
     @classmethod
-    def load_from_json(cls, filename):
-        with Path.open(filename, "r") as file:
-            data = json.load(file)
-            obj = cls.__new__(cls)
-            obj.first_frame_id = data["first_frame_id"]
-            obj.class_counts = data["class_counts"]
-            obj.bbox = data["bbox"]
-            obj.confidence = data["confidence"]
-            obj.confidence_sum = data["confidence_sum"]
-            obj.observations = data["observations"]
-            return obj
+    def from_dict(cls, data: dict):
+        obj = cls.__new__(cls)
+        obj.first_frame_id = data["first_frame_id"]
+        obj.last_frame_id = data["last_frame_id"]
+        obj.class_counts = data["class_counts"]
+        obj.bbox = data["bbox"]
+        obj.confidence = data["confidence"]
+        obj.confidence_sum = data["confidence_sum"]
+        obj.observations = data["observations"]
+        return obj
+
+    @classmethod
+    def from_json(cls, json_str: str):
+        data = json.loads(json_str)
+        return cls.from_dict(data)
 
     def class_proportions(self):
         if self.observations > 0:
@@ -99,7 +88,7 @@ class TrackedObjectMetaData:
                 for class_name, count in self.class_counts.items()
             }
         else:
-            proportions = {class_name: 0.0 for class_name in POSSIBLE_CLASSES}
+            proportions = {MAPPING_CLASSES[class_name]: 0.0 for class_name in POSSIBLE_CLASSES}
         return proportions
 
     def percentage_of_time_seen(self, frame_id):
@@ -121,6 +110,6 @@ class TrackedObjectMetaData:
     def __str__(self):
         return (
             f"First frame seen: {self.first_frame_id}, nb observations: {self.observations}, "
-            + f"class Proportions: {self.class_proportions()}, Bounding Box: {self.bbox}, "
-            + f"Mean Confidence: {self.mean_confidence()}"
+            + f"class proportions: {self.class_proportions()}, bbox: {self.bbox}, "
+            + f"mean confidence: {self.mean_confidence()}"
         )

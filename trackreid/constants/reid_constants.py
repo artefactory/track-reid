@@ -3,7 +3,7 @@ from typing import ClassVar
 from pydantic import BaseModel
 
 
-class ReidConstants(BaseModel):
+class States(BaseModel):
     LOST_FOREVER: int = -3
     TRACKER_OUTPUT: int = -2
     FILTERED_OUTPUT: int = -1
@@ -19,6 +19,15 @@ class ReidConstants(BaseModel):
         SWITCHER: "lost object to be re-matched",
         CANDIDATE: "new object to be matched",
     }
+
+
+class Matches(BaseModel):
+    DISALLOWED_MATCH: int = 1e6
+
+
+class ReidConstants(BaseModel):
+    STATES: States = States()
+    MATCHES: Matches = Matches()
 
 
 reid_constants = ReidConstants()

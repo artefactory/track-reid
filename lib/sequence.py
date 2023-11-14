@@ -30,6 +30,7 @@ class Sequence:
             raise StopIteration
 
         frame = Image.open(self.frame_paths[self.index])
+
         try:
             detection = np.loadtxt(self.detection_paths[self.index], dtype="float")
         except OSError:  # file doesn't exist not detection return empty file
