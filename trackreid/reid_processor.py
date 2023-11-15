@@ -4,7 +4,7 @@ from typing import Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
 
-from trackreid.args.reid_args import INPUT_POSITIONS, MAPPING_CLASSES, OUTPUT_POSITIONS
+from trackreid.args.reid_args import INPUT_POSITIONS, OUTPUT_POSITIONS
 from trackreid.constants.reid_constants import reid_constants
 from trackreid.matcher import Matcher
 from trackreid.tracked_object import TrackedObject
@@ -27,6 +27,8 @@ class ReidProcessor:
         max_frames_to_rematch: int,
         max_attempt_to_match: int,
         cost_function_threshold: Optional[Union[int, float]] = None,
+        save_to_txt: bool = True,
+        file_path: str = "tracks.txt",
     ) -> None:
         """
         Initializes the ReidProcessor class.
@@ -60,6 +62,18 @@ class ReidProcessor:
 
         self.frame_id = 0
         self.nb_output_cols = get_nb_output_cols(output_positions=OUTPUT_POSITIONS)
+
+        self.save_to_txt = save_to_txt
+        self.file_path = file_path
+
+    def set_file_path(self, new_file_path: str) -> None:
+        """
+        Sets a new file path.
+
+        Args:
+            new_file_path (str): The new file path.
+        """
+        self.file_path = new_file_path
 
     @property
     def nb_corrections(self) -> int:
@@ -110,9 +124,14 @@ class ReidProcessor:
             )
             self._perform_reid_process(current_tracker_ids=current_tracker_ids)
             reid_output = self._postprocess(current_tracker_ids=current_tracker_ids)
-            return reid_output
+
         else:
-            return tracker_output
+            reid_output = tracker_output
+
+        if self.save_to_txt:
+            self.save_results_to_txt(file_path=self.file_path, reid_output=reid_output)
+
+        return reid_output
 
     def _preprocess(self, tracker_output: np.ndarray, frame_id: int) -> List["TrackedObject"]:
         """
@@ -436,7 +455,10 @@ class ReidProcessor:
                 candidate.state = reid_constants.STATES.STABLE
         return all_tracked_objects
 
-    def _postprocess(self, current_tracker_ids: List[Union[int, float]]) -> np.ndarray:
+    def _postprocess(
+        self,
+        current_tracker_ids: List[Union[int, float]],
+    ) -> np.ndarray:
         """
         Postprocesses the current tracker IDs.
 
@@ -465,12 +487,24 @@ class ReidProcessor:
                     raise NameError(
                         f"Attribute {required_variable} not in TrackedObject. Check your required output names."
                     )
-                if required_variable == "category":
-                    inverted_dict = {v: k for k, v in MAPPING_CLASSES.items()}
-                    output = inverted_dict[output]
                 reid_output[idx, OUTPUT_POSITIONS[required_variable]] = output
 
         return reid_output
+
+    def save_results_to_txt(self, file_path: str, reid_output: np.ndarray) -> None:
+        """
+        Saves the reid_output to a txt file.
+
+        Args:
+            file_path (str): The path to the txt file.
+            reid_output (np.ndarray): The output of _post_process.
+        """
+        with open(file_path, "a") as f:  # noqa: PTH123
+            for row in reid_output:
+                line = " ".join(
+                    str(int(val)) if val.is_integer() else "{:.6f}".format(val) for val in row
+                )
+                f.write(line + "\n")
 
     def to_dict(self) -> Dict:
         """
