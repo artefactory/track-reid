@@ -38,7 +38,7 @@ def test_tracked_object_properties():
     tracked_object = ALL_TRACKED_OBJECTS[0].copy()
     assert tracked_object.object_id == 1.0
     assert tracked_object.state == 0
-    assert tracked_object.category == "shop_item"
+    assert tracked_object.category == 0
     assert round(tracked_object.confidence, 2) == 0.61
     assert round(tracked_object.mean_confidence, 2) == 0.64
     assert tracked_object.bbox == [598, 208, 814, 447]
@@ -52,7 +52,7 @@ def test_tracked_object_merge():
     tracked_object_1.merge(tracked_object_2)
     assert tracked_object_1.object_id == 1.0
     assert tracked_object_1.state == 0
-    assert tracked_object_1.category == "personal_item"
+    assert tracked_object_1.category == 1
     assert round(tracked_object_1.confidence, 2) == 0.70
     assert round(tracked_object_1.mean_confidence, 2) == 0.67
     assert tracked_object_1.bbox == [548, 455, 846, 645]
@@ -65,7 +65,7 @@ def test_tracked_object_cut():
     new_object, cut_object = tracked_object.cut(2.0)
     assert new_object.object_id == 14.0
     assert new_object.state == 0
-    assert new_object.category == "shop_item"
+    assert new_object.category == 0
     assert round(new_object.confidence, 2) == 0.61
     assert round(new_object.mean_confidence, 2) == 0.64
     assert new_object.bbox == [598, 208, 814, 447]
@@ -73,7 +73,7 @@ def test_tracked_object_cut():
     assert new_object.nb_corrections == 2
     assert cut_object.object_id == 1.0
     assert cut_object.state == 0
-    assert cut_object.category == "shop_item"
+    assert cut_object.category == 0
     assert round(cut_object.confidence, 2) == 0.61
     assert round(cut_object.mean_confidence, 2) == 0.64
     assert cut_object.bbox == [598, 208, 814, 447]
