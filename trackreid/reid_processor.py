@@ -226,6 +226,7 @@ class ReidProcessor:
         Args:
             current_tracker_ids (List[Union[int, float]]): The current tracker IDs.
         """
+
         self.all_tracked_objects = self.correct_reid_chains(
             all_tracked_objects=self.all_tracked_objects, current_tracker_ids=current_tracker_ids
         )
@@ -360,7 +361,7 @@ class ReidProcessor:
             all_tracked_objects.append(tracked_id)
 
             if new_object in current_tracker_ids:
-                new_object.state = reid_constants.STATES.STABLE
+                new_object.state = reid_constants.STATES.CANDIDATE
                 all_tracked_objects.append(new_object)
 
             elif new_object.nb_corrections > 1:
