@@ -93,13 +93,11 @@ class TrackedObjectMetaData:
     def class_proportions(self):
         if self.observations > 0:
             proportions = {
-                MAPPING_CLASSES.get(class_name): count / self.observations
+                class_name: count / self.observations
                 for class_name, count in self.class_counts.items()
             }
         else:
-            proportions = {
-                MAPPING_CLASSES.get(class_name): 0.0 for class_name in map(int, POSSIBLE_CLASSES)
-            }
+            proportions = {class_name: 0.0 for class_name in map(int, POSSIBLE_CLASSES)}
         return proportions
 
     def percentage_of_time_seen(self, frame_id):
