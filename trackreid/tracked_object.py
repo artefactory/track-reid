@@ -127,6 +127,8 @@ class TrackedObject:
         new_object = TrackedObject(
             state=reid_constants.STATES.STABLE, object_ids=after, metadata=self.metadata
         )
+        # set potential age 0 for new object
+        new_object.metadata.first_frame_id = new_object.metadata.last_frame_id
         return new_object, self
 
     def format_data(self):
