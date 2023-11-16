@@ -64,7 +64,7 @@ def test_filter_objects_by_state_2():
 
 
 def test_filter_objects_by_category():
-    category = "shop_item"
+    category = 0
     assert utils.filter_objects_by_category(ALL_TRACKED_OBJECTS, category, exclusion=False) == [
         ALL_TRACKED_OBJECTS[0],
         ALL_TRACKED_OBJECTS[2],
@@ -72,7 +72,7 @@ def test_filter_objects_by_category():
 
 
 def test_filter_objects_by_category_2():
-    category = "personal_item"
+    category = 1
     assert utils.filter_objects_by_category(ALL_TRACKED_OBJECTS, category, exclusion=True) == [
         ALL_TRACKED_OBJECTS[0],
         ALL_TRACKED_OBJECTS[2],

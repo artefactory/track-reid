@@ -1,5 +1,5 @@
-POSSIBLE_CLASSES = [0.0, 1.0]
-MAPPING_CLASSES = {0.0: "shop_item", 1.0: "personal_item"}
+POSSIBLE_CLASSES = [0, 1]
+MAPPING_CLASSES = {0: "shop_item", 1: "personal_item"}
 
 INPUT_POSITIONS = {
     "object_id": 4,
