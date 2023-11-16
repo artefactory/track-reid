@@ -48,9 +48,6 @@ def test_matcher_all_match():
         candidates.append(obj)
         switchers.append(obj)
 
-    print(candidates)
-    print(switchers)
-
     matches = matcher.match(candidates, switchers)
 
     assert len(matches) == 3
@@ -76,7 +73,6 @@ def test_matcher_middle_case():
         switchers.append(obj)
 
     matches = matcher.match(candidates, switchers)
-    print(matches)
 
     assert len(matches) == 2
     for match in matches:
