@@ -22,4 +22,4 @@ class InputDataPositions(BaseModel):
     )
 
 
-input_data_postitions = InputDataPositions()
+input_data_positions = InputDataPositions()

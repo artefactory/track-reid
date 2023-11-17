@@ -1,6 +1,6 @@
 import json
 
-from trackreid.configs.input_data_positions import input_data_postitions
+from trackreid.configs.input_data_positions import input_data_positions
 
 
 class TrackedObjectMetaData:
@@ -15,10 +15,10 @@ class TrackedObjectMetaData:
     def update(self, data_line, frame_id):
         self.last_frame_id = frame_id
 
-        class_name = int(data_line[input_data_postitions.category])
+        class_name = int(data_line[input_data_positions.category])
         self.class_counts[class_name] = self.class_counts.get(class_name, 0) + 1
-        self.bbox = list(map(int, data_line[input_data_postitions.bbox]))
-        confidence = float(data_line[input_data_postitions.confidence])
+        self.bbox = list(map(int, data_line[input_data_positions.bbox]))
+        confidence = float(data_line[input_data_positions.confidence])
         self.confidence = confidence
         self.confidence_sum += confidence
         self.observations += 1

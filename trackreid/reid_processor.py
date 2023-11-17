@@ -4,7 +4,7 @@ from typing import Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
 
-from trackreid.configs.input_data_positions import input_data_postitions
+from trackreid.configs.input_data_positions import input_data_positions
 from trackreid.configs.output_data_positions import output_data_positions
 from trackreid.configs.reid_constants import reid_constants
 from trackreid.matcher import Matcher
@@ -146,7 +146,7 @@ class ReidProcessor:
             List["TrackedObject"]: The preprocessed output.
         """
         reshaped_tracker_output = reshape_tracker_result(tracker_output=tracker_output)
-        current_tracker_ids = list(reshaped_tracker_output[:, input_data_postitions.object_id])
+        current_tracker_ids = list(reshaped_tracker_output[:, input_data_positions.object_id])
 
         self.all_tracked_objects = self._update_tracked_objects(
             tracker_output=reshaped_tracker_output, frame_id=frame_id
@@ -169,7 +169,7 @@ class ReidProcessor:
         """
         self.frame_id = frame_id
         for object_id, data_line in zip(
-            tracker_output[:, input_data_postitions.object_id], tracker_output
+            tracker_output[:, input_data_positions.object_id], tracker_output
         ):
             if object_id not in self.all_tracked_objects:
                 new_tracked_object = TrackedObject(
@@ -519,3 +519,33 @@ class ReidProcessor:
         for tracked_object in self.all_tracked_objects:
             data[tracked_object.object_id] = tracked_object.to_dict()
         return data
+
+    @staticmethod
+    def print_input_data_format_requirements():
+        """
+        Prints the input and output data format requirements.
+        """
+        input_schema = input_data_positions.model_json_schema()
+
+        print("Input Data Format Requirements:")
+        for name, properties in input_schema["properties"].items():
+            print("-" * 50)
+            print(f"{name}: {properties['description']}")
+            print(
+                f"{name} (position of {name} in the input array must be): {properties['default']}"
+            )
+
+    @staticmethod
+    def print_output_data_format_information():
+        """
+        Prints the output data format information.
+        """
+        output_schema = output_data_positions.model_json_schema()
+
+        print("\nOutput Data Format:")
+        for name, properties in output_schema["properties"].items():
+            print("-" * 50)
+            print(f"{name}: {properties['description']}")
+            print(
+                f"{name} (position of {name} in the output array will be): {properties['default']}"
+            )
