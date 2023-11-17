@@ -5,6 +5,7 @@ import numpy as np
 from llist import sllist
 
 from trackreid import utils
+from trackreid.configs.output_data_positions import OutputDataPositions
 from trackreid.tracked_object import TrackedObject
 
 # Load tracked object data
@@ -87,5 +88,5 @@ def test_reshape_tracker_result():
 
 
 def test_get_nb_output_cols():
-    output_positions = {"feature1": 1, "feature2": [1, 2, 3]}
-    assert utils.get_nb_output_cols(output_positions) == 4
+    output_positions = OutputDataPositions()
+    assert utils.get_nb_output_cols(output_positions) == 10

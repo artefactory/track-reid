@@ -1,4 +1,4 @@
-from trackreid.constants.reid_constants import reid_constants
+from trackreid.configs.reid_constants import reid_constants
 
 
 class TrackedObjectFilter:

@@ -3,7 +3,7 @@ from typing import Callable, Dict, List, Optional, Union
 import lap
 import numpy as np
 
-from trackreid.constants.reid_constants import reid_constants
+from trackreid.configs.reid_constants import reid_constants
 from trackreid.tracked_object import TrackedObject
 
 

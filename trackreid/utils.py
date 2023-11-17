@@ -3,6 +3,8 @@ from typing import List, Union
 import numpy as np
 from llist import sllist
 
+from trackreid.configs.output_data_positions import OutputDataPositions
+
 
 def get_top_list_correction(tracked_ids: list):
     top_list_correction = [tracked_id.re_id_chain.last.value for tracked_id in tracked_ids]
@@ -63,14 +65,15 @@ def reshape_tracker_result(tracker_output: np.ndarray):
     return tracker_output
 
 
-def get_nb_output_cols(output_positions: dict):
+def get_nb_output_cols(output_positions: OutputDataPositions):
+    schema = output_positions.model_json_schema()
     nb_cols = 0
-    for feature in output_positions.values():
-        if type(feature) is int:
+    for feature in schema["properties"]:
+        if schema["properties"][feature]["type"] == "integer":
             nb_cols += 1
-        elif type(feature) is list:
-            nb_cols += len(feature)
+        elif schema["properties"][feature]["type"] == "array":
+            nb_cols += len(schema["properties"][feature]["default"])
         else:
-            raise TypeError("Unkown type in required output positions.")
+            raise TypeError("Unknown type in required output positions.")
 
     return nb_cols

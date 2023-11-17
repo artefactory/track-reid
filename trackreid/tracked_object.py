@@ -6,7 +6,7 @@ from typing import Optional, Union
 import numpy as np
 from llist import sllist
 
-from trackreid.constants.reid_constants import reid_constants
+from trackreid.configs.reid_constants import reid_constants
 from trackreid.tracked_object_metadata import TrackedObjectMetaData
 from trackreid.utils import split_list_around_value
 

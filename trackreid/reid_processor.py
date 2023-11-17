@@ -4,8 +4,9 @@ from typing import Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
 
-from trackreid.args.reid_args import INPUT_POSITIONS, OUTPUT_POSITIONS
-from trackreid.constants.reid_constants import reid_constants
+from trackreid.configs.input_data_positions import input_data_postitions
+from trackreid.configs.output_data_positions import output_data_positions
+from trackreid.configs.reid_constants import reid_constants
 from trackreid.matcher import Matcher
 from trackreid.tracked_object import TrackedObject
 from trackreid.tracked_object_filter import TrackedObjectFilter
@@ -61,7 +62,7 @@ class ReidProcessor:
         self.max_attempt_to_match = max_attempt_to_match
 
         self.frame_id = 0
-        self.nb_output_cols = get_nb_output_cols(output_positions=OUTPUT_POSITIONS)
+        self.nb_output_cols = get_nb_output_cols(output_positions=output_data_positions)
 
         self.save_to_txt = save_to_txt
         self.file_path = file_path
@@ -145,7 +146,7 @@ class ReidProcessor:
             List["TrackedObject"]: The preprocessed output.
         """
         reshaped_tracker_output = reshape_tracker_result(tracker_output=tracker_output)
-        current_tracker_ids = list(reshaped_tracker_output[:, INPUT_POSITIONS["object_id"]])
+        current_tracker_ids = list(reshaped_tracker_output[:, input_data_postitions.object_id])
 
         self.all_tracked_objects = self._update_tracked_objects(
             tracker_output=reshaped_tracker_output, frame_id=frame_id
@@ -168,7 +169,7 @@ class ReidProcessor:
         """
         self.frame_id = frame_id
         for object_id, data_line in zip(
-            tracker_output[:, INPUT_POSITIONS["object_id"]], tracker_output
+            tracker_output[:, input_data_postitions.object_id], tracker_output
         ):
             if object_id not in self.all_tracked_objects:
                 new_tracked_object = TrackedObject(
@@ -478,7 +479,7 @@ class ReidProcessor:
         reid_output = np.zeros((len(stable_objects), self.nb_output_cols))
 
         for idx, stable_object in enumerate(stable_objects):
-            for required_variable in OUTPUT_POSITIONS:
+            for required_variable in output_data_positions.model_json_schema()["properties"].keys():
                 output = (
                     self.frame_id
                     if required_variable == "frame_id"
@@ -488,7 +489,7 @@ class ReidProcessor:
                     raise NameError(
                         f"Attribute {required_variable} not in TrackedObject. Check your required output names."
                     )
-                reid_output[idx, OUTPUT_POSITIONS[required_variable]] = output
+                reid_output[idx, getattr(output_data_positions, required_variable)] = output
 
         return reid_output
 
