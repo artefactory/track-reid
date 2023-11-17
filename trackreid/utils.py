@@ -74,10 +74,3 @@ def get_nb_output_cols(output_positions: dict):
             raise TypeError("Unkown type in required output positions.")
 
     return nb_cols
-
-
-def get_key_from_value(dictionary, target_value):
-    for key, value in dictionary.items():
-        if value == target_value:
-            return key
-    return None

@@ -8,8 +8,8 @@
         "first_frame_id": 154,
         "last_frame_id": 251,
         "class_counts": {
-            "shop_item": 2,
-            "personal_item": 0
+            "0": 2,
+            "1": 0
         },
         "bbox": [
             1430,

@@ -1,6 +1,3 @@
-POSSIBLE_CLASSES = [0, 1]
-MAPPING_CLASSES = {0: "shop_item", 1: "personal_item"}
-
 INPUT_POSITIONS = {
     "object_id": 4,
     "category": 5,
