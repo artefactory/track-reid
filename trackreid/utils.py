@@ -3,14 +3,35 @@ from typing import List, Union
 import numpy as np
 from llist import sllist
 
+from trackreid.configs.output_data_positions import OutputDataPositions
 
-def get_top_list_correction(tracked_ids: list):
+
+def get_top_list_correction(tracked_ids: List):
+    """
+    Function to get the last value of each re_id_chain in tracked_ids.
+
+    Args:
+        tracked_ids (list): List of tracked ids.
+
+    Returns:
+        list: List of last values of each re_id_chain in tracked_ids.
+    """
     top_list_correction = [tracked_id.re_id_chain.last.value for tracked_id in tracked_ids]
 
     return top_list_correction
 
 
 def split_list_around_value(my_list: sllist, value_to_split: float):
+    """
+    Function to split a list around a given value.
+
+    Args:
+        my_list (sllist): The list to split.
+        value_to_split (float): The value to split the list around.
+
+    Returns:
+        tuple: Two lists, before and after the split value.
+    """
     if value_to_split == my_list.last.value:
         raise NameError("split on the last")
     if value_to_split not in my_list:
@@ -35,7 +56,18 @@ def split_list_around_value(my_list: sllist, value_to_split: float):
     return before, after
 
 
-def filter_objects_by_state(tracked_objects: List, states: Union[int, list], exclusion=False):
+def filter_objects_by_state(tracked_objects: List, states: Union[int, List[int]], exclusion=False):
+    """
+    Function to filter tracked objects by their state.
+
+    Args:
+        tracked_objects (List): List of tracked objects.
+        states (Union[int, list]): State or list of states to filter by.
+        exclusion (bool, optional): If True, exclude objects with the given states. Defaults to False.
+
+    Returns:
+        list: List of filtered tracked objects.
+    """
     if isinstance(states, int):
         states = [states]
     if exclusion:
@@ -46,8 +78,21 @@ def filter_objects_by_state(tracked_objects: List, states: Union[int, list], exc
 
 
 def filter_objects_by_category(
-    tracked_objects: List, category: Union[Union[float, int], list], exclusion=False
+    tracked_objects: List,
+    category: Union[Union[float, int], List[Union[float, int]]],
+    exclusion=False,
 ):
+    """
+    Function to filter tracked objects by their category.
+
+    Args:
+        tracked_objects (List): List of tracked objects.
+        category (Union[Union[float, int], list]): Category or list of categories to filter by.
+        exclusion (bool, optional): If True, exclude objects with the given categories. Defaults to False.
+
+    Returns:
+        list: List of filtered tracked objects.
+    """
     if isinstance(category, Union[float, int]):
         category = [category]
     if exclusion:
@@ -58,26 +103,38 @@ def filter_objects_by_category(
 
 
 def reshape_tracker_result(tracker_output: np.ndarray):
+    """
+    Function to reshape the tracker output if it has only one dimension.
+
+    Args:
+        tracker_output (np.ndarray): The tracker output to reshape.
+
+    Returns:
+        np.ndarray: The reshaped tracker output.
+    """
     if tracker_output.ndim == 1:
         tracker_output = np.expand_dims(tracker_output, 0)
     return tracker_output
 
 
-def get_nb_output_cols(output_positions: dict):
+def get_nb_output_cols(output_positions: OutputDataPositions):
+    """
+    Function to get the number of output columns based on the model json schema.
+
+    Args:
+        output_positions (OutputDataPositions): The output data positions.
+
+    Returns:
+        int: The number of output columns.
+    """
+    schema = output_positions.model_json_schema()
     nb_cols = 0
-    for feature in output_positions.values():
-        if type(feature) is int:
+    for feature in schema["properties"]:
+        if schema["properties"][feature]["type"] == "integer":
             nb_cols += 1
-        elif type(feature) is list:
-            nb_cols += len(feature)
+        elif schema["properties"][feature]["type"] == "array":
+            nb_cols += len(schema["properties"][feature]["default"])
         else:
-            raise TypeError("Unkown type in required output positions.")
+            raise TypeError("Unknown type in required output positions.")
 
     return nb_cols
-
-
-def get_key_from_value(dictionary, target_value):
-    for key, value in dictionary.items():
-        if value == target_value:
-            return key
-    return None

@@ -1,13 +1,12 @@
 import json
 
-from trackreid.args.reid_args import INPUT_POSITIONS, MAPPING_CLASSES, POSSIBLE_CLASSES
-from trackreid.utils import get_key_from_value
+from trackreid.configs.input_data_positions import input_data_positions
 
 
 class TrackedObjectMetaData:
     def __init__(self, data_line, frame_id):
         self.first_frame_id = frame_id
-        self.class_counts = {class_name: 0 for class_name in map(int, POSSIBLE_CLASSES)}
+        self.class_counts = {}
         self.observations = 0
         self.confidence_sum = 0
         self.confidence = 0
@@ -15,10 +14,11 @@ class TrackedObjectMetaData:
 
     def update(self, data_line, frame_id):
         self.last_frame_id = frame_id
-        class_name = int(data_line[INPUT_POSITIONS["category"]])
+
+        class_name = int(data_line[input_data_positions.category])
         self.class_counts[class_name] = self.class_counts.get(class_name, 0) + 1
-        self.bbox = list(map(int, data_line[INPUT_POSITIONS["bbox"]]))
-        confidence = float(data_line[INPUT_POSITIONS["confidence"]])
+        self.bbox = list(map(int, data_line[input_data_positions.bbox]))
+        confidence = float(data_line[input_data_positions.confidence])
         self.confidence = confidence
         self.confidence_sum += confidence
         self.observations += 1
@@ -32,7 +32,7 @@ class TrackedObjectMetaData:
         self.confidence = other_object.confidence
         self.bbox = other_object.bbox
         self.last_frame_id = other_object.last_frame_id
-        for class_name in map(int, POSSIBLE_CLASSES):
+        for class_name in other_object.class_counts.keys():
             self.class_counts[class_name] = self.class_counts.get(
                 class_name, 0
             ) + other_object.class_counts.get(class_name, 0)
@@ -52,7 +52,7 @@ class TrackedObjectMetaData:
 
     def to_dict(self):
         class_counts_str = {
-            MAPPING_CLASSES[class_name]: count for class_name, count in self.class_counts.items()
+            str(class_name): count for class_name, count in self.class_counts.items()
         }
         data = {
             "first_frame_id": int(self.first_frame_id),
@@ -71,10 +71,7 @@ class TrackedObjectMetaData:
     @classmethod
     def from_dict(cls, data: dict):
         class_counts_str = data["class_counts"]
-        class_counts = {
-            get_key_from_value(MAPPING_CLASSES, class_name): count
-            for class_name, count in class_counts_str.items()
-        }
+        class_counts = {int(class_name): count for class_name, count in class_counts_str.items()}
         obj = cls.__new__(cls)
         obj.first_frame_id = data["first_frame_id"]
         obj.last_frame_id = data["last_frame_id"]
@@ -97,7 +94,7 @@ class TrackedObjectMetaData:
                 for class_name, count in self.class_counts.items()
             }
         else:
-            proportions = {class_name: 0.0 for class_name in map(int, POSSIBLE_CLASSES)}
+            proportions = None
         return proportions
 
     def percentage_of_time_seen(self, frame_id):

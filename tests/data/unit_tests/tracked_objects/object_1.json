@@ -12,8 +12,8 @@
         "first_frame_id": 15,
         "last_frame_id": 251,
         "class_counts": {
-            "shop_item": 175,
-            "personal_item": 0
+            "0": 175,
+            "1": 0
         },
         "bbox": [
             598,

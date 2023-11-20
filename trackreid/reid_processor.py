@@ -4,8 +4,9 @@ from typing import Callable, Dict, List, Optional, Set, Union
 
 import numpy as np
 
-from trackreid.args.reid_args import INPUT_POSITIONS, OUTPUT_POSITIONS
-from trackreid.constants.reid_constants import reid_constants
+from trackreid.configs.input_data_positions import input_data_positions
+from trackreid.configs.output_data_positions import output_data_positions
+from trackreid.configs.reid_constants import reid_constants
 from trackreid.matcher import Matcher
 from trackreid.tracked_object import TrackedObject
 from trackreid.tracked_object_filter import TrackedObjectFilter
@@ -31,16 +32,43 @@ class ReidProcessor:
         file_path: str = "tracks.txt",
     ) -> None:
         """
-        Initializes the ReidProcessor class.
+        This initializes the ReidProcessor class.
+        For information about the required input format and output details, use the following methods:
+
+        ReidProcessor.print_input_data_format_requirements()
+        ReidProcessor.print_output_data_format_information()
+
 
         Args:
-            filter_confidence_threshold: Confidence threshold for the filter.
-            filter_time_threshold: Time threshold for the filter.
-            cost_function: Cost function to be used.
-            selection_function: Selection function to be used.
-            max_frames_to_rematch (int): Maximum number of frames to rematch.
-            max_attempt_to_match (int): Maximum attempts to match.
-            cost_function_threshold (int, float): Maximum cost to rematch 2 objects.
+            filter_confidence_threshold (float): Confidence threshold for the filter. The filter will only consider
+            tracked objects that have a mean confidence score during the all transaction above this threshold.
+
+            filter_time_threshold (int): Time threshold for the filter. The filter will only consider tracked objects
+            that have been seen for a number of frames above this threshold.
+
+            cost_function (Callable): A function that calculates the cost of matching two objects. The cost function
+            should take two TrackedObject instances as input and return a numerical value representing the cost of
+            matching these two objects. A lower cost indicates a higher likelihood of a match.
+
+            selection_function (Callable): A function that determines whether two objects should be considered for
+            matching. The selection function should take two TrackedObject instances as input and return a binary value
+            (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return
+            value of 0 indicates that the pair should not be considered.
+
+            max_frames_to_rematch (int): Maximum number of frames to rematch. If a switcher is lost for a number of
+            frames greater than this value, it will be flagged as lost forever.
+
+            max_attempt_to_match (int): Maximum number of attempts to match a candidate. If a candidate has not been
+            rematched despite a number of attempts equal to this value, it will be flagged as a stable object.
+
+            cost_function_threshold (Optional[Union[int, float]]): An maximal threshold value for the cost function.
+            If provided, any pair of objects with a matching cost greater than this threshold will not be considered
+            for matching. If not provided, all selected pairs will be considered regardless of their matching cost.
+
+            save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the
+            results will be saved to a text file specified by the file_path parameter.
+
+            file_path (str): The path to the text file where the results will be saved if save_to_txt is set to True.
         """
 
         self.matcher = Matcher(
@@ -61,14 +89,14 @@ class ReidProcessor:
         self.max_attempt_to_match = max_attempt_to_match
 
         self.frame_id = 0
-        self.nb_output_cols = get_nb_output_cols(output_positions=OUTPUT_POSITIONS)
+        self.nb_output_cols = get_nb_output_cols(output_positions=output_data_positions)
 
         self.save_to_txt = save_to_txt
         self.file_path = file_path
 
     def set_file_path(self, new_file_path: str) -> None:
         """
-        Sets a new file path.
+        Sets a new file path for saving txt data.
 
         Args:
             new_file_path (str): The new file path.
@@ -77,6 +105,12 @@ class ReidProcessor:
 
     @property
     def nb_corrections(self) -> int:
+        """
+        Calculates and returns the total number of corrections made across all tracked objects.
+
+        Returns:
+            int: Total number of corrections.
+        """
         nb_corrections = 0
         for obj in self.all_tracked_objects:
             nb_corrections += obj.nb_corrections
@@ -84,6 +118,12 @@ class ReidProcessor:
 
     @property
     def nb_tracker_ids(self) -> int:
+        """
+        Calculates and returns the total number of tracker IDs across all tracked objects.
+
+        Returns:
+            int: Total number of tracker IDs.
+        """
         tracker_ids = 0
         for obj in self.all_tracked_objects:
             tracker_ids += obj.nb_ids
@@ -91,10 +131,23 @@ class ReidProcessor:
 
     @property
     def corrected_objects(self) -> List["TrackedObject"]:
+        """
+        Returns a list of tracked objects that have been corrected.
+
+        Returns:
+            List[TrackedObject]: List of corrected tracked objects.
+        """
         return [obj for obj in self.all_tracked_objects if obj.nb_corrections]
 
     @property
     def seen_objects(self) -> List["TrackedObject"]:
+        """
+        Returns a list of tracked objects that have been seen, excluding those in the
+        states TRACKER_OUTPUT and FILTERED_OUTPUT.
+
+        Returns:
+            List[TrackedObject]: List of seen tracked objects.
+        """
         return filter_objects_by_state(
             tracked_objects=self.all_tracked_objects,
             states=[reid_constants.STATES.TRACKER_OUTPUT, reid_constants.STATES.FILTERED_OUTPUT],
@@ -103,21 +156,49 @@ class ReidProcessor:
 
     @property
     def mean_nb_corrections(self) -> float:
+        """
+        Calculates and returns the mean number of corrections across all tracked objects.
+
+        Returns:
+            float: Mean number of corrections.
+        """
         return self.nb_corrections / len(self.all_tracked_objects)
 
-    def update(
-        self, tracker_output: np.ndarray, frame_id: int
-    ) -> Union[np.ndarray, List[TrackedObject]]:
+    def update(self, tracker_output: np.ndarray, frame_id: int) -> np.ndarray:
         """
-        Processes the tracker output.
+        Processes the tracker output and updates internal states.
+
+        All input data should be of numeric type, either integers or floats.
+        Here's an example of how the input data should look like based on the schema:
+
+        | bbox (0-3)      | object_id (4) | category (5) | confidence (6) |
+        |-----------------|---------------|--------------|----------------|
+        | 50, 60, 120, 80 |       1       |       1      |       0.91     |
+        | 50, 60, 120, 80 |       2       |       0      |       0.54     |
+
+        Each row represents a detected object. The first four columns represent the bounding box coordinates
+        (x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+        the sixth column represents the category of the detected object, and the seventh column represents
+        the confidence score of the detection.
+
+        You can use ReidProcessor.print_input_data_requirements() for more insight.
+
+        Here's an example of how the output data looks like based on the schema:
+
+        | frame_id (0) | object_id (1) | category (2) | bbox (3-6)      | confidence (7) | mean_confidence (8) | tracker_id (9) |
+        |--------------|---------------|--------------|-----------------|----------------|---------------------|----------------|
+        | 1            | 1             | 1            | 50, 60, 120, 80 | 0.91           | 0.85                | 1              |
+        | 2            | 2             | 0            | 50, 60, 120, 80 | 0.54           | 0.60                | 2              |
+
+        You can use ReidProcessor.print_output_data_format_information() for more insight.
 
         Args:
             tracker_output (np.ndarray): The tracker output.
             frame_id (int): The frame id.
 
         Returns:
-            Union[np.ndarray, List[TrackedObject]]: The processed output.
-        """
+            np.ndarray: The processed output.
+        """  # noqa: E501
         if tracker_output.size:  # empty tracking
             self.all_tracked_objects, current_tracker_ids = self._preprocess(
                 tracker_output=tracker_output, frame_id=frame_id
@@ -145,7 +226,7 @@ class ReidProcessor:
             List["TrackedObject"]: The preprocessed output.
         """
         reshaped_tracker_output = reshape_tracker_result(tracker_output=tracker_output)
-        current_tracker_ids = list(reshaped_tracker_output[:, INPUT_POSITIONS["object_id"]])
+        current_tracker_ids = list(reshaped_tracker_output[:, input_data_positions.object_id])
 
         self.all_tracked_objects = self._update_tracked_objects(
             tracker_output=reshaped_tracker_output, frame_id=frame_id
@@ -168,7 +249,7 @@ class ReidProcessor:
         """
         self.frame_id = frame_id
         for object_id, data_line in zip(
-            tracker_output[:, INPUT_POSITIONS["object_id"]], tracker_output
+            tracker_output[:, input_data_positions.object_id], tracker_output
         ):
             if object_id not in self.all_tracked_objects:
                 new_tracked_object = TrackedObject(
@@ -462,6 +543,8 @@ class ReidProcessor:
     ) -> np.ndarray:
         """
         Postprocesses the current tracker IDs.
+        It selects the stable TrackedObjects, and formats their datas in the output
+        to match requirements.
 
         Args:
             current_tracker_ids (List[Union[int, float]]): The current tracker IDs.
@@ -478,7 +561,7 @@ class ReidProcessor:
         reid_output = np.zeros((len(stable_objects), self.nb_output_cols))
 
         for idx, stable_object in enumerate(stable_objects):
-            for required_variable in OUTPUT_POSITIONS:
+            for required_variable in output_data_positions.model_json_schema()["properties"].keys():
                 output = (
                     self.frame_id
                     if required_variable == "frame_id"
@@ -488,7 +571,7 @@ class ReidProcessor:
                     raise NameError(
                         f"Attribute {required_variable} not in TrackedObject. Check your required output names."
                     )
-                reid_output[idx, OUTPUT_POSITIONS[required_variable]] = output
+                reid_output[idx, getattr(output_data_positions, required_variable)] = output
 
         return reid_output
 
@@ -518,3 +601,55 @@ class ReidProcessor:
         for tracked_object in self.all_tracked_objects:
             data[tracked_object.object_id] = tracked_object.to_dict()
         return data
+
+    @staticmethod
+    def print_input_data_format_requirements():
+        """
+
+        Prints the input data format requirements.
+
+        All input data should be of numeric type, either integers or floats.
+        Here's an example of how the input data should look like based on the schema:
+
+        |    bbox (0-3)   | object_id (4) | category (5) | confidence (6) |
+        |-----------------|---------------|--------------|----------------|
+        | 50, 60, 120, 80 |       1       |       1      |       0.91     |
+        | 50, 60, 120, 80 |       2       |       0      |       0.54     |
+
+        Each row represents a detected object. The first four columns represent the bounding box coordinates
+        (x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+        the sixth column represents the category of the detected object, and the seventh column represents
+        the confidence score of the detection.
+        """
+        input_schema = input_data_positions.model_json_schema()
+
+        print("Input Data Format Requirements:")
+        for name, properties in input_schema["properties"].items():
+            print("-" * 50)
+            print(f"{name}: {properties['description']}")
+            print(
+                f"{name} (position of {name} in the input array must be): {properties['default']}"
+            )
+
+    @staticmethod
+    def print_output_data_format_information():
+        """
+        Prints the output data format information.
+
+        Here's an example of how the output data looks like based on the schema:
+
+        | frame_id (0) | object_id (1) | category (2) | bbox (3-6) | confidence (7) | mean_confidence (8) | tracker_id (9) |
+        |--------------|---------------|--------------|------------|----------------|-------------------|------------------|
+        | 1            | 1             | 1            | 50,60,120,80 | 0.91         | 0.85              | 1                |
+        | 2            | 2             | 0            | 50,60,120,80 | 0.54         | 0.60              | 2                |
+
+        """  # noqa: E501
+        output_schema = output_data_positions.model_json_schema()
+
+        print("\nOutput Data Format:")
+        for name, properties in output_schema["properties"].items():
+            print("-" * 50)
+            print(f"{name}: {properties['description']}")
+            print(
+                f"{name} (position of {name} in the output array will be): {properties['default']}"
+            )
