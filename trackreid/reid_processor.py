@@ -25,11 +25,29 @@ class ReidProcessor:
     The ReidProcessor class is designed to correct the results of tracking algorithms by reconciling and reassigning
     lost or misidentified IDs. This ensures a consistent and accurate tracking of objects over time.
 
-    For information about the required input format and output details, please refer to the update method
-    documentation or use the following methods:
+    All input data should be of numeric type, either integers or floats.
+    Here's an example of how the input data should look like based on the schema:
 
-    ReidProcessor.print_input_data_format_requirements()
-    ReidProcessor.print_output_data_format_information()
+    | bbox (0-3)      | object_id (4) | category (5) | confidence (6) |
+    |-----------------|---------------|--------------|----------------|
+    | 50, 60, 120, 80 |       1       |       1      |       0.91     |
+    | 50, 60, 120, 80 |       2       |       0      |       0.54     |
+
+    Each row represents a detected object. The first four columns represent the bounding box coordinates
+    (x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+    the sixth column represents the category of the detected object, and the seventh column represents
+    the confidence score of the detection.
+
+    You can use ReidProcessor.print_input_data_requirements() for more insight.
+
+    Here's an example of how the output data looks like based on the schema:
+
+    | frame_id (0) | object_id (1) | category (2) | bbox (3-6)      | confidence (7) | mean_confidence (8) | tracker_id (9) |
+    |--------------|---------------|--------------|-----------------|----------------|---------------------|----------------|
+    | 1            | 1             | 1            | 50, 60, 120, 80 | 0.91           | 0.85                | 1              |
+    | 2            | 2             | 0            | 50, 60, 120, 80 | 0.54           | 0.60                | 2              |
+
+    You can use ReidProcessor.print_output_data_format_information() for more insight.
 
 
     Args:
@@ -63,11 +81,11 @@ class ReidProcessor:
 
         save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the
         results will be saved to a text file specified by the file_path parameter.
-        Default to True.
+        Default to False.
 
         file_path (str): The path to the text file where the results will be saved if save_to_txt is set to True.
         Defaults to tracks.txt
-    """
+    """  # noqa: E501
 
     def __init__(
         self,
@@ -78,7 +96,7 @@ class ReidProcessor:
         selection_function: Callable = select_by_category,
         cost_function: Callable = bounding_box_distance,
         cost_function_threshold: Optional[Union[int, float]] = None,
-        save_to_txt: bool = True,
+        save_to_txt: bool = False,
         file_path: str = "tracks.txt",
     ) -> None:
         self.matcher = Matcher(

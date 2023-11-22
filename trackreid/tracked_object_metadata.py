@@ -1,5 +1,7 @@
 import json
 
+import numpy as np
+
 from trackreid.configs.input_data_positions import input_data_positions
 
 
@@ -16,7 +18,7 @@ class TrackedObjectMetaData:
     for a single frame) and a frame_id (which identifies the frame where the object was detected).
     """
 
-    def __init__(self, data_line, frame_id):
+    def __init__(self, data_line: np.ndarray, frame_id: int):
         self.first_frame_id = frame_id
         self.class_counts = {}
         self.observations = 0
@@ -24,7 +26,7 @@ class TrackedObjectMetaData:
         self.confidence = 0
         self.update(data_line, frame_id)
 
-    def update(self, data_line, frame_id):
+    def update(self, data_line: np.ndarray, frame_id: int):
         """
         Updates the metadata of a tracked object based on new detection data.
 
@@ -32,8 +34,8 @@ class TrackedObjectMetaData:
         It updates the last frame id, class counts, bounding box, confidence, confidence sum, and observations.
 
         Args:
-            data_line (list): The detection data for a single frame. It contains information such as the class name,
-            bounding box coordinates, and confidence level of the detection.
+            data_line (np.ndarra): The detection data for a single frame. It contains information such as the
+            class name, bounding box coordinates, and confidence level of the detection.
 
             frame_id (int): The frame id where the object was detected. This is used to update the last frame id of
             the tracked object.
@@ -204,7 +206,7 @@ class TrackedObjectMetaData:
             proportions = None
         return proportions
 
-    def percentage_of_time_seen(self, frame_id):
+    def percentage_of_time_seen(self, frame_id: int):
         """
         Calculates the percentage of time the tracked object has been seen.
 

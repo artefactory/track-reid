@@ -81,7 +81,7 @@ class TrackedObject:
     def copy(self):
         return TrackedObject(object_ids=self.re_id_chain, state=self.state, metadata=self.metadata)
 
-    def merge(self, other_object):
+    def merge(self, other_object: TrackedObject):
         if not isinstance(other_object, TrackedObject):
             raise TypeError("Can only merge with another TrackedObject.")
 
@@ -149,7 +149,7 @@ class TrackedObject:
         """
         return self.nb_ids - 1
 
-    def get_age(self, frame_id):
+    def get_age(self, frame_id: int):
         """
         Calculates and returns the age of the tracked object based on the given frame id.
         Age is defined as the difference between the current frame id and the first frame id where
@@ -157,7 +157,7 @@ class TrackedObject:
         """
         return frame_id - self.metadata.first_frame_id
 
-    def get_nb_frames_since_last_appearance(self, frame_id):
+    def get_nb_frames_since_last_appearance(self, frame_id: int):
         """
         Calculates and returns the number of frames since the last appearance of the tracked object.
         This is computed as the difference between the current frame id and the last frame id where

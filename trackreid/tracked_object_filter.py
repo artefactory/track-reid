@@ -1,4 +1,5 @@
 from trackreid.configs.reid_constants import reid_constants
+from trackreid.tracked_object import TrackedObject
 
 
 class TrackedObjectFilter:
@@ -13,11 +14,11 @@ class TrackedObjectFilter:
         must be observed in to be considered valid.
     """
 
-    def __init__(self, confidence_threshold, frames_seen_threshold):
+    def __init__(self, confidence_threshold: float, frames_seen_threshold: int):
         self.confidence_threshold = confidence_threshold
         self.frames_seen_threshold = frames_seen_threshold
 
-    def update(self, tracked_object):
+    def update(self, tracked_object: TrackedObject):
         """
         The update method is used to update the state of a tracked object based on its confidence
         and the number of frames it has been observed in.
