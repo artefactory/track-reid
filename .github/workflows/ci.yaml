@@ -29,7 +29,10 @@ jobs:
 
       - name: Install requirements
         run: |
-          poetry install
+          make install
 
       - name: Run Pre commit hooks
         run: make format-code
+
+      - name: Test with pytest
+        run: make run-tests

@@ -12,8 +12,6 @@
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-informational?logo=pre-commit&logoColor=white)](https://github.com/artefactory-fr/track-reid/blob/main/.pre-commit-config.yaml)
 </div>
 
-TODO: if not done already, check out the [Skaff documentation](https://artefact.roadie.so/catalog/default/component/repo-builder-ds/docs/) for more information about the generated repository.
-
 This Git repository is dedicated to the development of a Python library aimed at correcting the results of tracking algorithms. The primary goal of this library is to reconcile and reassign lost or misidentified IDs, ensuring a consistent and accurate tracking of objects over time.
 
 ## Table of Contents
@@ -27,13 +25,23 @@ This Git repository is dedicated to the development of a Python library aimed at
 
 ## Installation
 
+First, install poetry:
+
+```bash
+make download-poetry
+```
+
 To install the required packages in a virtual environment, run the following command:
 
 ```bash
 make install
 ```
 
-TODO: Choose between conda and venv if necessary or let the Makefile as is and copy/paste the [MORE INFO installation section](MORE_INFO.md#eased-installation) to explain how to choose between conda and venv.
+You can then activate the env with the following command:
+
+```bash
+poetry shell
+```
 
 A complete list of available commands can be found using the following command:
 
@@ -43,11 +51,22 @@ make help
 
 ## Usage
 
-TODO: Add usage instructions here
+For a quickstart, please refer to the documentation [here](https://artefactory-fr.github.io/track-reid/quickstart_user/). You also have at disposal a demo notebook in `notebooks/starer_kit_reid.ipynb`.
+
+Lets say you have a `dataset` iterable object, composed for each iteartion of a frame id and its associated tracking results. You can call the `ReidProcessor` update class using the following:
+
+```python
+for frame_id, tracker_output in dataset:
+    corrected_results = reid_processor.update(frame_id = frame_id,                  tracker_output=tracker_output)
+```
+
+At the end of the for loop, information about the correction can be retrieved using the `ReidProcessor` properties. For instance, the list of tracked object can be accessed using:
+
+```python
+reid_processor.seen_objects()
+```
 
 ## Documentation
-
-TODO: Github pages is not enabled by default, you need to enable it in the repository settings: Settings > Pages > Source: "Deploy from a branch" / Branch: "gh-pages" / Folder: "/(root)"
 
 A detailed documentation of this project is available [here](https://artefactory-fr.github.io/track-reid/)
 

@@ -1,0 +1,46 @@
+site_name: track-reid
+
+theme:
+  name: "material"
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: default
+      primary: indigo
+      accent: pink
+      toggle:
+        icon: material/moon-waning-crescent
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: slate
+      primary: indigo
+      accent: pink
+      toggle:
+        icon: material/white-balance-sunny
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+
+plugins:
+  - mkdocstrings
+  - search
+
+markdown_extensions:
+  - codehilite:
+      use_pygments: true
+      pygments_style: monokai
+
+nav:
+  - Home: index.md
+  - Quickstart users: quickstart_user.md
+  - Quickstart developers: quickstart_dev.md
+  - Custom cost and selection functions: custom_cost_selection.md
+  - Code Reference:
+    - ReidProcessor: reference/reid_processor.md
+    - TrackedObjectFilter: reference/tracked_object_filter.md
+    - Matcher: reference/matcher.md
+    - TrackedObjectMetadata: reference/tracked_object_metadata.md
+    - TrackedObject: reference/tracked_object.md
+    - Cost functions: reference/cost_functions.md
+    - Selection functions: reference/selection_functions.md
