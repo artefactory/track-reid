@@ -13,8 +13,8 @@ class States(BaseModel):
 
     DESCRIPTION: ClassVar[dict] = {
         LOST_FOREVER: "switcher never rematched",
-        TRACKER_OUTPUT: "bytetrack output not in reid process",
-        FILTERED_OUTPUT: "bytetrack output entering reid process",
+        TRACKER_OUTPUT: "tracker output not in reid process",
+        FILTERED_OUTPUT: "tracker output entering reid process",
         STABLE: "stable object",
         SWITCHER: "lost object to be re-matched",
         CANDIDATE: "new object to be matched",

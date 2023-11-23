@@ -7,7 +7,9 @@ import numpy as np
 from trackreid.configs.input_data_positions import input_data_positions
 from trackreid.configs.output_data_positions import output_data_positions
 from trackreid.configs.reid_constants import reid_constants
+from trackreid.cost_functions import bounding_box_distance
 from trackreid.matcher import Matcher
+from trackreid.selection_functions import select_by_category
 from trackreid.tracked_object import TrackedObject
 from trackreid.tracked_object_filter import TrackedObjectFilter
 from trackreid.utils import (
@@ -19,58 +21,84 @@ from trackreid.utils import (
 
 
 class ReidProcessor:
+    """
+    The ReidProcessor class is designed to correct the results of tracking algorithms by reconciling and reassigning
+    lost or misidentified IDs. This ensures a consistent and accurate tracking of objects over time.
+
+    All input data should be of numeric type, either integers or floats.
+    Here's an example of how the input data should look like based on the schema:
+
+    | bbox (0-3)      | object_id (4) | category (5) | confidence (6) |
+    |-----------------|---------------|--------------|----------------|
+    | 50, 60, 120, 80 |       1       |       1      |       0.91     |
+    | 50, 60, 120, 80 |       2       |       0      |       0.54     |
+
+    Each row represents a detected object. The first four columns represent the bounding box coordinates
+    (x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+    the sixth column represents the category of the detected object, and the seventh column represents
+    the confidence score of the detection.
+
+    You can use ReidProcessor.print_input_data_requirements() for more insight.
+
+    Here's an example of how the output data looks like based on the schema:
+
+    | frame_id (0) | object_id (1) | category (2) | bbox (3-6)      | confidence (7) | mean_confidence (8) | tracker_id (9) |
+    |--------------|---------------|--------------|-----------------|----------------|---------------------|----------------|
+    | 1            | 1             | 1            | 50, 60, 120, 80 | 0.91           | 0.85                | 1              |
+    | 2            | 2             | 0            | 50, 60, 120, 80 | 0.54           | 0.60                | 2              |
+
+    You can use ReidProcessor.print_output_data_format_information() for more insight.
+
+
+    Args:
+        filter_confidence_threshold (float): Confidence threshold for the filter. The filter will only consider
+        tracked objects that have a mean confidence score during the all transaction above this threshold.
+
+        filter_time_threshold (int): Time threshold for the filter. The filter will only consider tracked objects
+        that have been seen for a number of frames above this threshold.
+
+        max_frames_to_rematch (int): Maximum number of frames to rematch. If a switcher is lost for a number of
+        frames greater than this value, it will be flagged as lost forever.
+
+        max_attempt_to_match (int): Maximum number of attempts to match a candidate. If a candidate has not been
+        rematched despite a number of attempts equal to this value, it will be flagged as a stable object.
+
+        selection_function (Callable): A function that determines whether two objects should be considered for
+        matching. The selection function should take two TrackedObject instances as input and return a binary value
+        (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return
+        value of 0 indicates that the pair should not be considered.
+        Defaults to select_by_category.
+
+        cost_function (Callable): A function that calculates the cost of matching two objects. The cost function
+        should take two TrackedObject instances as input and return a numerical value representing the cost of
+        matching these two objects. A lower cost indicates a higher likelihood of a match.
+        Defaults to bounding_box_distance.
+
+        cost_function_threshold (Optional[Union[int, float]]): An maximal threshold value for the cost function.
+        If provided, any pair of objects with a matching cost greater than this threshold will not be considered
+        for matching. If not provided, all selected pairs will be considered regardless of their matching cost.
+        Defaults to None.
+
+        save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the
+        results will be saved to a text file specified by the file_path parameter.
+        Default to False.
+
+        file_path (str): The path to the text file where the results will be saved if save_to_txt is set to True.
+        Defaults to tracks.txt
+    """  # noqa: E501
+
     def __init__(
         self,
         filter_confidence_threshold: float,
         filter_time_threshold: int,
-        cost_function: Callable,
-        selection_function: Callable,
         max_frames_to_rematch: int,
         max_attempt_to_match: int,
+        selection_function: Callable = select_by_category,
+        cost_function: Callable = bounding_box_distance,
         cost_function_threshold: Optional[Union[int, float]] = None,
-        save_to_txt: bool = True,
+        save_to_txt: bool = False,
         file_path: str = "tracks.txt",
     ) -> None:
-        """
-        This initializes the ReidProcessor class.
-        For information about the required input format and output details, use the following methods:
-
-        ReidProcessor.print_input_data_format_requirements()
-        ReidProcessor.print_output_data_format_information()
-
-
-        Args:
-            filter_confidence_threshold (float): Confidence threshold for the filter. The filter will only consider
-            tracked objects that have a mean confidence score during the all transaction above this threshold.
-
-            filter_time_threshold (int): Time threshold for the filter. The filter will only consider tracked objects
-            that have been seen for a number of frames above this threshold.
-
-            cost_function (Callable): A function that calculates the cost of matching two objects. The cost function
-            should take two TrackedObject instances as input and return a numerical value representing the cost of
-            matching these two objects. A lower cost indicates a higher likelihood of a match.
-
-            selection_function (Callable): A function that determines whether two objects should be considered for
-            matching. The selection function should take two TrackedObject instances as input and return a binary value
-            (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return
-            value of 0 indicates that the pair should not be considered.
-
-            max_frames_to_rematch (int): Maximum number of frames to rematch. If a switcher is lost for a number of
-            frames greater than this value, it will be flagged as lost forever.
-
-            max_attempt_to_match (int): Maximum number of attempts to match a candidate. If a candidate has not been
-            rematched despite a number of attempts equal to this value, it will be flagged as a stable object.
-
-            cost_function_threshold (Optional[Union[int, float]]): An maximal threshold value for the cost function.
-            If provided, any pair of objects with a matching cost greater than this threshold will not be considered
-            for matching. If not provided, all selected pairs will be considered regardless of their matching cost.
-
-            save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the
-            results will be saved to a text file specified by the file_path parameter.
-
-            file_path (str): The path to the text file where the results will be saved if save_to_txt is set to True.
-        """
-
         self.matcher = Matcher(
             cost_function=cost_function,
             selection_function=selection_function,
@@ -302,7 +330,23 @@ class ReidProcessor:
 
     def _perform_reid_process(self, current_tracker_ids: List[Union[int, float]]) -> None:
         """
-        Performs the reid process.
+        Performs the re-identification process on tracked objects.
+
+        This method is responsible for managing the state of tracked objects and identifying potential
+        candidates for re-identification. It follows these steps:
+
+        1.  correct_reid_chains: Corrects the re-identification chains of all tracked objects
+        based on the current tracker IDs. This avoids potential duplicates.
+        2.  update_switchers_states: Updates the states of switchers (objects that have switched IDs)
+        based on the current frame's tracked objects, the maximum number of frames to rematch, and the current frame ID.
+        3.  update_candidates_states: Updates the states of candidate objects (potential matches for re-identification)
+        based on the maximum number of attempts to match and the current frame ID.
+        4.  identify_switchers: Identifies switchers based on the current and last frame's tracked objects and
+        updates the state of all tracked objects accordingly.
+        5.  identify_candidates: Identifies candidates for re-identification and updates the state of all
+        tracked objects accordingly.
+        6.  match: Matches candidates with switchers using Jonker-Volgenant algorithm.
+        7.  process_matches: Processes the matches and updates the state of all tracked objects accordingly.
 
         Args:
             current_tracker_ids (List[Union[int, float]]): The current tracker IDs.
