@@ -23,5 +23,5 @@ jobs:
           make install
       - name: Deploying MkDocs documentation
         run: |
-          mkdocs build
-          mkdocs gh-deploy --force
+          poetry run mkdocs build
+          poetry run mkdocs gh-deploy --force
