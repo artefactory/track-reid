@@ -16,7 +16,6 @@ opencv-python = "^4.8.1.78"
 tqdm = "^4.66.1"
 pillow = "^10.1.0"
 
-
 [tool.poetry.group.dev.dependencies]
 black = "22.10.0"
 ruff = "0.0.272"
@@ -26,7 +25,7 @@ pytest = "7.3.2"
 ipykernel = "6.24.0"
 mkdocs = "1.4.3"
 mkdocs-material = "9.1.15"
-mkdocstrings-python = "1.1.2"
+mkdocstrings = {extras = ["python-legacy"], version = "^0.24.0"}
 bandit = "1.7.5"
 nbstripout = "0.6.1"
 
