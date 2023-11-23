@@ -51,7 +51,20 @@ make help
 
 ## Usage
 
-TODO: Add usage instructions here
+For a quickstart, please refer to the documentation [here](https://artefactory-fr.github.io/track-reid/quickstart_user/). You also have at disposal a demo notebook in `notebooks/starer_kit_reid.ipynb`.
+
+Lets say you have a `dataset` iterable object, composed for each iteartion of a frame id and its associated tracking results. You can call the `ReidProcessor` update class using the following:
+
+```python
+for frame_id, tracker_output in dataset:
+    corrected_results = reid_processor.update(frame_id = frame_id,                  tracker_output=tracker_output)
+```
+
+At the end of the for loop, information about the correction can be retrieved using the `ReidProcessor` properties. For instance, the list of tracked object can be accessed using:
+
+```python
+reid_processor.seen_objects()
+```
 
 ## Documentation
 
