@@ -31,28 +31,20 @@ class TrackedObjectMetaData:
         Updates the metadata of a tracked object based on new detection data.
 
         This method is used to update the metadata of a tracked object whenever new detection data is available.
-        It updates the last frame id, class counts, bounding box, confidence, confidence sum, and observations.
+        It updates the last frame id, class counts, bounding box, confidence, confidence sum, and observations:
+            - last_frame_id: Updated to the frame id where the object was detected
+            - class_counts: Incremented by 1 for the detected class
+            - bbox: Updated to the bounding box coordinates from the detection data
+            - confidence: Updated to the confidence level from the detection data
+            - confidence_sum: Incremented by the confidence level from the detection data
+            - observations: Incremented by 1
 
         Args:
-            data_line (np.ndarra): The detection data for a single frame. It contains information such as the
-            class name, bounding box coordinates, and confidence level of the detection.
+            data_line (np.ndarra): The detection data for a single frame. It contains information such as the class name, bounding box coordinates, and confidence level of the detection.
 
-            frame_id (int): The frame id where the object was detected. This is used to update the last frame id of
-            the tracked object.
+            frame_id (int): The frame id where the object was detected. This is used to update the last frame id of the tracked object.
 
-        Updates:
-            last_frame_id: The last frame id is updated to the frame id where the object was detected.
-
-            class_counts: The class counts are updated by incrementing the count of the detected class by 1.
-
-            bbox: The bounding box is updated to the bounding box coordinates from the detection data.
-
-            confidence: The confidence is updated to the confidence level from the detection data.
-
-            confidence_sum: The confidence sum is updated by adding the confidence level from the detection data.
-
-            observations: The total number of observations is incremented by 1.
-        """
+        """  # noqa: E501
         self.last_frame_id = frame_id
 
         class_name = int(data_line[input_data_positions.category])
@@ -66,22 +58,23 @@ class TrackedObjectMetaData:
     def merge(self, other_object):
         """
         Merges the metadata of another TrackedObjectMetaData instance into the current one.
+        Updates the current instance with the data from the other TrackedObjectMetaData instance.
+
+        The following properties are updated:
+            - observations: Incremented by the observations of the other object.
+            - confidence_sum: Incremented by the confidence sum of the other object.
+            - confidence: Set to the confidence of the other object.
+            - bbox: Set to the bounding box of the other object.
+            - last_frame_id: Set to the last frame id of the other object.
+            - class_counts: For each class, the count is incremented by the count of the other object.
 
         Args:
-            other_object (TrackedObjectMetaData): The other TrackedObjectMetaData instance whose metadata
-            is to be merged with the current instance.
+            other_object (TrackedObjectMetaData): The other TrackedObjectMetaData instance whose metadata is to be merged with the current instance.
 
         Raises:
             TypeError: If the other_object is not an instance of TrackedObjectMetaData.
 
-        Updates:
-            observations: The total number of observations is updated by adding the observations of the other object.
-            confidence_sum: The total confidence sum is updated by adding the confidence sum of the other object.
-            confidence: The confidence is updated to the confidence of the other object.
-            bbox: The bounding box is updated to the bounding box of the other object.
-            last_frame_id: The last frame id is updated to the last frame id of the other object.
-            class_counts: The class counts are updated by adding the class counts of the other object for each class.
-        """
+        """  # noqa: E501
         if not isinstance(other_object, type(self)):
             raise TypeError("Can only merge with another TrackedObjectMetaData.")
 

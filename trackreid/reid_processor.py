@@ -51,40 +51,23 @@ class ReidProcessor:
 
 
     Args:
-        filter_confidence_threshold (float): Confidence threshold for the filter. The filter will only consider
-        tracked objects that have a mean confidence score during the all transaction above this threshold.
+        filter_confidence_threshold (float): Confidence threshold for the filter. The filter will only consider tracked objects that have a mean confidence score during the all transaction above this threshold.
 
-        filter_time_threshold (int): Time threshold for the filter. The filter will only consider tracked objects
-        that have been seen for a number of frames above this threshold.
+        filter_time_threshold (int): Time threshold for the filter. The filter will only consider tracked objects that have been seen for a number of frames above this threshold.
 
-        max_frames_to_rematch (int): Maximum number of frames to rematch. If a switcher is lost for a number of
-        frames greater than this value, it will be flagged as lost forever.
+        max_frames_to_rematch (int): Maximum number of frames to rematch. If a switcher is lost for a number of frames greater than this value, it will be flagged as lost forever.
 
-        max_attempt_to_match (int): Maximum number of attempts to match a candidate. If a candidate has not been
-        rematched despite a number of attempts equal to this value, it will be flagged as a stable object.
+        max_attempt_to_match (int): Maximum number of attempts to match a candidate. If a candidate has not been rematched despite a number of attempts equal to this value, it will be flagged as a stable object.
 
-        selection_function (Callable): A function that determines whether two objects should be considered for
-        matching. The selection function should take two TrackedObject instances as input and return a binary value
-        (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return
-        value of 0 indicates that the pair should not be considered.
-        Defaults to select_by_category.
+        selection_function (Callable): A function that determines whether two objects should be considered for matching. The selection function should take two TrackedObject instances as input and return a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered.
 
-        cost_function (Callable): A function that calculates the cost of matching two objects. The cost function
-        should take two TrackedObject instances as input and return a numerical value representing the cost of
-        matching these two objects. A lower cost indicates a higher likelihood of a match.
-        Defaults to bounding_box_distance.
+        cost_function (Callable): A function that calculates the cost of matching two objects. The cost function should take two TrackedObject instances as input and return a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match.
 
-        cost_function_threshold (Optional[Union[int, float]]): An maximal threshold value for the cost function.
-        If provided, any pair of objects with a matching cost greater than this threshold will not be considered
-        for matching. If not provided, all selected pairs will be considered regardless of their matching cost.
-        Defaults to None.
+        cost_function_threshold (Optional[Union[int, float]]): An maximal threshold value for the cost function. If provided, any pair of objects with a matching cost greater than this threshold will not be considered for matching. If not provided, all selected pairs will be considered regardless of their matching cost.\n
 
-        save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the
-        results will be saved to a text file specified by the file_path parameter.
-        Default to False.
+        save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the results will be saved to a text file specified by the file_path parameter.
 
         file_path (str): The path to the text file where the results will be saved if save_to_txt is set to True.
-        Defaults to tracks.txt
     """  # noqa: E501
 
     def __init__(

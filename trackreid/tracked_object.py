@@ -44,14 +44,12 @@ class TrackedObject:
     Args:
         object_ids (Union[Union[float, int], sllist]): The unique identifiers for the object.
         state (int): The current state of the object.
-        metadata (Union[np.ndarray, TrackedObjectMetaData]): The metadata for the object. It can be either a
-        TrackedObjectMetaData object, or a data line, i.e. output of detection model. If metadata is initialized
-        with a TrackedObjectMetaData object, a frame_id must be given.
+        metadata (Union[np.ndarray, TrackedObjectMetaData]): The metadata for the object. It can be either a TrackedObjectMetaData object, or a data line, i.e. output of detection model. If metadata is initialized with a TrackedObjectMetaData object, a frame_id must be given.
         frame_id (Optional[int], optional): The frame ID where the object was first seen. Defaults to None.
 
     Raises:
         NameError: If the type of object_ids or metadata is unrecognized.
-    """
+    """  # noqa: E501
 
     def __init__(
         self,
@@ -192,12 +190,10 @@ class TrackedObject:
         the tracked object.
 
         Args:
-            data_line (np.ndarray): The detection data for a single frame. It contains information such as the
-            class name, bounding box coordinates, and confidence level of the detection.
+            data_line (np.ndarray): The detection data for a single frame. It contains information such as the class name, bounding box coordinates, and confidence level of the detection.
 
-            frame_id (int): The frame id where the object was detected. This is used to update the last frame id of
-            the tracked object.
-        """
+            frame_id (int): The frame id where the object was detected. This is used to update the last frame id of the tracked object.
+        """  # noqa: E501
         self.metadata.update(data_line=data_line, frame_id=frame_id)
 
     def __eq__(self, other):

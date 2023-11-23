@@ -18,22 +18,13 @@ class Matcher:
         Initializes the Matcher object with the provided cost function, selection function, and cost function threshold.
 
         Args:
-            cost_function (Callable): A function that calculates the cost of matching two objects. This function should
-            take two TrackedObject instances as input and return a numerical value representing the cost of matching
-            these two objects. A lower cost indicates a higher likelihood of a match.
-
-            selection_function (Callable): A function that determines whether two objects should be considered for
-            matching. This function should take two TrackedObject instances as input and return a binary value (0 or 1).
-            A return value of 1 indicates that the pair should be considered for matching, while a return value of 0
-            indicates that the pair should not be considered.
-
-            cost_function_threshold (Optional[Union[int, float]]): An optional threshold value for the cost function.
-            If provided, any pair of objects with a matching cost greater than this threshold will not be considered for
-            matching. If not provided, all selected pairs will be considered regardless of their matching cost.
+            cost_function (Callable): A function that calculates the cost of matching two objects. This function should take two TrackedObject instances as input and return a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match.
+            selection_function (Callable): A function that determines whether two objects should be considered for matching. This function should take two TrackedObject instances as input and return a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered.
+            cost_function_threshold (Optional[Union[int, float]]): An optional threshold value for the cost function. If provided, any pair of objects with a matching cost greater than this threshold will not be considered for matching. If not provided, all selected pairs will be considered regardless of their matching cost.
 
         Returns:
             None
-        """
+        """  # noqa: E501
         self.cost_function = cost_function
         self.selection_function = selection_function
         self.cost_function_threshold = cost_function_threshold

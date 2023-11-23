@@ -8,11 +8,9 @@ class TrackedObjectFilter:
     confidence and the number of frames they have been observed in.
 
     Args:
-        confidence_threshold (float): The minimum mean confidence level required for a tracked
-        object to be considered valid.
-        frames_seen_threshold (int): The minimum number of frames a tracked object
-        must be observed in to be considered valid.
-    """
+        confidence_threshold (float): The minimum mean confidence level required for a tracked object to be considered valid.
+        frames_seen_threshold (int): The minimum number of frames a tracked object must be observed in to be considered valid.
+    """  # noqa: E501
 
     def __init__(self, confidence_threshold: float, frames_seen_threshold: int):
         self.confidence_threshold = confidence_threshold
