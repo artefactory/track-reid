@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from typing import Optional, Union
 
 import numpy as np
@@ -248,15 +247,6 @@ class TrackedObject:
         }
         return data
 
-    def to_json(self):
-        """
-        Converts the TrackedObject instance to a JSON string.
-
-        Returns:
-            str: A JSON string representation of the TrackedObject instance.
-        """
-        return json.dumps(self.to_dict(), indent=4)
-
     @classmethod
     def from_dict(cls, data: dict):
         """
@@ -273,17 +263,3 @@ class TrackedObject:
         obj.re_id_chain = sllist(data["re_id_chain"])
         obj.metadata = TrackedObjectMetaData.from_dict(data["metadata"])
         return obj
-
-    @classmethod
-    def from_json(cls, json_str: str):
-        """
-        Creates a new TrackedObject instance from a JSON string.
-
-        Args:
-            json_str (str): A JSON string containing the data for the TrackedObject instance.
-
-        Returns:
-            TrackedObject: A new TrackedObject instance created from the JSON string.
-        """
-        data = json.loads(json_str)
-        return cls.from_dict(data)
