@@ -2,6 +2,23 @@
 
 
 
+## 0.0.4 (2023-11-24)
+
+### Fix
+
+* fix: release 0.0.4 (#29) ([`a2e9423`](https://github.com/artefactory-fr/track-reid/commit/a2e942323215dc7ede65c68f45378d1e0368751d))
+
+* fix: less prod dependencies (#26) ([`612759e`](https://github.com/artefactory-fr/track-reid/commit/612759e634443ae2e057f11209ce62bdbe989cd4))
+
+* fix: lapx ([`bb85e5e`](https://github.com/artefactory-fr/track-reid/commit/bb85e5ec208aee7c45eb1dd28214965b4952b912))
+
+* fix: less prod dependencies ([`644757c`](https://github.com/artefactory-fr/track-reid/commit/644757cbf29880aa40969732e15b0f05e59ad51e))
+
+### Unknown
+
+* Tp/add integration test (#28) ([`cf95dde`](https://github.com/artefactory-fr/track-reid/commit/cf95dde33a28951d6f48e57e732c20ebafc48320))
+
+
 ## 0.0.3 (2023-11-23)
 
 ### Fix
