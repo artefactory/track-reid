@@ -4,7 +4,7 @@ from pathlib import Path
 from trackreid.tracked_object_metadata import TrackedObjectMetaData
 
 INPUT_FOLDER = Path("tests/assets/unit_tests/data/tracked_objects")
-LIST_TRACKED_OBJECTS = ["object_1.json", "object_4.json", "object_24.json"]
+LIST_TRACKED_OBJECTS = ["tracked_object_1.json", "tracked_object_4.json", "tracked_object_24.json"]
 
 ALL_TRACKED_METADATA = []
 for tracked_object in LIST_TRACKED_OBJECTS:

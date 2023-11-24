@@ -1,1 +1,1 @@
-{"object_id": 4.0, "state": 0, "re_id_chain": [4.0, 43.0], "metadata": {"first_frame_id": 1, "last_frame_id": 363, "class_counts": {"0": 349}, "bbox": [464, 187, 886, 562], "confidence": 0.575016, "confidence_sum": 260.3729819999998, "observations": 349}}
+{"object_id": 2.0, "state": 0, "re_id_chain": [2.0, 6.0, 10.0, 16.0], "metadata": {"first_frame_id": 1, "last_frame_id": 363, "class_counts": {"0": 320}, "bbox": [596, 100, 714, 218], "confidence": 0.631255, "confidence_sum": 224.94876499999998, "observations": 320}}

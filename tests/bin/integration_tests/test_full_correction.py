@@ -16,17 +16,17 @@ OUTPUT_FILE = "corrected_tracks.txt"
 EXPECTED_OUTPUT_FOLDER = Path("tests/assets/integration_tests/expected_outputs")
 EXPECTED_OUTPUT_FILES = [
     OUTPUT_FILE,
-    "tracked_object_0.json",
     "tracked_object_1.json",
     "tracked_object_2.json",
     "tracked_object_3.json",
     "tracked_object_4.json",
+    "tracked_object_5.json",
 ]
 
 
 def save_tracked_objects(reid_processor: ReidProcessor, file_path_folder: Path):
-    for tracked_object_id, tracked_object in enumerate(reid_processor.all_tracked_objects):
-        file_path = file_path_folder / f"tracked_object_{tracked_object_id}.json"
+    for tracked_object in reid_processor.all_tracked_objects:
+        file_path = file_path_folder / f"tracked_object_{int(tracked_object.object_id)}.json"
         with file_path.open("w") as file:
             json.dump(tracked_object.to_dict(), file)
 
