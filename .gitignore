@@ -142,6 +142,10 @@ secrets/*
 data/detections/*
 data/frames/*
 *.mp4
+*.pt
 data/*.txt
 # poetry
 poetry.lock
+
+
+*.png

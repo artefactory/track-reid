@@ -1,3 +1,5 @@
 git+https://github.com/artefactory-fr/bytetrack.git@0.0.3
 git+https://github.com/artefactory-fr/track-reid.git@0.0.3
 opencv-python==4.8.1.78
+ultralytics==8.0.216
+matplotlib==3.8.2
