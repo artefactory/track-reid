@@ -9,8 +9,8 @@ from trackreid.configs.output_data_positions import OutputDataPositions
 from trackreid.tracked_object import TrackedObject
 
 # Load tracked object data
-INPUT_FOLDER = Path("tests/data/unit_tests/tracked_objects")
-LIST_TRACKED_OBJECTS = ["object_1.json", "object_4.json", "object_24.json"]
+INPUT_FOLDER = Path("tests/assets/unit_tests/data/tracked_objects")
+LIST_TRACKED_OBJECTS = ["tracked_object_1.json", "tracked_object_4.json", "tracked_object_24.json"]
 
 ALL_TRACKED_OBJECTS = []
 for tracked_object in LIST_TRACKED_OBJECTS:
