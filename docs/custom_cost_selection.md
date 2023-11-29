@@ -2,7 +2,7 @@
 
 ## Custom cost function
 
-In our codebase, a cost function is utilized to quantify the dissimilarity between two objects, specifically instances of [TrackedObjects](reference/tracked_object.md). The cost function plays a pivotal role in the matching process within the [Matcher class](reference/matcher.md), where it computes a cost matrix. Each element in this matrix represents the cost of assigning a candidate to a switcher. For a deeper understanding of cost functions, please refer to the [related documentation](reference/cost_functions.md).
+In our codebase, a cost function is utilized to quantify the dissimilarity between two objects, specifically instances of [TrackedObject](reference/tracked_object.md). The cost function plays a pivotal role in the matching process within the [Matcher class](reference/matcher.md), where it computes a cost matrix. Each element in this matrix represents the cost of assigning a candidate to a switcher. For a deeper understanding of cost functions, please refer to the [related documentation](reference/cost_functions.md).
 
 When initializing the [ReidProcessor](reference/reid_processor.md), you have the option to provide a custom cost function. The requirements for designing one are as follows:
 

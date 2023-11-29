@@ -221,7 +221,7 @@ class ReidProcessor:
             reid_output = tracker_output
 
         if self.save_to_txt:
-            self.save_results_to_txt(file_path=self.file_path, reid_output=reid_output)
+            self._save_results_to_txt(file_path=self.file_path, reid_output=reid_output)
 
         return reid_output
 
@@ -318,24 +318,24 @@ class ReidProcessor:
         This method is responsible for managing the state of tracked objects and identifying potential
         candidates for re-identification. It follows these steps:
 
-        1.  correct_reid_chains: Corrects the re-identification chains of all tracked objects
+        1.  _correct_reid_chains: Corrects the re-identification chains of all tracked objects
         based on the current tracker IDs. This avoids potential duplicates.
-        2.  update_switchers_states: Updates the states of switchers (objects that have switched IDs)
+        2.  _update_switchers_states: Updates the states of switchers (objects that have switched IDs)
         based on the current frame's tracked objects, the maximum number of frames to rematch, and the current frame ID.
-        3.  update_candidates_states: Updates the states of candidate objects (potential matches for re-identification)
+        3.  _update_candidates_states: Updates the states of candidate objects (potential matches for re-identification)
         based on the maximum number of attempts to match and the current frame ID.
-        4.  identify_switchers: Identifies switchers based on the current and last frame's tracked objects and
+        4.  _identify_switchers: Identifies switchers based on the current and last frame's tracked objects and
         updates the state of all tracked objects accordingly.
-        5.  identify_candidates: Identifies candidates for re-identification and updates the state of all
+        5.  _identify_candidates: Identifies candidates for re-identification and updates the state of all
         tracked objects accordingly.
         6.  match: Matches candidates with switchers using Jonker-Volgenant algorithm.
-        7.  process_matches: Processes the matches and updates the state of all tracked objects accordingly.
+        7.  _process_matches: Processes the matches and updates the state of all tracked objects accordingly.
 
         Args:
             current_tracker_ids (List[Union[int, float]]): The current tracker IDs.
         """
 
-        self.all_tracked_objects = self.correct_reid_chains(
+        self.all_tracked_objects = self._correct_reid_chains(
             all_tracked_objects=self.all_tracked_objects, current_tracker_ids=current_tracker_ids
         )
 
@@ -343,26 +343,26 @@ class ReidProcessor:
             current_tracker_ids=current_tracker_ids
         )
 
-        self.all_tracked_objects = self.update_switchers_states(
+        self.all_tracked_objects = self._update_switchers_states(
             all_tracked_objects=self.all_tracked_objects,
             current_frame_tracked_objects=current_frame_tracked_objects,
             max_frames_to_rematch=self.max_frames_to_rematch,
             frame_id=self.frame_id,
         )
 
-        self.all_tracked_objects = self.update_candidates_states(
+        self.all_tracked_objects = self._update_candidates_states(
             all_tracked_objects=self.all_tracked_objects,
             max_attempt_to_match=self.max_attempt_to_match,
             frame_id=self.frame_id,
         )
 
-        self.all_tracked_objects = self.identify_switchers(
+        self.all_tracked_objects = self._identify_switchers(
             current_frame_tracked_objects=current_frame_tracked_objects,
             last_frame_tracked_objects=self.last_frame_tracked_objects,
             all_tracked_objects=self.all_tracked_objects,
         )
 
-        self.all_tracked_objects = self.identify_candidates(
+        self.all_tracked_objects = self._identify_candidates(
             all_tracked_objects=self.all_tracked_objects
         )
 
@@ -375,7 +375,7 @@ class ReidProcessor:
 
         matches = self.matcher.match(candidates, switchers)
 
-        self.all_tracked_objects = self.process_matches(
+        self.all_tracked_objects = self._process_matches(
             all_tracked_objects=self.all_tracked_objects,
             matches=matches,
         )
@@ -387,7 +387,7 @@ class ReidProcessor:
         self.last_frame_tracked_objects = current_frame_tracked_objects.copy()
 
     @staticmethod
-    def identify_switchers(
+    def _identify_switchers(
         all_tracked_objects: List["TrackedObject"],
         current_frame_tracked_objects: Set["TrackedObject"],
         last_frame_tracked_objects: Set["TrackedObject"],
@@ -414,7 +414,7 @@ class ReidProcessor:
         return all_tracked_objects
 
     @staticmethod
-    def identify_candidates(all_tracked_objects: List["TrackedObject"]) -> List["TrackedObject"]:
+    def _identify_candidates(all_tracked_objects: List["TrackedObject"]) -> List["TrackedObject"]:
         """
         Identifies candidates in the list of all tracked objects, and
         update their states. A candidate is an object that was never seen before and
@@ -435,7 +435,7 @@ class ReidProcessor:
         return all_tracked_objects
 
     @staticmethod
-    def correct_reid_chains(
+    def _correct_reid_chains(
         all_tracked_objects: List["TrackedObject"],
         current_tracker_ids: List[Union[int, float]],
     ) -> List["TrackedObject"]:
@@ -479,7 +479,7 @@ class ReidProcessor:
         return all_tracked_objects
 
     @staticmethod
-    def process_matches(
+    def _process_matches(
         all_tracked_objects: List["TrackedObject"],
         matches: Dict["TrackedObject", "TrackedObject"],
     ) -> List["TrackedObject"]:
@@ -502,7 +502,7 @@ class ReidProcessor:
         return all_tracked_objects
 
     @staticmethod
-    def update_switchers_states(
+    def _update_switchers_states(
         all_tracked_objects: List["TrackedObject"],
         current_frame_tracked_objects: Set["TrackedObject"],
         max_frames_to_rematch: int,
@@ -537,7 +537,7 @@ class ReidProcessor:
         return all_tracked_objects
 
     @staticmethod
-    def update_candidates_states(
+    def _update_candidates_states(
         all_tracked_objects: List["TrackedObject"], max_attempt_to_match: int, frame_id: int
     ) -> List["TrackedObject"]:
         """
@@ -602,7 +602,7 @@ class ReidProcessor:
 
         return reid_output
 
-    def save_results_to_txt(self, file_path: str, reid_output: np.ndarray) -> None:
+    def _save_results_to_txt(self, file_path: str, reid_output: np.ndarray) -> None:
         """
         Saves the reid_output to a txt file.
 

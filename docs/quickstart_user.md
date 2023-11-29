@@ -1,20 +1,20 @@
 # Using the ReidProcessor
 
-The `ReidProcessor` is the entry point of the `track-reid` library. It is used to process and reconcile tracking data, ensuring consistent and accurate tracking of objects over time. Here's a step-by-step guide on how to use it:
+The [ReidProcessor](reference/reid_processor.md) is the entry point of the `track-reid` library. It is used to process and reconcile tracking data, ensuring consistent and accurate tracking of objects over time. Here's a step-by-step guide on how to use it:
 
 ## Step 1: Understand the Usage
 
 The reidentification process is applied to tracking results, which are derived from the application of a tracking algorithm on detection results for successive frames of a video. This reidentification process is applied iteratively on each tracking result, updating its internal states during the process.
 
-The `ReidProcessor` needs to be updated with the tracking results for each frame of your
-sequence or video. This is done by calling the `update` method that takes 2 arguments:
+The [ReidProcessor](reference/reid_processor.md) needs to be updated with the tracking results for each frame of your
+sequence or video. This is done by calling the [update](/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.update) method that takes 2 arguments:
 
 - `frame_id`: an integer specifying the current frame of the video
 - `tracker_output`: a numpy array containing the tracking results for the current frame
 
 ## Step 2: Understand the Data Format Requirements
 
-The `ReidProcessor` update function requires a numpy array of tracking results for the current frame as input. This data must meet specific criteria regarding data type and structure.
+The [ReidProcessor update](/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.update) function requires a numpy array of tracking results for the current frame as input. This data must meet specific criteria regarding data type and structure.
 
 All input data must be numeric, either integers or floats.
 Here's an example of the expected input data format based on the schema:
@@ -33,7 +33,7 @@ These values remain unchanged during the reidentification process.
 - The sixth column indicates the **category** of the detected object, which may also be adjusted during the reidentification process.
 - The seventh column is the confidence score of the detection, which is not modified by the reidentification process.
 
-For additional information, you can utilize `ReidProcessor.print_input_data_requirements()`.
+For additional information, you can utilize [ReidProcessor.print_input_data_format_requirements](/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.print_input_data_format_requirements).
 
 Here's a reformatted example of how the output data should appear, based on the schema:
 
@@ -50,24 +50,24 @@ Here's a reformatted example of how the output data should appear, based on the 
 - The eighth column indicates the **average confidence** of the detected object over its lifetime, from the beginning of the tracking to the current frame.
 - The final column is the **object ID assigned by the tracking algorithm**, before the reidentification process.
 
-You can use `ReidProcessor.print_output_data_format_information()` for more insight.
+You can use [ReidProcessor.print_output_data_format_information](/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.print_output_data_format_information) for more insight.
 
 ## Step 3: Understand Necessary Modules
 
 To make ReidProcessor work, several modules are necessary:
 
-- `TrackedObject`: This class represents a tracked object. It is used within the Matcher and ReidProcessor classes.
-- `TrackedObjectMetadata`: This class is attached to a tracked object and represents informations and properties about the object.
-- `TrackedObjectFilter`: This class is used to filter tracked objects based on certain criteria. It is used within the ReidProcessor class.
-- `Matcher`: This class is used to match tracked objects based on a cost function and a selection function. It is initialized within the ReidProcessor class.
+- [TrackedObject](reference/tracked_object.md): This class represents a tracked object. It is used within the Matcher and ReidProcessor classes.
+- [TrackedObjectMetadata](reference/tracked_object_metadata.md): This class is attached to a tracked object and represents informations and properties about the object.
+- [TrackedObjectFilter](reference/tracked_object_filter.md): This class is used to filter tracked objects based on certain criteria. It is used within the ReidProcessor class.
+- [Matcher](reference/matcher.md): This class is used to match tracked objects based on a cost function and a selection function. It is initialized within the ReidProcessor class.
 
-The cost and selection functions are key components of the ReidProcessor, as they will drive the matching process between lost objects and new objects during the video. Those two functions are fully customizable and can be passed as arguments of the ReidProcessor at initialization. They both take 2 `TrackedObjects` as inputs, and perform computation based on their metadatas.
+The cost and selection functions are key components of the ReidProcessor, as they will drive the matching process between lost objects and new objects during the video. Those two functions are fully customizable and can be passed as arguments of the ReidProcessor at initialization. They both take 2 [TrackedObject](reference/tracked_object.md) as inputs, and perform computation based on their metadatas.
 
-- **cost function**: This function calculates the cost of matching two objects. It takes two TrackedObject instances as input and returns a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match. The default cost function is `bounding_box_distance`.
+- **cost function**: This function calculates the cost of matching two objects. It takes two TrackedObject instances as input and returns a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match. The default cost function is [bounding_box_distance](/reference/cost_functions/#trackreid.cost_functions.bounding_box_distance.bounding_box_distance).
 
-- **selection_function**: This function determines whether two objects should be considered for matching. It takes two TrackedObject instances as input and returns a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered. The default selection function is `select_by_category`.
+- **selection_function**: This function determines whether two objects should be considered for matching. It takes two TrackedObject instances as input and returns a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered. The default selection function is [select_by_category](/reference/selection_functions/#trackreid.selection_functions.select_by_category.select_by_category).
 
-In summary, prior to the matching process, filtering on which objects should be considerated is applied thought the `TrackedObjectFilter`. All objects are represented by the `TrackedObject` class, with its attached metadata represented by `TrackedObjectMetadata`. The `ReidProcessor` then uses the `Matcher` class with a cost function and selection function to match objects.
+In summary, prior to the matching process, filtering on which objects should be considerated is applied thought the [TrackedObjectFilter](reference/tracked_object_filter.md). All objects are represented by the [TrackedObject](reference/tracked_object.md) class, with its attached metadata represented by [TrackedObjectMetadata](reference/tracked_object_metadata.md). The [ReidProcessor](reference/reid_processor.md) then uses the [Matcher](reference/matcher.md) class with a cost function and selection function to match objects.
 
 ## Step 4: Initialize ReidProcessor
 
@@ -83,7 +83,7 @@ reid_processor = ReidProcessor(filter_confidence_threshold=0.1,
                                file_path="your_file.txt")
 ```
 
-Here is a brief explanation of each argument in the ReidProcessor function, and how you can monitor the `Matcher` and the `TrackedObjectFilter` behaviours:
+Here is a brief explanation of each argument in the ReidProcessor function, and how you can monitor the [Matcher](reference/matcher.md) and the [TrackedObjectFilter](reference/tracked_object_filter.md) behaviours:
 
 - `filter_confidence_threshold`: Float value that sets the **minimum average confidence level** for a tracked object to be considered valid. Tracked objects with average confidence levels below this threshold will be ignored.
 
@@ -103,14 +103,15 @@ For more information on how to design custom cost and selection functions, refer
 
 ## Step 5: Run reidentifiaction process
 
-Lets say you have a `dataset` iterable object, composed for each iteartion of a frame id and its associated tracking results. You can call the `ReidProcessor` update class using the following:
+Lets say you have a `dataset` iterable object, composed for each iteartion of a frame id and its associated tracking results. You can call the [ReidProcessor](reference/reid_processor.md) update class using the following:
 
 ```python
 for frame_id, tracker_output in dataset:
-    corrected_results = reid_processor.update(frame_id = frame_id,                  tracker_output=tracker_output)
+    corrected_results = reid_processor.update(frame_id = frame_id,
+                                              tracker_output=tracker_output)
 ```
 
-At the end of the for loop, information about the correction can be retrieved using the `ReidProcessor` properties. For instance, the list of tracked object can be accessed using:
+At the end of the for loop, information about the correction can be retrieved using the [ReidProcessor](reference/reid_processor.md) properties. For instance, the list of tracked object can be accessed using:
 
 ```python
 reid_processor.seen_objects()
