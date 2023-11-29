@@ -2,6 +2,31 @@
 
 
 
+## 0.0.5 (2023-11-29)
+
+### Fix
+
+* fix: doc and hotfix (#33) ([`bbc047a`](https://github.com/artefactory-fr/track-reid/commit/bbc047a5fdaf94f3f69a63623fbcf34b3a895ace))
+
+* fix: don&#39;t convert to int (#32) ([`6fc38f9`](https://github.com/artefactory-fr/track-reid/commit/6fc38f9bf8ab1149f3affc35dd8cb31077efeb0a))
+
+* fix: don&#39;t convert to int ([`bc0f306`](https://github.com/artefactory-fr/track-reid/commit/bc0f306be9bfb37f9310ae107e77bd9b85aa84f4))
+
+* fix: tests ([`19dba31`](https://github.com/artefactory-fr/track-reid/commit/19dba31f847216a5a2c10774c3b76b4dd5feef30))
+
+* fix: don&#39;t convert to int ([`aa95ddd`](https://github.com/artefactory-fr/track-reid/commit/aa95dddaa8f6e43b58f871a5841857892e42bba0))
+
+* fix: don&#39;t convert to int ([`6d4ea07`](https://github.com/artefactory-fr/track-reid/commit/6d4ea075a23db995724a61e53a530d06a189c6cd))
+
+### Unknown
+
+* change private methods names (#31) ([`ff12c4e`](https://github.com/artefactory-fr/track-reid/commit/ff12c4e41f98ca2cf59a59a4e41975bbc33f3d9c))
+
+* add local hyperlinks in docs (#30) ([`bc045ca`](https://github.com/artefactory-fr/track-reid/commit/bc045cabfc0a0585d9e21892e0fbf98eb798b177))
+
+* change private methods names ([`07d6c19`](https://github.com/artefactory-fr/track-reid/commit/07d6c19988b91aaaab07d1387ffd5475e2bb9d51))
+
+
 ## 0.0.4 (2023-11-24)
 
 ### Fix
