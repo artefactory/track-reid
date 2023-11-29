@@ -49,7 +49,7 @@ class TrackedObjectMetaData:
 
         class_name = int(data_line[input_data_positions.category])
         self.class_counts[class_name] = self.class_counts.get(class_name, 0) + 1
-        self.bbox = list(map(int, data_line[input_data_positions.bbox]))
+        self.bbox = list(data_line[input_data_positions.bbox])
         confidence = float(data_line[input_data_positions.confidence])
         self.confidence = confidence
         self.confidence_sum += confidence
@@ -126,7 +126,7 @@ class TrackedObjectMetaData:
             "first_frame_id": int(self.first_frame_id),
             "last_frame_id": int(self.last_frame_id),
             "class_counts": class_counts_str,
-            "bbox": [int(i) for i in self.bbox],
+            "bbox": self.bbox,
             "confidence": float(self.confidence),
             "confidence_sum": float(self.confidence_sum),
             "observations": int(self.observations),
