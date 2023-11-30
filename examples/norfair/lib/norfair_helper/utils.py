@@ -2,9 +2,8 @@ from typing import List
 
 import cv2
 import numpy as np
-from norfair import Detection, get_cutout
-
 from lib.bbox.utils import rescale_bbox, xy_center_to_xyxy
+from norfair import Detection, get_cutout
 
 
 def yolo_to_norfair_detection(

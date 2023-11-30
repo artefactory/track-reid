@@ -138,10 +138,12 @@ secrets/*
 .DS_Store
 
 
-# Data ignore everythin data/detections and data/frames
-data/detections/*
-data/frames/*
+# Ignore everything in data/ and large files
+data/
 *.mp4
-*.txt
+*.pt
 # poetry
 poetry.lock
+
+
+*.png

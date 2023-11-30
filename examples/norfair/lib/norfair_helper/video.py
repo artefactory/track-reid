@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
-from norfair import Tracker, draw_boxes
-
 from lib.norfair_helper.utils import compute_embeddings, yolo_to_norfair_detection
 from lib.sequence import Sequence
+from norfair import Tracker, draw_boxes
 
 
 def generate_tracking_video(
