@@ -2,7 +2,8 @@
 name = "trackreid"
 authors = ["tristanpepinartefact <tristan.pepin@artefact.com>"]
 description = "This Git repository is dedicated to the development of a Python library aimed at correcting the results of tracking algorithms. The primary goal of this library is to reconcile and reassign lost or misidentified IDs, ensuring a consistent and accurate tracking of objects over time. "
-version = "0.0.5"
+
+version = "0.1.0"
 readme = "README.md"
 
 
