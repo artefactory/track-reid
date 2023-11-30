@@ -23,6 +23,16 @@ This Git repository is dedicated to the development of a Python library aimed at
   - [Documentation](#documentation)
   - [Repository Structure](#repository-structure)
 
+## trackreid + bytetrack VS bytetrack
+
+<p align="center">
+  <img src="https://storage.googleapis.com/track-reid/assets/output_with_reid.gif" width="400"/>
+  <img src="https://storage.googleapis.com/track-reid/assets/output_no_reid.gif" width="400"/>
+</p>
+
+
+
+
 ## Installation
 
 First, install poetry:
