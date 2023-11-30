@@ -2,6 +2,103 @@
 
 
 
+## 0.0.5 (2023-11-29)
+
+### Fix
+
+* fix: doc and hotfix (#33) ([`bbc047a`](https://github.com/artefactory-fr/track-reid/commit/bbc047a5fdaf94f3f69a63623fbcf34b3a895ace))
+
+* fix: don&#39;t convert to int (#32) ([`6fc38f9`](https://github.com/artefactory-fr/track-reid/commit/6fc38f9bf8ab1149f3affc35dd8cb31077efeb0a))
+
+* fix: don&#39;t convert to int ([`bc0f306`](https://github.com/artefactory-fr/track-reid/commit/bc0f306be9bfb37f9310ae107e77bd9b85aa84f4))
+
+* fix: tests ([`19dba31`](https://github.com/artefactory-fr/track-reid/commit/19dba31f847216a5a2c10774c3b76b4dd5feef30))
+
+* fix: don&#39;t convert to int ([`aa95ddd`](https://github.com/artefactory-fr/track-reid/commit/aa95dddaa8f6e43b58f871a5841857892e42bba0))
+
+* fix: don&#39;t convert to int ([`6d4ea07`](https://github.com/artefactory-fr/track-reid/commit/6d4ea075a23db995724a61e53a530d06a189c6cd))
+
+### Unknown
+
+* change private methods names (#31) ([`ff12c4e`](https://github.com/artefactory-fr/track-reid/commit/ff12c4e41f98ca2cf59a59a4e41975bbc33f3d9c))
+
+* add local hyperlinks in docs (#30) ([`bc045ca`](https://github.com/artefactory-fr/track-reid/commit/bc045cabfc0a0585d9e21892e0fbf98eb798b177))
+
+* change private methods names ([`07d6c19`](https://github.com/artefactory-fr/track-reid/commit/07d6c19988b91aaaab07d1387ffd5475e2bb9d51))
+
+
+## 0.0.4 (2023-11-24)
+
+### Fix
+
+* fix: release 0.0.4 (#29) ([`a2e9423`](https://github.com/artefactory-fr/track-reid/commit/a2e942323215dc7ede65c68f45378d1e0368751d))
+
+* fix: less prod dependencies (#26) ([`612759e`](https://github.com/artefactory-fr/track-reid/commit/612759e634443ae2e057f11209ce62bdbe989cd4))
+
+* fix: lapx ([`bb85e5e`](https://github.com/artefactory-fr/track-reid/commit/bb85e5ec208aee7c45eb1dd28214965b4952b912))
+
+* fix: less prod dependencies ([`644757c`](https://github.com/artefactory-fr/track-reid/commit/644757cbf29880aa40969732e15b0f05e59ad51e))
+
+### Unknown
+
+* Tp/add integration test (#28) ([`cf95dde`](https://github.com/artefactory-fr/track-reid/commit/cf95dde33a28951d6f48e57e732c20ebafc48320))
+
+
+## 0.0.3 (2023-11-23)
+
+### Fix
+
+* fix: commit histories (#25) ([`e479f49`](https://github.com/artefactory-fr/track-reid/commit/e479f491cd04d9a42d8d44b8c3d102d3db029ad8))
+
+* fix: bytetrack internal (#15)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`befb92d`](https://github.com/artefactory-fr/track-reid/commit/befb92dd81ae225562b19917e2a4e07c3ccd5c72))
+
+### Unknown
+
+* Merge branch &#39;main&#39; into dev ([`d82a733`](https://github.com/artefactory-fr/track-reid/commit/d82a733aaf45bba5eee7e807c7134d095ce5daee))
+
+* Fix/commit history (#24)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt;
+Co-authored-by: Tristan Pepin &lt;122389133+tristanpepinartefact@users.noreply.github.com&gt;
+Co-authored-by: github-actions &lt;github-actions@github.com&gt; ([`c59c54e`](https://github.com/artefactory-fr/track-reid/commit/c59c54e7cfd95e080b76d85e7d0f2556b09b2454))
+
+* Tp/fix notebook (#23) ([`b3cff2d`](https://github.com/artefactory-fr/track-reid/commit/b3cff2dc6f3a0569a5972874d732b6bb8df73207))
+
+* fix deployment (#22) ([`ea57547`](https://github.com/artefactory-fr/track-reid/commit/ea575474784d58c49f081d693724c58dbf80cafd))
+
+* Dev (#21)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt;
+Co-authored-by: Tristan Pepin &lt;122389133+tristanpepinartefact@users.noreply.github.com&gt;
+Co-authored-by: github-actions &lt;github-actions@github.com&gt; ([`0151f3e`](https://github.com/artefactory-fr/track-reid/commit/0151f3eb62885c14b3fe5b3ea2df9f1c5ae24374))
+
+* Tp/add mkdocs (#19) ([`5b64484`](https://github.com/artefactory-fr/track-reid/commit/5b64484c7dc1af992bf201bda8ee05087c35a874))
+
+* update readme (#20) ([`5708a9a`](https://github.com/artefactory-fr/track-reid/commit/5708a9a37b2da99b3fa4ec0fc8db844fc8370a70))
+
+* Merge branch &#39;main&#39; into dev ([`ca2b905`](https://github.com/artefactory-fr/track-reid/commit/ca2b905e9570f72503ec540284e87444fa83402f))
+
+* Add docstring (#18) ([`e362e62`](https://github.com/artefactory-fr/track-reid/commit/e362e62bd086e4e1c1b2c588d36e4fb027fcc4ca))
+
+* Tp/improve user interface (#17) ([`81ecb2c`](https://github.com/artefactory-fr/track-reid/commit/81ecb2c77bd5558f8eeefb9febc6d74d485bd2c9))
+
+* Tp/add to txt saving (#16) ([`c661fab`](https://github.com/artefactory-fr/track-reid/commit/c661fabbd7607b3afd97089419b01d2faf75aee3))
+
+* Tp/fix_issues (#14) ([`7bc79a6`](https://github.com/artefactory-fr/track-reid/commit/7bc79a68d328d0ab5351ce017a59b31cddaa289d))
+
+* Tp/update reid to real life date (#13)
+
+Co-authored-by: TomDarmon &lt;36815861+TomDarmon@users.noreply.github.com&gt;
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt;
+Co-authored-by: github-actions &lt;github-actions@github.com&gt; ([`457e979`](https://github.com/artefactory-fr/track-reid/commit/457e9795121e590861f791454c3da9a7ebf2ae19))
+
+* fea: add embedding norfair (#6)
+
+Add embedding in norfair notebook ([`2780905`](https://github.com/artefactory-fr/track-reid/commit/27809051beb96e5eea4f4c1733e71bc4c0e0cccc))
+
+
 ## 0.0.2 (2023-11-09)
 
 ### Fix
@@ -9,6 +106,10 @@
 * fix: remove useless dependencies (#11) (#12)
 
 Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`c082c1c`](https://github.com/artefactory-fr/track-reid/commit/c082c1c8766840512a9c1ad58b6848ff560e4ec7))
+
+* fix: remove useless dependencies (#11)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`5beb916`](https://github.com/artefactory-fr/track-reid/commit/5beb916cc3d768b7e2662155572170c3226f0041))
 
 * fix: env in pyproject (#10)
 
