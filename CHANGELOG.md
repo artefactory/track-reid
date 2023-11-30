@@ -2,6 +2,19 @@
 
 
 
+## 0.1.1 (2023-11-30)
+
+### Chore
+
+* chore: readme demo was not loading (#37) (#38) ([`fa32d8a`](https://github.com/artefactory-fr/track-reid/commit/fa32d8a088c1353d56bdfff8cef87ac0786616c1))
+
+### Fix
+
+* fix: readme (#37)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`4adce01`](https://github.com/artefactory-fr/track-reid/commit/4adce015ecf71be5cb3f090694bbe52987bde141))
+
+
 ## 0.1.0 (2023-11-30)
 
 ### Feature
