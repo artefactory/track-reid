@@ -24,14 +24,17 @@ This Git repository is dedicated to the development of a Python library aimed at
   - [Repository Structure](#repository-structure)
 
 ## trackreid + bytetrack VS bytetrack
-
 <p align="center">
-  <img src="https://storage.googleapis.com/track-reid/assets/output_with_reid.gif" width="400"/>
-  <img src="https://storage.googleapis.com/track-reid/assets/output_no_reid.gif" width="400"/>
+  <img src="https://storage.googleapis.com/track-reid/assets/demo_with_reid_small.gif" width="400"/><br>
+  <b>Bytetrack x yolov8l x trackreid, 4 objects</b>
 </p>
-
-
-
+<p align="center">
+  <img src="https://storage.googleapis.com/track-reid/assets/demo_no_reid_small.gif" width="400"/><br>
+  <b>Bytetrack x yolov8l, 42 objects</b>
+</p>
+<p align="center">
+    <a href="https://artefactory-fr.github.io/track-reid/">Demo with better quality can be found here</a>
+</p>
 
 ## Installation
 
