@@ -28,6 +28,16 @@ This Git repository is dedicated to the development of a Python library aimed at
     <a href="https://artefactory-fr.github.io/track-reid/">Demo with better quality can be found here</a>
 </p>
 
+<div align="center">
+
+ | Model | Time difference | Time per iteration |
+ | --- | --- | --- |
+ | yolo + bytetrack | -- |  -- | -- |
+ | yolo + bytetrack + trackreid | +0.95% | +2e-6 s/it |
+
+</div>
+<div align="center">
+
 ## Installation
 
 To install the library, run the following command:
@@ -39,6 +49,8 @@ To install a specific version, run the following command:
 ```bash
 pip install git+https://github.com/artefactory-fr/track-reid.git@x.y.z
 ```
+
+</div>
 
 
 ## Usage
