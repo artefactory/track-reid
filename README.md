@@ -36,7 +36,6 @@ This Git repository is dedicated to the development of a Python library aimed at
  | yolo + bytetrack + trackreid | +0.95% | +2e-6 s/it |
 
 </div>
-<div align="center">
 
 ## Installation
 
