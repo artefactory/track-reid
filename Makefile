@@ -22,6 +22,11 @@ install:
 install-requirements:
 	@poetry install -n
 
+.PHONY: install-dev-requirements
+## Install Python Dependencies for development
+install-dev-requirements:
+	@poetry install -n --with dev
+
 .PHONY: update-requirements
 #help: update-requirements				- Update Python Dependencies (requirements.txt and requirements-dev.txt)
 update-requirements:
