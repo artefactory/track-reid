@@ -103,16 +103,21 @@ For more information on how to design custom cost and selection functions, refer
 
 ## Step 5: Run reidentifiaction process
 
-Lets say you have a `dataset` iterable object, composed for each iteartion of a frame id and its associated tracking results. You can call the [ReidProcessor](reference/reid_processor.md) update class using the following:
+Suppose you have a list of frames, a model and a tracker. You can call the `ReidProcessor` update method on each outputs of your tracker as follow:
 
 ```python
-for frame_id, tracker_output in dataset:
-    corrected_results = reid_processor.update(frame_id = frame_id,
-                                              tracker_output=tracker_output)
+for frame_id, image_filename in enumerate(available_frames):
+    img = cv2.imread(image_filename)
+    detections = model.predict(img)
+    tracked_objects = tracker.update(detections, frame_id)
+    corrected_tracked_objects = reid_processor.update(tracked_objects, frame_id)
+
 ```
 
-At the end of the for loop, information about the correction can be retrieved using the [ReidProcessor](reference/reid_processor.md) properties. For instance, the list of tracked object can be accessed using:
+At the end of the for loop, information about the correction can be retrieved using the `ReidProcessor` properties. For instance, the list of tracked object can be accessed using:
 
 ```python
 reid_processor.seen_objects()
 ```
+
+For a complete example you can refer to [examples/trackreid/starter_kit_reid.ipynb](/examples/trackreid/starter_kit_reid.ipynb)
