@@ -2,6 +2,29 @@
 
 
 
+## 0.2.0 (2023-12-11)
+
+### Feature
+
+* feat: improve documentation &amp; user onboarding (#41) ([`b289d22`](https://github.com/artefactory-fr/track-reid/commit/b289d22963025908f8a81c00f13fa84f4427ce73))
+
+### Fix
+
+* fix: remoce legacy folder / structure (#39)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`91ffd6e`](https://github.com/artefactory-fr/track-reid/commit/91ffd6e2d84537aa02dfca9d59dc5c68213b7360))
+
+### Unknown
+
+* doc: speed in readme (#42)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`4d48883`](https://github.com/artefactory-fr/track-reid/commit/4d488838dfca1e9542bb42fcaaa10f474253af5d))
+
+* doc: better readme + contributing.md (#40)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`cb323d1`](https://github.com/artefactory-fr/track-reid/commit/cb323d1d9d17a4a270f02513e3a09e2324f82e5e))
+
+
 ## 0.1.1 (2023-11-30)
 
 ### Chore
