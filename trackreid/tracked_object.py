@@ -59,7 +59,7 @@ class TrackedObject:
     ):
         self.state = state
 
-        if isinstance(object_ids, Union[float, int]):
+        if isinstance(object_ids, (float, int)):
             self.re_id_chain = sllist([object_ids])
         elif isinstance(object_ids, sllist):
             self.re_id_chain = sllist(object_ids)
@@ -196,7 +196,7 @@ class TrackedObject:
         self.metadata.update(data_line=data_line, frame_id=frame_id)
 
     def __eq__(self, other):
-        if isinstance(other, Union[float, int]):
+        if isinstance(other, (float, int)):
             return other in self.re_id_chain
         elif isinstance(other, TrackedObject):
             return self.re_id_chain == other.re_id_chain

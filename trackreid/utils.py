@@ -93,7 +93,7 @@ def filter_objects_by_category(
     Returns:
         list: List of filtered tracked objects.
     """
-    if isinstance(category, Union[float, int]):
+    if isinstance(category, (float, int)):
         category = [category]
     if exclusion:
         filtered_objects = [obj for obj in tracked_objects if obj.category not in category]
