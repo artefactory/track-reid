@@ -2,6 +2,64 @@
 
 
 
+## 0.2.0 (2023-12-11)
+
+### Feature
+
+* feat: improve documentation &amp; user onboarding (#41) ([`b289d22`](https://github.com/artefactory-fr/track-reid/commit/b289d22963025908f8a81c00f13fa84f4427ce73))
+
+### Fix
+
+* fix: remoce legacy folder / structure (#39)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`91ffd6e`](https://github.com/artefactory-fr/track-reid/commit/91ffd6e2d84537aa02dfca9d59dc5c68213b7360))
+
+### Unknown
+
+* doc: speed in readme (#42)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`4d48883`](https://github.com/artefactory-fr/track-reid/commit/4d488838dfca1e9542bb42fcaaa10f474253af5d))
+
+* doc: better readme + contributing.md (#40)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`cb323d1`](https://github.com/artefactory-fr/track-reid/commit/cb323d1d9d17a4a270f02513e3a09e2324f82e5e))
+
+
+## 0.1.1 (2023-11-30)
+
+### Chore
+
+* chore: readme demo was not loading (#37) (#38) ([`fa32d8a`](https://github.com/artefactory-fr/track-reid/commit/fa32d8a088c1353d56bdfff8cef87ac0786616c1))
+
+### Fix
+
+* fix: readme (#37)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`4adce01`](https://github.com/artefactory-fr/track-reid/commit/4adce015ecf71be5cb3f090694bbe52987bde141))
+
+
+## 0.1.0 (2023-11-30)
+
+### Feature
+
+* feat: realease 0.1.0 (#36) ([`375a6bc`](https://github.com/artefactory-fr/track-reid/commit/375a6bc19533109bde2f937250f9aeeaa7b878d2))
+
+* feat: realease 0.1.0 (#35)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt; ([`df41be6`](https://github.com/artefactory-fr/track-reid/commit/df41be62c8ee6d70b0fbed9ca062409e46465d7c))
+
+### Unknown
+
+* Merge branch &#39;main&#39; into dev ([`e3fbe76`](https://github.com/artefactory-fr/track-reid/commit/e3fbe767840e894b35217bc637f7069b9c89114d))
+
+* fea: documentation &amp; examples folder (#34) ([`55a78f8`](https://github.com/artefactory-fr/track-reid/commit/55a78f86d8f343b3b17fae6b157f6f09f6dc83ef))
+
+* fea: create example forlder (#27)
+
+Co-authored-by: TomDarmon &lt;tom.darmon@artefact.com&gt;
+Co-authored-by: tristanpepinartefact &lt;tristan.pepin@artefact.com&gt; ([`d0a3324`](https://github.com/artefactory-fr/track-reid/commit/d0a3324111c56976baec4a5e5507ad05193fa4a1))
+
+
 ## 0.0.5 (2023-11-29)
 
 ### Fix
