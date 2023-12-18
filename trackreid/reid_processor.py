@@ -105,6 +105,18 @@ class ReidProcessor:
         self.save_to_txt = save_to_txt
         self.file_path = file_path
 
+    def reset(self) -> None:
+        """
+        Resets the ReID processor state for a new processing sequence.
+
+        This method resets the frame counter to zero and clears all tracked objects
+        and the last frame's tracked objects from memory, preparing the processor
+        for a new sequence of frames.
+        """
+        self.frame_id = 0
+        self.all_tracked_objects: List[TrackedObject] = []
+        self.last_frame_tracked_objects: Set[TrackedObject] = set()
+
     def set_file_path(self, new_file_path: str) -> None:
         """
         Sets a new file path for saving txt data.
