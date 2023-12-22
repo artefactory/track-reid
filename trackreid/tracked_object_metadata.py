@@ -196,7 +196,7 @@ class TrackedObjectMetaData:
                 for class_name, count in self.class_counts.items()
             }
         else:
-            proportions = None
+            proportions = {}
         return proportions
 
     def percentage_of_time_seen(self, frame_id: int):

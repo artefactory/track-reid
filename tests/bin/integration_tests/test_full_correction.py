@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 
 from tests.utils.file_utils import compare_files, reset_output_folder
-from trackreid.reid_processor import ReidProcessor
+from trackreid import ReidProcessor
 from trackreid.tracked_object import TrackedObject
 
 INPUT_FOLDER = Path("tests/assets/integration_tests/data/")
