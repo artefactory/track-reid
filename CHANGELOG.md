@@ -2,6 +2,22 @@
 
 
 
+## 0.3.1 (2023-12-22)
+
+### Fix
+
+* fix: possible division per 0 (#47) ([`0e9f9f8`](https://github.com/artefactory-fr/track-reid/commit/0e9f9f8132b0cd97118b55d6310764d59ea34881))
+
+### Unknown
+
+* Merge branch &#39;main&#39; into dev ([`4bab2d5`](https://github.com/artefactory-fr/track-reid/commit/4bab2d57b7665b96bdfb470d3e46fb12b0f29268))
+
+* Tp/fix possible crash (#46)
+
+Co-authored-by: TomDarmon &lt;36815861+TomDarmon@users.noreply.github.com&gt;
+Co-authored-by: github-actions &lt;github-actions@github.com&gt; ([`4e8a531`](https://github.com/artefactory-fr/track-reid/commit/4e8a531af77a51ec1d7818a1dfdce6d778d4e0bb))
+
+
 ## 0.3.0 (2023-12-18)
 
 ### Feature
