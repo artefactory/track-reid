@@ -185,7 +185,10 @@ class ReidProcessor:
         Returns:
             float: Mean number of corrections.
         """
-        return self.nb_corrections / len(self.all_tracked_objects)
+        if len(self.all_tracked_objects):
+            return self.nb_corrections / len(self.all_tracked_objects)
+        else:
+            return 0
 
     def update(self, tracker_output: np.ndarray, frame_id: int) -> np.ndarray:
         """

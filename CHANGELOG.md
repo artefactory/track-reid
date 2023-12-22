@@ -2,6 +2,20 @@
 
 
 
+## 0.3.0 (2023-12-18)
+
+### Feature
+
+* feat: add reset, add compatibility python 3.9 (#45) ([`d124cdd`](https://github.com/artefactory-fr/track-reid/commit/d124cddd2266a00808af4ba65484ce825969c6e5))
+
+### Unknown
+
+* Tp/fix isinstance and add reset (#44)
+
+Co-authored-by: TomDarmon &lt;36815861+TomDarmon@users.noreply.github.com&gt;
+Co-authored-by: github-actions &lt;github-actions@github.com&gt; ([`8390225`](https://github.com/artefactory-fr/track-reid/commit/83902256901c8b1982e1e3aebff2b26d13305dcd))
+
+
 ## 0.2.0 (2023-12-11)
 
 ### Feature

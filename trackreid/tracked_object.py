@@ -126,6 +126,13 @@ class TrackedObject:
         return self.metadata.mean_confidence()
 
     @property
+    def class_proportions(self):
+        """
+        Returns the proportion of observations in each classes.
+        """
+        return self.metadata.class_proportions()
+
+    @property
     def bbox(self):
         """
         Returns the bounding box coordinates from the metadata.
@@ -146,11 +153,29 @@ class TrackedObject:
         """
         return self.nb_ids - 1
 
+    def get_percentage_of_time_seen(self, frame_id: int):
+        """
+        Calculates and returns the percentage of time the tracked object has been seen up to the given frame id.
+
+        Args:
+            frame_id (int): The current frame id.
+
+        Returns:
+            float: The percentage of time the tracked object has been seen.
+        """
+        return self.metadata.percentage_of_time_seen(frame_id=frame_id)
+
     def get_age(self, frame_id: int):
         """
         Calculates and returns the age of the tracked object based on the given frame id.
         Age is defined as the difference between the current frame id and the first frame id where
         the object was detected.
+
+        Args:
+            frame_id (int): The current frame id.
+
+        Returns:
+            int: The age of the tracked object based on the given frame id.
         """
         return frame_id - self.metadata.first_frame_id
 
@@ -159,6 +184,12 @@ class TrackedObject:
         Calculates and returns the number of frames since the last appearance of the tracked object.
         This is computed as the difference between the current frame id and the last frame id where
         the object was detected.
+
+        Args:
+            frame_id (int): The current frame id.
+
+        Returns:
+            int: The number of frames since the last appearance of the tracked object.
         """
         return frame_id - self.metadata.last_frame_id
 
