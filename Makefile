@@ -1,4 +1,4 @@
-PYTHON_VERSION = 3.10.13
+PYTHON_VERSION = 3.11
 # help: help					- Display this makefile's help information
 .PHONY: help
 help:
