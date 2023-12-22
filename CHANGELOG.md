@@ -2,6 +2,17 @@
 
 
 
+## 0.4.0 (2023-12-22)
+
+### Feature
+
+* feat: allow python 3.11 (#48) (#49) ([`8b753da`](https://github.com/artefactory-fr/track-reid/commit/8b753da59dc502e6e22e23ccaae1d7a2e81c50c1))
+
+* feat: allow python 3.11 (#48)
+
+Co-authored-by: github-actions &lt;github-actions@github.com&gt; ([`79c100e`](https://github.com/artefactory-fr/track-reid/commit/79c100eeb234e61db9cf0b8a5148751d172f8a50))
+
+
 ## 0.3.1 (2023-12-22)
 
 ### Fix
