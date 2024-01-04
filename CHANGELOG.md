@@ -2,6 +2,17 @@
 
 
 
+## 0.4.1 (2024-01-04)
+
+### Fix
+
+* fix: deploy docs python3.11 (#50) (#51) ([`c7f006f`](https://github.com/artefactory-fr/track-reid/commit/c7f006f46600db4711d7ef25686aa7a857e43d10))
+
+### Unknown
+
+* fix deploy docs python3.11 (#50) ([`2389c04`](https://github.com/artefactory-fr/track-reid/commit/2389c047f5efeeef77508738c28030baa8021005))
+
+
 ## 0.4.0 (2023-12-22)
 
 ### Feature
