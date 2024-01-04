@@ -1,0 +1,1998 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../tracked_object_metadata/">
+      
+      
+        <link rel="next" href="../cost_functions/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+    
+    
+      
+        <title>TrackedObject - track-reid</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#trackedobject" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="track-reid" class="md-header__button md-logo" aria-label="track-reid" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            track-reid
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              TrackedObject
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 12a10 10 0 0 0 13 9.54 10 10 0 0 1 0-19.08A10 10 0 0 0 2 12Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81 1.42-1.42M1 13h3v-2H1m12 9h-2v3h2"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="track-reid" class="md-nav__button md-logo" aria-label="track-reid" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    track-reid
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart_user/" class="md-nav__link">
+        Quickstart users
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart_dev/" class="md-nav__link">
+        Quickstart developers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../custom_cost_selection/" class="md-nav__link">
+        Custom cost and selection functions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Code Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reid_processor/" class="md-nav__link">
+        ReidProcessor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracked_object_filter/" class="md-nav__link">
+        TrackedObjectFilter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matcher/" class="md-nav__link">
+        Matcher
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracked_object_metadata/" class="md-nav__link">
+        TrackedObjectMetadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          TrackedObject
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        TrackedObject
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.tracked_object" class="md-nav__link">
+    trackreid.tracked_object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject" class="md-nav__link">
+    TrackedObject
+  </a>
+  
+    <nav class="md-nav" aria-label="TrackedObject">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.bbox" class="md-nav__link">
+    bbox
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.category" class="md-nav__link">
+    category
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.class_proportions" class="md-nav__link">
+    class_proportions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.confidence" class="md-nav__link">
+    confidence
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.mean_confidence" class="md-nav__link">
+    mean_confidence
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.nb_corrections" class="md-nav__link">
+    nb_corrections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.nb_ids" class="md-nav__link">
+    nb_ids
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.object_id" class="md-nav__link">
+    object_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.tracker_id" class="md-nav__link">
+    tracker_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.cut" class="md-nav__link">
+    cut()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.from_dict" class="md-nav__link">
+    from_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_age" class="md-nav__link">
+    get_age()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_nb_frames_since_last_appearance" class="md-nav__link">
+    get_nb_frames_since_last_appearance()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_percentage_of_time_seen" class="md-nav__link">
+    get_percentage_of_time_seen()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_state" class="md-nav__link">
+    get_state()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.to_dict" class="md-nav__link">
+    to_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.update_metadata" class="md-nav__link">
+    update_metadata()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cost_functions/" class="md-nav__link">
+        Cost functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selection_functions/" class="md-nav__link">
+        Selection functions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.tracked_object" class="md-nav__link">
+    trackreid.tracked_object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject" class="md-nav__link">
+    TrackedObject
+  </a>
+  
+    <nav class="md-nav" aria-label="TrackedObject">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.bbox" class="md-nav__link">
+    bbox
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.category" class="md-nav__link">
+    category
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.class_proportions" class="md-nav__link">
+    class_proportions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.confidence" class="md-nav__link">
+    confidence
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.mean_confidence" class="md-nav__link">
+    mean_confidence
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.nb_corrections" class="md-nav__link">
+    nb_corrections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.nb_ids" class="md-nav__link">
+    nb_ids
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.object_id" class="md-nav__link">
+    object_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.tracker_id" class="md-nav__link">
+    tracker_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.cut" class="md-nav__link">
+    cut()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.from_dict" class="md-nav__link">
+    from_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_age" class="md-nav__link">
+    get_age()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_nb_frames_since_last_appearance" class="md-nav__link">
+    get_nb_frames_since_last_appearance()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_percentage_of_time_seen" class="md-nav__link">
+    get_percentage_of_time_seen()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.get_state" class="md-nav__link">
+    get_state()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.to_dict" class="md-nav__link">
+    to_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.tracked_object.TrackedObject.update_metadata" class="md-nav__link">
+    update_metadata()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="trackedobject">TrackedObject</h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="trackreid.tracked_object"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="trackreid.tracked_object.TrackedObject" class="doc doc-heading">
+        <code>
+TrackedObject        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>The TrackedObject class represents an object that is being tracked in a video frame.
+It contains information about the object's state, its unique identifiers, and metadata.</p>
+<p>The object's state is an integer that represents the current state of the object in the
+reid process. The states can take the following values:</p>
+<ul>
+<li>LOST_FOREVER (-3): "Switcher never rematched"</li>
+<li>TRACKER_OUTPUT (-2): "Tracker output not in reid process"</li>
+<li>FILTERED_OUTPUT (-1): "Tracker output entering reid process"</li>
+<li>STABLE (0): "Stable object"</li>
+<li>SWITCHER (1): "Lost object to be re-matched"</li>
+<li>CANDIDATE (2): "New object to be matched"</li>
+</ul>
+<p>The object's unique identifiers are stored in a singly linked list (sllist) called re_id_chain. The re_id_chain
+is a crucial component in the codebase. It stores the history of the object's unique identifiers, allowing for
+tracking of the object across different frames. The first value in the re_id_chain
+is the original object ID, while the last value is the most recent tracker ID assigned to the object.</p>
+<p>The metadata is an instance of the TrackedObjectMetaData class, which contains additional information
+about the object.</p>
+<p>The TrackedObject class provides several methods for manipulating and accessing the data it contains.
+These include methods for merging two TrackedObject instances, updating the metadata, and converting the
+TrackedObject instance to a dictionary or JSON string.</p>
+<p>The TrackedObject class also provides several properties for accessing specific pieces of data, such as the object's
+unique identifier, its state, and its metadata.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>object_ids</code></td>
+        <td><code>Union[Union[float, int], sllist]</code></td>
+        <td><p>The unique identifiers for the object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>state</code></td>
+        <td><code>int</code></td>
+        <td><p>The current state of the object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>metadata</code></td>
+        <td><code>Union[np.ndarray, TrackedObjectMetaData]</code></td>
+        <td><p>The metadata for the object. It can be either a TrackedObjectMetaData object, or a data line, i.e. output of detection model. If metadata is initialized with a TrackedObjectMetaData object, a frame_id must be given.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>frame_id</code></td>
+        <td><code>Optional[int]</code></td>
+        <td><p>The frame ID where the object was first seen. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NameError</code></td>
+        <td><p>If the type of object_ids or metadata is unrecognized.</p></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">TrackedObject</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The TrackedObject class represents an object that is being tracked in a video frame.</span>
+<span class="sd">    It contains information about the object&#39;s state, its unique identifiers, and metadata.</span>
+
+<span class="sd">    The object&#39;s state is an integer that represents the current state of the object in the</span>
+<span class="sd">    reid process. The states can take the following values:</span>
+
+<span class="sd">    - LOST_FOREVER (-3): &quot;Switcher never rematched&quot;</span>
+<span class="sd">    - TRACKER_OUTPUT (-2): &quot;Tracker output not in reid process&quot;</span>
+<span class="sd">    - FILTERED_OUTPUT (-1): &quot;Tracker output entering reid process&quot;</span>
+<span class="sd">    - STABLE (0): &quot;Stable object&quot;</span>
+<span class="sd">    - SWITCHER (1): &quot;Lost object to be re-matched&quot;</span>
+<span class="sd">    - CANDIDATE (2): &quot;New object to be matched&quot;</span>
+
+<span class="sd">    The object&#39;s unique identifiers are stored in a singly linked list (sllist) called re_id_chain. The re_id_chain</span>
+<span class="sd">    is a crucial component in the codebase. It stores the history of the object&#39;s unique identifiers, allowing for</span>
+<span class="sd">    tracking of the object across different frames. The first value in the re_id_chain</span>
+<span class="sd">    is the original object ID, while the last value is the most recent tracker ID assigned to the object.</span>
+
+<span class="sd">    The metadata is an instance of the TrackedObjectMetaData class, which contains additional information</span>
+<span class="sd">    about the object.</span>
+
+<span class="sd">    The TrackedObject class provides several methods for manipulating and accessing the data it contains.</span>
+<span class="sd">    These include methods for merging two TrackedObject instances, updating the metadata, and converting the</span>
+<span class="sd">    TrackedObject instance to a dictionary or JSON string.</span>
+
+<span class="sd">    The TrackedObject class also provides several properties for accessing specific pieces of data, such as the object&#39;s</span>
+<span class="sd">    unique identifier, its state, and its metadata.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        object_ids (Union[Union[float, int], sllist]): The unique identifiers for the object.</span>
+<span class="sd">        state (int): The current state of the object.</span>
+<span class="sd">        metadata (Union[np.ndarray, TrackedObjectMetaData]): The metadata for the object. It can be either a TrackedObjectMetaData object, or a data line, i.e. output of detection model. If metadata is initialized with a TrackedObjectMetaData object, a frame_id must be given.</span>
+<span class="sd">        frame_id (Optional[int], optional): The frame ID where the object was first seen. Defaults to None.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NameError: If the type of object_ids or metadata is unrecognized.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">object_ids</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">sllist</span><span class="p">],</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">TrackedObjectMetaData</span><span class="p">],</span>
+        <span class="n">frame_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">object_ids</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">=</span> <span class="n">sllist</span><span class="p">([</span><span class="n">object_ids</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">object_ids</span><span class="p">,</span> <span class="n">sllist</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">=</span> <span class="n">sllist</span><span class="p">(</span><span class="n">object_ids</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;unrocognized type for object_ids.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">frame_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">),</span> <span class="s2">&quot;Please provide a frame_id for TrackedObject initialization&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">TrackedObjectMetaData</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">TrackedObjectMetaData</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;unrocognized type for metadata.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">TrackedObject</span><span class="p">(</span><span class="n">object_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_object</span><span class="p">:</span> <span class="n">TrackedObject</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other_object</span><span class="p">,</span> <span class="n">TrackedObject</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Can only merge with another TrackedObject.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Merge the re_id_chains</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">other_object</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">other_object</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">other_object</span><span class="o">.</span><span class="n">state</span>
+
+        <span class="c1"># Return the merged object</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">object_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the first value in the re_id_chain which represents the object id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tracker_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the last value in the re_id_chain which represents the last tracker id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the category with the maximum count in the class_counts dictionary of the metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">class_counts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">class_counts</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the confidence value from the metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">confidence</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mean_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the mean confidence value from the metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">mean_confidence</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">class_proportions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the proportion of observations in each classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">class_proportions</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the bounding box coordinates from the metadata.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bbox</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nb_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of ids in the re_id_chain.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nb_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the number of corrections which is the number of ids in the re_id_chain minus one.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_ids</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">get_percentage_of_time_seen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates and returns the percentage of time the tracked object has been seen up to the given frame id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frame_id (int): The current frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: The percentage of time the tracked object has been seen.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">percentage_of_time_seen</span><span class="p">(</span><span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates and returns the age of the tracked object based on the given frame id.</span>
+<span class="sd">        Age is defined as the difference between the current frame id and the first frame id where</span>
+<span class="sd">        the object was detected.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frame_id (int): The current frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The age of the tracked object based on the given frame id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">frame_id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">first_frame_id</span>
+
+    <span class="k">def</span> <span class="nf">get_nb_frames_since_last_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates and returns the number of frames since the last appearance of the tracked object.</span>
+<span class="sd">        This is computed as the difference between the current frame id and the last frame id where</span>
+<span class="sd">        the object was detected.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frame_id (int): The current frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The number of frames since the last appearance of the tracked object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">frame_id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">last_frame_id</span>
+
+    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current state of the tracked object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;TrackedObject(current_id=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">object_id</span><span class="si">}</span><span class="s2">, re_id_chain=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;, state=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">DESCRIPTION</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span><span class="si">}</span><span class="s2">, metadata : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="nf">update_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_line</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the metadata of the tracked object based on new detection data.</span>
+
+<span class="sd">        This method is used to update the metadata of a tracked object whenever new detection data is available.</span>
+<span class="sd">        It updates the metadata by calling the update method of the TrackedObjectMetaData instance associated with</span>
+<span class="sd">        the tracked object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data_line (np.ndarray): The detection data for a single frame. It contains information such as the class name, bounding box coordinates, and confidence level of the detection.</span>
+
+<span class="sd">            frame_id (int): The frame id where the object was detected. This is used to update the last frame id of the tracked object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data_line</span><span class="o">=</span><span class="n">data_line</span><span class="p">,</span> <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">other</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TrackedObject</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">re_id_chain</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Splits the re_id_chain of the tracked object at the specified object_id and creates a new TrackedObject</span>
+<span class="sd">        instance with the remaining part of the re_id_chain. The original TrackedObject instance retains the part</span>
+<span class="sd">        of the re_id_chain before the specified object_id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            object_id (int): The object_id at which to split the re_id_chain.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NameError: If the specified object_id is not found in the re_id_chain of the tracked object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: A tuple containing the new TrackedObject instance and the original TrackedObject instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">object_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Trying to cut object </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">object_id</span><span class="si">}</span><span class="s2"> that is not in the re-id chain.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">before</span><span class="p">,</span> <span class="n">after</span> <span class="o">=</span> <span class="n">split_list_around_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">,</span> <span class="n">object_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">=</span> <span class="n">before</span>
+
+        <span class="n">new_object</span> <span class="o">=</span> <span class="n">TrackedObject</span><span class="p">(</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span><span class="p">,</span> <span class="n">object_ids</span><span class="o">=</span><span class="n">after</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+        <span class="p">)</span>
+        <span class="c1"># set potential age 0 for new object</span>
+        <span class="n">new_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">first_frame_id</span> <span class="o">=</span> <span class="n">new_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">last_frame_id</span>
+        <span class="k">return</span> <span class="n">new_object</span><span class="p">,</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the TrackedObject instance to a dictionary.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary representation of the TrackedObject instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;object_id&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_id</span><span class="p">),</span>
+            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span>
+            <span class="s2">&quot;re_id_chain&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">),</span>
+            <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new TrackedObject instance from a dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): A dictionary containing the data for the TrackedObject instance.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            TrackedObject: A new TrackedObject instance created from the dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">=</span> <span class="n">sllist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;re_id_chain&quot;</span><span class="p">])</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">TrackedObjectMetaData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.bbox" class="doc doc-heading">
+<code class=" language-python"><span class="n">bbox</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the bounding box coordinates from the metadata.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.category" class="doc doc-heading">
+<code class=" language-python"><span class="n">category</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the category with the maximum count in the class_counts dictionary of the metadata.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.class_proportions" class="doc doc-heading">
+<code class=" language-python"><span class="n">class_proportions</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the proportion of observations in each classes.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.confidence" class="doc doc-heading">
+<code class=" language-python"><span class="n">confidence</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the confidence value from the metadata.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.mean_confidence" class="doc doc-heading">
+<code class=" language-python"><span class="n">mean_confidence</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the mean confidence value from the metadata.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.nb_corrections" class="doc doc-heading">
+<code class=" language-python"><span class="n">nb_corrections</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the number of corrections which is the number of ids in the re_id_chain minus one.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.nb_ids" class="doc doc-heading">
+<code class=" language-python"><span class="n">nb_ids</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the number of ids in the re_id_chain.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.object_id" class="doc doc-heading">
+<code class=" language-python"><span class="n">object_id</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the first value in the re_id_chain which represents the object id.</p>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.tracker_id" class="doc doc-heading">
+<code class=" language-python"><span class="n">tracker_id</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the last value in the re_id_chain which represents the last tracker id.</p>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.cut" class="doc doc-heading">
+<code class=" language-python"><span class="n">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Splits the re_id_chain of the tracked object at the specified object_id and creates a new TrackedObject
+instance with the remaining part of the re_id_chain. The original TrackedObject instance retains the part
+of the re_id_chain before the specified object_id.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>object_id</code></td>
+        <td><code>int</code></td>
+        <td><p>The object_id at which to split the re_id_chain.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>NameError</code></td>
+        <td><p>If the specified object_id is not found in the re_id_chain of the tracked object.</p></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing the new TrackedObject instance and the original TrackedObject instance.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Splits the re_id_chain of the tracked object at the specified object_id and creates a new TrackedObject</span>
+<span class="sd">    instance with the remaining part of the re_id_chain. The original TrackedObject instance retains the part</span>
+<span class="sd">    of the re_id_chain before the specified object_id.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        object_id (int): The object_id at which to split the re_id_chain.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NameError: If the specified object_id is not found in the re_id_chain of the tracked object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing the new TrackedObject instance and the original TrackedObject instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">object_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Trying to cut object </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">object_id</span><span class="si">}</span><span class="s2"> that is not in the re-id chain.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">before</span><span class="p">,</span> <span class="n">after</span> <span class="o">=</span> <span class="n">split_list_around_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">,</span> <span class="n">object_id</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">=</span> <span class="n">before</span>
+
+    <span class="n">new_object</span> <span class="o">=</span> <span class="n">TrackedObject</span><span class="p">(</span>
+        <span class="n">state</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span><span class="p">,</span> <span class="n">object_ids</span><span class="o">=</span><span class="n">after</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+    <span class="p">)</span>
+    <span class="c1"># set potential age 0 for new object</span>
+    <span class="n">new_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">first_frame_id</span> <span class="o">=</span> <span class="n">new_object</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">last_frame_id</span>
+    <span class="k">return</span> <span class="n">new_object</span><span class="p">,</span> <span class="bp">self</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.from_dict" class="doc doc-heading">
+<code class=" language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Creates a new TrackedObject instance from a dictionary.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>dict</code></td>
+        <td><p>A dictionary containing the data for the TrackedObject instance.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>TrackedObject</code></td>
+      <td><p>A new TrackedObject instance created from the dictionary.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a new TrackedObject instance from a dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (dict): A dictionary containing the data for the TrackedObject instance.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        TrackedObject: A new TrackedObject instance created from the dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">re_id_chain</span> <span class="o">=</span> <span class="n">sllist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;re_id_chain&quot;</span><span class="p">])</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">TrackedObjectMetaData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">obj</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.get_age" class="doc doc-heading">
+<code class=" language-python"><span class="n">get_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates and returns the age of the tracked object based on the given frame id.
+Age is defined as the difference between the current frame id and the first frame id where
+the object was detected.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>frame_id</code></td>
+        <td><code>int</code></td>
+        <td><p>The current frame id.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>The age of the tracked object based on the given frame id.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates and returns the age of the tracked object based on the given frame id.</span>
+<span class="sd">    Age is defined as the difference between the current frame id and the first frame id where</span>
+<span class="sd">    the object was detected.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        frame_id (int): The current frame id.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The age of the tracked object based on the given frame id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">frame_id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">first_frame_id</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.get_nb_frames_since_last_appearance" class="doc doc-heading">
+<code class=" language-python"><span class="n">get_nb_frames_since_last_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates and returns the number of frames since the last appearance of the tracked object.
+This is computed as the difference between the current frame id and the last frame id where
+the object was detected.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>frame_id</code></td>
+        <td><code>int</code></td>
+        <td><p>The current frame id.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>The number of frames since the last appearance of the tracked object.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_nb_frames_since_last_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates and returns the number of frames since the last appearance of the tracked object.</span>
+<span class="sd">    This is computed as the difference between the current frame id and the last frame id where</span>
+<span class="sd">    the object was detected.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        frame_id (int): The current frame id.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The number of frames since the last appearance of the tracked object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">frame_id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">last_frame_id</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.get_percentage_of_time_seen" class="doc doc-heading">
+<code class=" language-python"><span class="n">get_percentage_of_time_seen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates and returns the percentage of time the tracked object has been seen up to the given frame id.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>frame_id</code></td>
+        <td><code>int</code></td>
+        <td><p>The current frame id.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>The percentage of time the tracked object has been seen.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_percentage_of_time_seen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates and returns the percentage of time the tracked object has been seen up to the given frame id.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        frame_id (int): The current frame id.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The percentage of time the tracked object has been seen.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">percentage_of_time_seen</span><span class="p">(</span><span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.get_state" class="doc doc-heading">
+<code class=" language-python"><span class="n">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns the current state of the tracked object.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the current state of the tracked object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.to_dict" class="doc doc-heading">
+<code class=" language-python"><span class="n">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Converts the TrackedObject instance to a dictionary.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>dict</code></td>
+      <td><p>A dictionary representation of the TrackedObject instance.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the TrackedObject instance to a dictionary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary representation of the TrackedObject instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;object_id&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_id</span><span class="p">),</span>
+        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span>
+        <span class="s2">&quot;re_id_chain&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">re_id_chain</span><span class="p">),</span>
+        <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.tracked_object.TrackedObject.update_metadata" class="doc doc-heading">
+<code class=" language-python"><span class="n">update_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_line</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Updates the metadata of the tracked object based on new detection data.</p>
+<p>This method is used to update the metadata of a tracked object whenever new detection data is available.
+It updates the metadata by calling the update method of the TrackedObjectMetaData instance associated with
+the tracked object.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data_line</code></td>
+        <td><code>np.ndarray</code></td>
+        <td><p>The detection data for a single frame. It contains information such as the class name, bounding box coordinates, and confidence level of the detection.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>frame_id</code></td>
+        <td><code>int</code></td>
+        <td><p>The frame id where the object was detected. This is used to update the last frame id of the tracked object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/tracked_object.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">update_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_line</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Updates the metadata of the tracked object based on new detection data.</span>
+
+<span class="sd">    This method is used to update the metadata of a tracked object whenever new detection data is available.</span>
+<span class="sd">    It updates the metadata by calling the update method of the TrackedObjectMetaData instance associated with</span>
+<span class="sd">    the tracked object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data_line (np.ndarray): The detection data for a single frame. It contains information such as the class name, bounding box coordinates, and confidence level of the detection.</span>
+
+<span class="sd">        frame_id (int): The frame id where the object was detected. This is used to update the last frame id of the tracked object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data_line</span><span class="o">=</span><span class="n">data_line</span><span class="p">,</span> <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+    
+  </body>
+</html>

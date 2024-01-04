@@ -1,0 +1,761 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../quickstart_dev/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+    
+    
+      
+        <title>Quickstart users - track-reid</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#using-the-reidprocessor" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="track-reid" class="md-header__button md-logo" aria-label="track-reid" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            track-reid
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Quickstart users
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 12a10 10 0 0 0 13 9.54 10 10 0 0 1 0-19.08A10 10 0 0 0 2 12Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81 1.42-1.42M1 13h3v-2H1m12 9h-2v3h2"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="track-reid" class="md-nav__button md-logo" aria-label="track-reid" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    track-reid
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Quickstart users
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Quickstart users
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-understand-the-usage" class="md-nav__link">
+    Step 1: Understand the Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-understand-the-data-format-requirements" class="md-nav__link">
+    Step 2: Understand the Data Format Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-understand-necessary-modules" class="md-nav__link">
+    Step 3: Understand Necessary Modules
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-initialize-reidprocessor" class="md-nav__link">
+    Step 4: Initialize ReidProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-run-reidentifiaction-process" class="md-nav__link">
+    Step 5: Run reidentifiaction process
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart_dev/" class="md-nav__link">
+        Quickstart developers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_cost_selection/" class="md-nav__link">
+        Custom cost and selection functions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Code Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/reid_processor/" class="md-nav__link">
+        ReidProcessor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/tracked_object_filter/" class="md-nav__link">
+        TrackedObjectFilter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/matcher/" class="md-nav__link">
+        Matcher
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/tracked_object_metadata/" class="md-nav__link">
+        TrackedObjectMetadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/tracked_object/" class="md-nav__link">
+        TrackedObject
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/cost_functions/" class="md-nav__link">
+        Cost functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/selection_functions/" class="md-nav__link">
+        Selection functions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-understand-the-usage" class="md-nav__link">
+    Step 1: Understand the Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-understand-the-data-format-requirements" class="md-nav__link">
+    Step 2: Understand the Data Format Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-understand-necessary-modules" class="md-nav__link">
+    Step 3: Understand Necessary Modules
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-initialize-reidprocessor" class="md-nav__link">
+    Step 4: Initialize ReidProcessor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-run-reidentifiaction-process" class="md-nav__link">
+    Step 5: Run reidentifiaction process
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="using-the-reidprocessor">Using the ReidProcessor</h1>
+<p>The <a href="../reference/reid_processor/">ReidProcessor</a> is the entry point of the <code>track-reid</code> library. It is used to process and reconcile tracking data, ensuring consistent and accurate tracking of objects over time. Here's a step-by-step guide on how to use it:</p>
+<h2 id="step-1-understand-the-usage">Step 1: Understand the Usage</h2>
+<p>The reidentification process is applied to tracking results, which are derived from the application of a tracking algorithm on detection results for successive frames of a video. This reidentification process is applied iteratively on each tracking result, updating its internal states during the process.</p>
+<p>The <a href="../reference/reid_processor/">ReidProcessor</a> needs to be updated with the tracking results for each frame of your
+sequence or video. This is done by calling the <a href="/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.update">update</a> method that takes 2 arguments:</p>
+<ul>
+<li><code>frame_id</code>: an integer specifying the current frame of the video</li>
+<li><code>tracker_output</code>: a numpy array containing the tracking results for the current frame</li>
+</ul>
+<h2 id="step-2-understand-the-data-format-requirements">Step 2: Understand the Data Format Requirements</h2>
+<p>The <a href="/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.update">ReidProcessor update</a> function requires a numpy array of tracking results for the current frame as input. This data must meet specific criteria regarding data type and structure.</p>
+<p>All input data must be numeric, either integers or floats.
+Here's an example of the expected input data format based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>bbox (0-3)</th>
+<th>object_id (4)</th>
+<th>category (5)</th>
+<th>confidence (6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>1</td>
+<td>1</td>
+<td>0.91</td>
+</tr>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>2</td>
+<td>0</td>
+<td>0.54</td>
+</tr>
+</tbody>
+</table>
+<p>Each row corresponds to a tracked object.</p>
+<ul>
+<li>The first four columns denote the <strong>bounding box coordinates</strong> in the format (x, y, width, height),
+where x and y are the top left coordinates of the bounding box. These coordinates can be either normalized or in pixel units.
+These values remain unchanged during the reidentification process.</li>
+<li>The fifth column is the <strong>object ID</strong> assigned by the tracker, which may be adjusted during the reidentification process.</li>
+<li>The sixth column indicates the <strong>category</strong> of the detected object, which may also be adjusted during the reidentification process.</li>
+<li>The seventh column is the confidence score of the detection, which is not modified by the reidentification process.</li>
+</ul>
+<p>For additional information, you can utilize <a href="/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.print_input_data_format_requirements">ReidProcessor.print_input_data_format_requirements</a>.</p>
+<p>Here's a reformatted example of how the output data should appear, based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>frame_id (0)</th>
+<th>object_id (1)</th>
+<th>category (2)</th>
+<th>bbox (3-6)</th>
+<th>confidence (7)</th>
+<th>mean_confidence (8)</th>
+<th>tracker_id (9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>50, 60, 120, 80</td>
+<td>0.91</td>
+<td>0.85</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>50, 60, 120, 80</td>
+<td>0.54</td>
+<td>0.60</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The first column represents the <strong>frame identifier</strong>, indicating the frame for which the result is applicable.</li>
+<li>The second column is the <strong>object ID</strong> assigned by the reidentification process.</li>
+<li>The third column is the <strong>category</strong> of the detected object, which may be adjusted during the reidentification process.</li>
+<li>The next four columns represent the <strong>bounding box coordinates</strong>, which remain unchanged from the input data.</li>
+<li>The seventh column is the <strong>confidence</strong> of the object, which also remains unchanged from the input data.</li>
+<li>The eighth column indicates the <strong>average confidence</strong> of the detected object over its lifetime, from the beginning of the tracking to the current frame.</li>
+<li>The final column is the <strong>object ID assigned by the tracking algorithm</strong>, before the reidentification process.</li>
+</ul>
+<p>You can use <a href="/reference/reid_processor/#trackreid.reid_processor.ReidProcessor.print_output_data_format_information">ReidProcessor.print_output_data_format_information</a> for more insight.</p>
+<h2 id="step-3-understand-necessary-modules">Step 3: Understand Necessary Modules</h2>
+<p>To make ReidProcessor work, several modules are necessary:</p>
+<ul>
+<li><a href="../reference/tracked_object/">TrackedObject</a>: This class represents a tracked object. It is used within the Matcher and ReidProcessor classes.</li>
+<li><a href="../reference/tracked_object_metadata/">TrackedObjectMetadata</a>: This class is attached to a tracked object and represents informations and properties about the object.</li>
+<li><a href="../reference/tracked_object_filter/">TrackedObjectFilter</a>: This class is used to filter tracked objects based on certain criteria. It is used within the ReidProcessor class.</li>
+<li><a href="../reference/matcher/">Matcher</a>: This class is used to match tracked objects based on a cost function and a selection function. It is initialized within the ReidProcessor class.</li>
+</ul>
+<p>The cost and selection functions are key components of the ReidProcessor, as they will drive the matching process between lost objects and new objects during the video. Those two functions are fully customizable and can be passed as arguments of the ReidProcessor at initialization. They both take 2 <a href="../reference/tracked_object/">TrackedObject</a> as inputs, and perform computation based on their metadatas.</p>
+<ul>
+<li>
+<p><strong>cost function</strong>: This function calculates the cost of matching two objects. It takes two TrackedObject instances as input and returns a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match. The default cost function is <a href="/reference/cost_functions/#trackreid.cost_functions.bounding_box_distance.bounding_box_distance">bounding_box_distance</a>.</p>
+</li>
+<li>
+<p><strong>selection_function</strong>: This function determines whether two objects should be considered for matching. It takes two TrackedObject instances as input and returns a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered. The default selection function is <a href="/reference/selection_functions/#trackreid.selection_functions.select_by_category.select_by_category">select_by_category</a>.</p>
+</li>
+</ul>
+<p>In summary, prior to the matching process, filtering on which objects should be considerated is applied thought the <a href="../reference/tracked_object_filter/">TrackedObjectFilter</a>. All objects are represented by the <a href="../reference/tracked_object/">TrackedObject</a> class, with its attached metadata represented by <a href="../reference/tracked_object_metadata/">TrackedObjectMetadata</a>. The <a href="../reference/reid_processor/">ReidProcessor</a> then uses the <a href="../reference/matcher/">Matcher</a> class with a cost function and selection function to match objects.</p>
+<h2 id="step-4-initialize-reidprocessor">Step 4: Initialize ReidProcessor</h2>
+<p>If you do not want to provide custom cost and selection function, here is an example of ReidProcessor initialization:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">reid_processor</span> <span class="o">=</span> <span class="n">ReidProcessor</span><span class="p">(</span><span class="n">filter_confidence_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                               <span class="n">filter_time_threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                               <span class="n">cost_function_threshold</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+                               <span class="n">max_attempt_to_match</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                               <span class="n">max_frames_to_rematch</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                               <span class="n">save_to_txt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                               <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;your_file.txt&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Here is a brief explanation of each argument in the ReidProcessor function, and how you can monitor the <a href="../reference/matcher/">Matcher</a> and the <a href="../reference/tracked_object_filter/">TrackedObjectFilter</a> behaviours:</p>
+<ul>
+<li>
+<p><code>filter_confidence_threshold</code>: Float value that sets the <strong>minimum average confidence level</strong> for a tracked object to be considered valid. Tracked objects with average confidence levels below this threshold will be ignored.</p>
+</li>
+<li>
+<p><code>filter_time_threshold</code>: Integer that sets the <strong>minimum number of frames</strong> a tracked object must be seen with the same id to be considered valid. Tracked objects seen less frames that this threshold will be ignored.</p>
+</li>
+<li>
+<p><code>cost_function_threshold</code>: This is a float value that sets the <strong>maximum cost for a match</strong> between a detection and a track. If the cost of matching a detection to a track exceeds this threshold, the match will not be made. Set to None for no limitation.</p>
+</li>
+<li>
+<p><code>max_attempt_to_match</code>: This is an integer that sets the <strong>maximum number of attempts to match a tracked object never seen before</strong> to a lost tracked object. If this tracked object never seen before can't be matched within this number of attempts, it will be considered a new stable tracked object.</p>
+</li>
+<li>
+<p><code>max_frames_to_rematch</code>: This is an integer that sets the <strong>maximum number of frames to try to rematch a tracked object that has been lost</strong>. If a lost object can't be rematch within this number of frames, it will be considered as lost forever.</p>
+</li>
+<li>
+<p><code>save_to_txt</code>: This is a boolean value that determines whether the tracking results should be saved to a text file. If set to True, the results will be saved to a text file.</p>
+</li>
+<li>
+<p><code>file_path</code>: This is a string that specifies the path to the text file where the tracking results will be saved. This argument is only relevant if save_to_txt is set to True.</p>
+</li>
+</ul>
+<p>For more information on how to design custom cost and selection functions, refer to <a href="../custom_cost_selection/">this guide</a>.</p>
+<h2 id="step-5-run-reidentifiaction-process">Step 5: Run reidentifiaction process</h2>
+<p>Suppose you have a list of frames, a model and a tracker. You can call the <code>ReidProcessor</code> update method on each outputs of your tracker as follow:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">frame_id</span><span class="p">,</span> <span class="n">image_filename</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">available_frames</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image_filename</span><span class="p">)</span>
+    <span class="n">detections</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">tracked_objects</span> <span class="o">=</span> <span class="n">tracker</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span>
+    <span class="n">corrected_tracked_objects</span> <span class="o">=</span> <span class="n">reid_processor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tracked_objects</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span>
+</code></pre></div>
+
+<p>At the end of the for loop, information about the correction can be retrieved using the <code>ReidProcessor</code> properties. For instance, the list of tracked object can be accessed using:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">reid_processor</span><span class="o">.</span><span class="n">seen_objects</span><span class="p">()</span>
+</code></pre></div>
+
+<p>For a complete example you can refer to <a href="/examples/trackreid/starter_kit_reid.ipynb">examples/trackreid/starter_kit_reid.ipynb</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+    
+  </body>
+</html>

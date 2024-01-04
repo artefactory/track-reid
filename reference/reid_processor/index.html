@@ -1,0 +1,2285 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../custom_cost_selection/">
+      
+      
+        <link rel="next" href="../tracked_object_filter/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+    
+    
+      
+        <title>ReidProcessor - track-reid</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.26e3688c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reid-processor" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="track-reid" class="md-header__button md-logo" aria-label="track-reid" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            track-reid
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ReidProcessor
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+            
+              <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 12a10 10 0 0 0 13 9.54 10 10 0 0 1 0-19.08A10 10 0 0 0 2 12Z"/></svg>
+              </label>
+            
+          
+            
+            
+            
+            <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+            
+              <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3.55 19.09 1.41 1.41 1.8-1.79-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71 1.8 1.79 1.41-1.41-1.79-1.8M20.45 5l-1.41-1.4-1.8 1.79 1.42 1.42M13 1h-2v3h2M6.76 5.39 4.96 3.6 3.55 5l1.79 1.81 1.42-1.42M1 13h3v-2H1m12 9h-2v3h2"/></svg>
+              </label>
+            
+          
+        </form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="track-reid" class="md-nav__button md-logo" aria-label="track-reid" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    track-reid
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart_user/" class="md-nav__link">
+        Quickstart users
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart_dev/" class="md-nav__link">
+        Quickstart developers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../custom_cost_selection/" class="md-nav__link">
+        Custom cost and selection functions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Code Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Code Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          ReidProcessor
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        ReidProcessor
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.reid_processor" class="md-nav__link">
+    trackreid.reid_processor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor" class="md-nav__link">
+    ReidProcessor
+  </a>
+  
+    <nav class="md-nav" aria-label="ReidProcessor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.corrected_objects" class="md-nav__link">
+    corrected_objects
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.mean_nb_corrections" class="md-nav__link">
+    mean_nb_corrections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.nb_corrections" class="md-nav__link">
+    nb_corrections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.nb_tracker_ids" class="md-nav__link">
+    nb_tracker_ids
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.seen_objects" class="md-nav__link">
+    seen_objects
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.print_input_data_format_requirements" class="md-nav__link">
+    print_input_data_format_requirements()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.print_output_data_format_information" class="md-nav__link">
+    print_output_data_format_information()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.reset" class="md-nav__link">
+    reset()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.set_file_path" class="md-nav__link">
+    set_file_path()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.to_dict" class="md-nav__link">
+    to_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.update" class="md-nav__link">
+    update()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracked_object_filter/" class="md-nav__link">
+        TrackedObjectFilter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../matcher/" class="md-nav__link">
+        Matcher
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracked_object_metadata/" class="md-nav__link">
+        TrackedObjectMetadata
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracked_object/" class="md-nav__link">
+        TrackedObject
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cost_functions/" class="md-nav__link">
+        Cost functions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../selection_functions/" class="md-nav__link">
+        Selection functions
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.reid_processor" class="md-nav__link">
+    trackreid.reid_processor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor" class="md-nav__link">
+    ReidProcessor
+  </a>
+  
+    <nav class="md-nav" aria-label="ReidProcessor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.corrected_objects" class="md-nav__link">
+    corrected_objects
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.mean_nb_corrections" class="md-nav__link">
+    mean_nb_corrections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.nb_corrections" class="md-nav__link">
+    nb_corrections
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.nb_tracker_ids" class="md-nav__link">
+    nb_tracker_ids
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.seen_objects" class="md-nav__link">
+    seen_objects
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.print_input_data_format_requirements" class="md-nav__link">
+    print_input_data_format_requirements()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.print_output_data_format_information" class="md-nav__link">
+    print_output_data_format_information()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.reset" class="md-nav__link">
+    reset()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.set_file_path" class="md-nav__link">
+    set_file_path()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.to_dict" class="md-nav__link">
+    to_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackreid.reid_processor.ReidProcessor.update" class="md-nav__link">
+    update()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="reid-processor">Reid processor</h1>
+
+
+  <div class="doc doc-object doc-module">
+
+<a id="trackreid.reid_processor"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h2 id="trackreid.reid_processor.ReidProcessor" class="doc doc-heading">
+        <code>
+ReidProcessor        </code>
+
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>The ReidProcessor class is designed to correct the results of tracking algorithms by reconciling and reassigning
+lost or misidentified IDs. This ensures a consistent and accurate tracking of objects over time.</p>
+<p>All input data should be of numeric type, either integers or floats.
+Here's an example of how the input data should look like based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>bbox (0-3)</th>
+<th>object_id (4)</th>
+<th>category (5)</th>
+<th>confidence (6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>1</td>
+<td>1</td>
+<td>0.91</td>
+</tr>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>2</td>
+<td>0</td>
+<td>0.54</td>
+</tr>
+</tbody>
+</table>
+<p>Each row represents a detected object. The first four columns represent the bounding box coordinates
+(x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+the sixth column represents the category of the detected object, and the seventh column represents
+the confidence score of the detection.</p>
+<p>You can use ReidProcessor.print_input_data_requirements() for more insight.</p>
+<p>Here's an example of how the output data looks like based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>frame_id (0)</th>
+<th>object_id (1)</th>
+<th>category (2)</th>
+<th>bbox (3-6)</th>
+<th>confidence (7)</th>
+<th>mean_confidence (8)</th>
+<th>tracker_id (9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>50, 60, 120, 80</td>
+<td>0.91</td>
+<td>0.85</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>50, 60, 120, 80</td>
+<td>0.54</td>
+<td>0.60</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>You can use ReidProcessor.print_output_data_format_information() for more insight.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>filter_confidence_threshold</code></td>
+        <td><code>float</code></td>
+        <td><p>Confidence threshold for the filter. The filter will only consider tracked objects that have a mean confidence score during the all transaction above this threshold.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>filter_time_threshold</code></td>
+        <td><code>int</code></td>
+        <td><p>Time threshold for the filter. The filter will only consider tracked objects that have been seen for a number of frames above this threshold.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>max_frames_to_rematch</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum number of frames to rematch. If a switcher is lost for a number of frames greater than this value, it will be flagged as lost forever.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>max_attempt_to_match</code></td>
+        <td><code>int</code></td>
+        <td><p>Maximum number of attempts to match a candidate. If a candidate has not been rematched despite a number of attempts equal to this value, it will be flagged as a stable object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>selection_function</code></td>
+        <td><code>Callable</code></td>
+        <td><p>A function that determines whether two objects should be considered for matching. The selection function should take two TrackedObject instances as input and return a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered.</p></td>
+        <td><code>&lt;function select_by_category at 0x7f39bc3fdf80&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>cost_function</code></td>
+        <td><code>Callable</code></td>
+        <td><p>A function that calculates the cost of matching two objects. The cost function should take two TrackedObject instances as input and return a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match.</p></td>
+        <td><code>&lt;function bounding_box_distance at 0x7f39bc3ede40&gt;</code></td>
+      </tr>
+      <tr>
+        <td><code>cost_function_threshold</code></td>
+        <td><code>Optional[Union[int, float]]</code></td>
+        <td><p>An maximal threshold value for the cost function. If provided, any pair of objects with a matching cost greater than this threshold will not be considered for matching. If not provided, all selected pairs will be considered regardless of their matching cost.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>save_to_txt</code></td>
+        <td><code>bool</code></td>
+        <td><p>A flag indicating whether to save the results to a text file. If set to True, the results will be saved to a text file specified by the file_path parameter.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>file_path</code></td>
+        <td><code>str</code></td>
+        <td><p>The path to the text file where the results will be saved if save_to_txt is set to True.</p></td>
+        <td><code>&#39;tracks.txt&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">ReidProcessor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ReidProcessor class is designed to correct the results of tracking algorithms by reconciling and reassigning</span>
+<span class="sd">    lost or misidentified IDs. This ensures a consistent and accurate tracking of objects over time.</span>
+
+<span class="sd">    All input data should be of numeric type, either integers or floats.</span>
+<span class="sd">    Here&#39;s an example of how the input data should look like based on the schema:</span>
+
+<span class="sd">    | bbox (0-3)      | object_id (4) | category (5) | confidence (6) |</span>
+<span class="sd">    |-----------------|---------------|--------------|----------------|</span>
+<span class="sd">    | 50, 60, 120, 80 |       1       |       1      |       0.91     |</span>
+<span class="sd">    | 50, 60, 120, 80 |       2       |       0      |       0.54     |</span>
+
+<span class="sd">    Each row represents a detected object. The first four columns represent the bounding box coordinates</span>
+<span class="sd">    (x, y, width, height), the fifth column represents the object ID assigned by the tracker,</span>
+<span class="sd">    the sixth column represents the category of the detected object, and the seventh column represents</span>
+<span class="sd">    the confidence score of the detection.</span>
+
+<span class="sd">    You can use ReidProcessor.print_input_data_requirements() for more insight.</span>
+
+<span class="sd">    Here&#39;s an example of how the output data looks like based on the schema:</span>
+
+<span class="sd">    | frame_id (0) | object_id (1) | category (2) | bbox (3-6)      | confidence (7) | mean_confidence (8) | tracker_id (9) |</span>
+<span class="sd">    |--------------|---------------|--------------|-----------------|----------------|---------------------|----------------|</span>
+<span class="sd">    | 1            | 1             | 1            | 50, 60, 120, 80 | 0.91           | 0.85                | 1              |</span>
+<span class="sd">    | 2            | 2             | 0            | 50, 60, 120, 80 | 0.54           | 0.60                | 2              |</span>
+
+<span class="sd">    You can use ReidProcessor.print_output_data_format_information() for more insight.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        filter_confidence_threshold (float): Confidence threshold for the filter. The filter will only consider tracked objects that have a mean confidence score during the all transaction above this threshold.</span>
+
+<span class="sd">        filter_time_threshold (int): Time threshold for the filter. The filter will only consider tracked objects that have been seen for a number of frames above this threshold.</span>
+
+<span class="sd">        max_frames_to_rematch (int): Maximum number of frames to rematch. If a switcher is lost for a number of frames greater than this value, it will be flagged as lost forever.</span>
+
+<span class="sd">        max_attempt_to_match (int): Maximum number of attempts to match a candidate. If a candidate has not been rematched despite a number of attempts equal to this value, it will be flagged as a stable object.</span>
+
+<span class="sd">        selection_function (Callable): A function that determines whether two objects should be considered for matching. The selection function should take two TrackedObject instances as input and return a binary value (0 or 1). A return value of 1 indicates that the pair should be considered for matching, while a return value of 0 indicates that the pair should not be considered.</span>
+
+<span class="sd">        cost_function (Callable): A function that calculates the cost of matching two objects. The cost function should take two TrackedObject instances as input and return a numerical value representing the cost of matching these two objects. A lower cost indicates a higher likelihood of a match.</span>
+
+<span class="sd">        cost_function_threshold (Optional[Union[int, float]]): An maximal threshold value for the cost function. If provided, any pair of objects with a matching cost greater than this threshold will not be considered for matching. If not provided, all selected pairs will be considered regardless of their matching cost.\n</span>
+
+<span class="sd">        save_to_txt (bool): A flag indicating whether to save the results to a text file. If set to True, the results will be saved to a text file specified by the file_path parameter.</span>
+
+<span class="sd">        file_path (str): The path to the text file where the results will be saved if save_to_txt is set to True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filter_confidence_threshold</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">filter_time_threshold</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">max_frames_to_rematch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">max_attempt_to_match</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">selection_function</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">select_by_category</span><span class="p">,</span>
+        <span class="n">cost_function</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">bounding_box_distance</span><span class="p">,</span>
+        <span class="n">cost_function_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">save_to_txt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;tracks.txt&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span> <span class="o">=</span> <span class="n">Matcher</span><span class="p">(</span>
+            <span class="n">cost_function</span><span class="o">=</span><span class="n">cost_function</span><span class="p">,</span>
+            <span class="n">selection_function</span><span class="o">=</span><span class="n">selection_function</span><span class="p">,</span>
+            <span class="n">cost_function_threshold</span><span class="o">=</span><span class="n">cost_function_threshold</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracked_filter</span> <span class="o">=</span> <span class="n">TrackedObjectFilter</span><span class="p">(</span>
+            <span class="n">confidence_threshold</span><span class="o">=</span><span class="n">filter_confidence_threshold</span><span class="p">,</span>
+            <span class="n">frames_seen_threshold</span><span class="o">=</span><span class="n">filter_time_threshold</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_frame_tracked_objects</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_frames_to_rematch</span> <span class="o">=</span> <span class="n">max_frames_to_rematch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_attempt_to_match</span> <span class="o">=</span> <span class="n">max_attempt_to_match</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_output_cols</span> <span class="o">=</span> <span class="n">get_nb_output_cols</span><span class="p">(</span><span class="n">output_positions</span><span class="o">=</span><span class="n">output_data_positions</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_to_txt</span> <span class="o">=</span> <span class="n">save_to_txt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets the ReID processor state for a new processing sequence.</span>
+
+<span class="sd">        This method resets the frame counter to zero and clears all tracked objects</span>
+<span class="sd">        and the last frame&#39;s tracked objects from memory, preparing the processor</span>
+<span class="sd">        for a new sequence of frames.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_frame_tracked_objects</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a new file path for saving txt data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            new_file_path (str): The new file path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">new_file_path</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nb_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates and returns the total number of corrections made across all tracked objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Total number of corrections.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nb_corrections</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span>
+            <span class="n">nb_corrections</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">nb_corrections</span>
+        <span class="k">return</span> <span class="n">nb_corrections</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nb_tracker_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates and returns the total number of tracker IDs across all tracked objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Total number of tracker IDs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tracker_ids</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span>
+            <span class="n">tracker_ids</span> <span class="o">+=</span> <span class="n">obj</span><span class="o">.</span><span class="n">nb_ids</span>
+        <span class="k">return</span> <span class="n">tracker_ids</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">corrected_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of tracked objects that have been corrected.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[TrackedObject]: List of corrected tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">nb_corrections</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">seen_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of tracked objects that have been seen, excluding those in the</span>
+<span class="sd">        states TRACKER_OUTPUT and FILTERED_OUTPUT.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[TrackedObject]: List of seen tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="n">tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span>
+            <span class="n">states</span><span class="o">=</span><span class="p">[</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">TRACKER_OUTPUT</span><span class="p">,</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">FILTERED_OUTPUT</span><span class="p">],</span>
+            <span class="n">exclusion</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mean_nb_corrections</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates and returns the mean number of corrections across all tracked objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Mean number of corrections.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_corrections</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker_output</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes the tracker output and updates internal states.</span>
+
+<span class="sd">        All input data should be of numeric type, either integers or floats.</span>
+<span class="sd">        Here&#39;s an example of how the input data should look like based on the schema:</span>
+
+<span class="sd">        | bbox (0-3)      | object_id (4) | category (5) | confidence (6) |</span>
+<span class="sd">        |-----------------|---------------|--------------|----------------|</span>
+<span class="sd">        | 50, 60, 120, 80 |       1       |       1      |       0.91     |</span>
+<span class="sd">        | 50, 60, 120, 80 |       2       |       0      |       0.54     |</span>
+
+<span class="sd">        Each row represents a detected object. The first four columns represent the bounding box coordinates</span>
+<span class="sd">        (x, y, width, height), the fifth column represents the object ID assigned by the tracker,</span>
+<span class="sd">        the sixth column represents the category of the detected object, and the seventh column represents</span>
+<span class="sd">        the confidence score of the detection.</span>
+
+<span class="sd">        You can use ReidProcessor.print_input_data_requirements() for more insight.</span>
+
+<span class="sd">        Here&#39;s an example of how the output data looks like based on the schema:</span>
+
+<span class="sd">        | frame_id (0) | object_id (1) | category (2) | bbox (3-6)      | confidence (7) | mean_confidence (8) | tracker_id (9) |</span>
+<span class="sd">        |--------------|---------------|--------------|-----------------|----------------|---------------------|----------------|</span>
+<span class="sd">        | 1            | 1             | 1            | 50, 60, 120, 80 | 0.91           | 0.85                | 1              |</span>
+<span class="sd">        | 2            | 2             | 0            | 50, 60, 120, 80 | 0.54           | 0.60                | 2              |</span>
+
+<span class="sd">        You can use ReidProcessor.print_output_data_format_information() for more insight.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tracker_output (np.ndarray): The tracker output.</span>
+<span class="sd">            frame_id (int): The frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: The processed output.</span>
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+        <span class="k">if</span> <span class="n">tracker_output</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>  <span class="c1"># empty tracking</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">current_tracker_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">(</span>
+                <span class="n">tracker_output</span><span class="o">=</span><span class="n">tracker_output</span><span class="p">,</span> <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_perform_reid_process</span><span class="p">(</span><span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span><span class="p">)</span>
+            <span class="n">reid_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postprocess</span><span class="p">(</span><span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reid_output</span> <span class="o">=</span> <span class="n">tracker_output</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_to_txt</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_results_to_txt</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">reid_output</span><span class="o">=</span><span class="n">reid_output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">reid_output</span>
+
+    <span class="k">def</span> <span class="nf">_preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker_output</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Preprocesses the tracker output.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tracker_output (np.ndarray): The tracker output.</span>
+<span class="sd">            frame_id (int): The frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: The preprocessed output.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reshaped_tracker_output</span> <span class="o">=</span> <span class="n">reshape_tracker_result</span><span class="p">(</span><span class="n">tracker_output</span><span class="o">=</span><span class="n">tracker_output</span><span class="p">)</span>
+        <span class="n">current_tracker_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reshaped_tracker_output</span><span class="p">[:,</span> <span class="n">input_data_positions</span><span class="o">.</span><span class="n">object_id</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_tracked_objects</span><span class="p">(</span>
+            <span class="n">tracker_output</span><span class="o">=</span><span class="n">reshaped_tracker_output</span><span class="p">,</span> <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_filtering</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">current_tracker_ids</span>
+
+    <span class="k">def</span> <span class="nf">_update_tracked_objects</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">tracker_output</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the tracked objects.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tracker_output (np.ndarray): The tracker output.</span>
+<span class="sd">            frame_id (int): The frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[TrackedObject]: The updated tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="n">frame_id</span>
+        <span class="k">for</span> <span class="n">object_id</span><span class="p">,</span> <span class="n">data_line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">tracker_output</span><span class="p">[:,</span> <span class="n">input_data_positions</span><span class="o">.</span><span class="n">object_id</span><span class="p">],</span> <span class="n">tracker_output</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">object_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span>
+                <span class="n">new_tracked_object</span> <span class="o">=</span> <span class="n">TrackedObject</span><span class="p">(</span>
+                    <span class="n">object_ids</span><span class="o">=</span><span class="n">object_id</span><span class="p">,</span>
+                    <span class="n">state</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">TRACKER_OUTPUT</span><span class="p">,</span>
+                    <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span><span class="p">,</span>
+                    <span class="n">metadata</span><span class="o">=</span><span class="n">data_line</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_tracked_object</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">object_id</span><span class="p">)]</span><span class="o">.</span><span class="n">update_metadata</span><span class="p">(</span>
+                    <span class="n">data_line</span><span class="p">,</span> <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span>
+
+    <span class="k">def</span> <span class="nf">_get_current_frame_tracked_objects</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">current_tracker_ids</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the tracked objects for the current frame.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            current_tracker_ids (Set[Union[int, float]]): The set of current tracker IDs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Set[Union[int, float]]: The set of tracked objects for the current frame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tracked_objects</span> <span class="o">=</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">TRACKER_OUTPUT</span><span class="p">,</span> <span class="n">exclusion</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="n">current_frame_tracked_objects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">tracked_id</span> <span class="k">for</span> <span class="n">tracked_id</span> <span class="ow">in</span> <span class="n">tracked_objects</span> <span class="k">if</span> <span class="n">tracked_id</span> <span class="ow">in</span> <span class="n">current_tracker_ids</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">current_frame_tracked_objects</span>
+
+    <span class="k">def</span> <span class="nf">_apply_filtering</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies filtering to the tracked objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[TrackedObject]: The filtered tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">tracked_object</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracked_filter</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tracked_object</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span>
+
+    <span class="k">def</span> <span class="nf">_perform_reid_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_tracker_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs the re-identification process on tracked objects.</span>
+
+<span class="sd">        This method is responsible for managing the state of tracked objects and identifying potential</span>
+<span class="sd">        candidates for re-identification. It follows these steps:</span>
+
+<span class="sd">        1.  _correct_reid_chains: Corrects the re-identification chains of all tracked objects</span>
+<span class="sd">        based on the current tracker IDs. This avoids potential duplicates.</span>
+<span class="sd">        2.  _update_switchers_states: Updates the states of switchers (objects that have switched IDs)</span>
+<span class="sd">        based on the current frame&#39;s tracked objects, the maximum number of frames to rematch, and the current frame ID.</span>
+<span class="sd">        3.  _update_candidates_states: Updates the states of candidate objects (potential matches for re-identification)</span>
+<span class="sd">        based on the maximum number of attempts to match and the current frame ID.</span>
+<span class="sd">        4.  _identify_switchers: Identifies switchers based on the current and last frame&#39;s tracked objects and</span>
+<span class="sd">        updates the state of all tracked objects accordingly.</span>
+<span class="sd">        5.  _identify_candidates: Identifies candidates for re-identification and updates the state of all</span>
+<span class="sd">        tracked objects accordingly.</span>
+<span class="sd">        6.  match: Matches candidates with switchers using Jonker-Volgenant algorithm.</span>
+<span class="sd">        7.  _process_matches: Processes the matches and updates the state of all tracked objects accordingly.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            current_tracker_ids (List[Union[int, float]]): The current tracker IDs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_correct_reid_chains</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span>
+        <span class="p">)</span>
+
+        <span class="n">current_frame_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_current_frame_tracked_objects</span><span class="p">(</span>
+            <span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_switchers_states</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span>
+            <span class="n">current_frame_tracked_objects</span><span class="o">=</span><span class="n">current_frame_tracked_objects</span><span class="p">,</span>
+            <span class="n">max_frames_to_rematch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_frames_to_rematch</span><span class="p">,</span>
+            <span class="n">frame_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_candidates_states</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span>
+            <span class="n">max_attempt_to_match</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_attempt_to_match</span><span class="p">,</span>
+            <span class="n">frame_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identify_switchers</span><span class="p">(</span>
+            <span class="n">current_frame_tracked_objects</span><span class="o">=</span><span class="n">current_frame_tracked_objects</span><span class="p">,</span>
+            <span class="n">last_frame_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">last_frame_tracked_objects</span><span class="p">,</span>
+            <span class="n">all_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identify_candidates</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span>
+        <span class="p">)</span>
+
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">,</span> <span class="n">exclusion</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">switchers</span> <span class="o">=</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">SWITCHER</span><span class="p">,</span> <span class="n">exclusion</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="n">matches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">switchers</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_matches</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span>
+            <span class="n">matches</span><span class="o">=</span><span class="n">matches</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">current_frame_tracked_objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_current_frame_tracked_objects</span><span class="p">(</span>
+            <span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_frame_tracked_objects</span> <span class="o">=</span> <span class="n">current_frame_tracked_objects</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_identify_switchers</span><span class="p">(</span>
+        <span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+        <span class="n">current_frame_tracked_objects</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+        <span class="n">last_frame_tracked_objects</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identifies switchers in the list of all tracked objects, and</span>
+<span class="sd">        update their states. A switcher is an object that is lost, and probably</span>
+<span class="sd">        needs to be rematched.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_tracked_objects (List[&quot;TrackedObject&quot;]): List of all objects being tracked.</span>
+<span class="sd">            current_frame_tracked_objects (Set[&quot;TrackedObject&quot;]): Set of currently tracked objects.</span>
+<span class="sd">            last_frame_tracked_objects Set[&quot;TrackedObject&quot;]: Set of last timestep tracked objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: Updated list of all tracked objects after state changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lost_objects</span> <span class="o">=</span> <span class="n">last_frame_tracked_objects</span> <span class="o">-</span> <span class="n">current_frame_tracked_objects</span>
+
+        <span class="k">for</span> <span class="n">tracked_object</span> <span class="ow">in</span> <span class="n">all_tracked_objects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tracked_object</span> <span class="ow">in</span> <span class="n">lost_objects</span><span class="p">:</span>
+                <span class="n">tracked_object</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">SWITCHER</span>
+
+        <span class="k">return</span> <span class="n">all_tracked_objects</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_identify_candidates</span><span class="p">(</span><span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identifies candidates in the list of all tracked objects, and</span>
+<span class="sd">        update their states. A candidate is an object that was never seen before and</span>
+<span class="sd">        that probably needs to be rematched.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_tracked_objects (List[&quot;TrackedObject&quot;]): List of all objects being tracked.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: Updated list of all tracked objects after state changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tracked_objects</span> <span class="o">=</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">TRACKER_OUTPUT</span><span class="p">,</span> <span class="n">exclusion</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">current_object</span> <span class="ow">in</span> <span class="n">tracked_objects</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current_object</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">FILTERED_OUTPUT</span><span class="p">:</span>
+                <span class="n">current_object</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">CANDIDATE</span>
+        <span class="k">return</span> <span class="n">all_tracked_objects</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_correct_reid_chains</span><span class="p">(</span>
+        <span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+        <span class="n">current_tracker_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Corrects the reid chains to prevent duplicates when an object reappears with a corrected id.</span>
+<span class="sd">        For instance, if an object has a reid chain [1, 3, 6, 7], only the id 7 should be in the tracker&#39;s output.</span>
+<span class="sd">        If another id from the chain (e.g., 3) is in the tracker&#39;s output, the reid chain is split into two:</span>
+<span class="sd">        [1, 3] and [6, 7]. The first object&#39;s state is set to stable as 3 is in the current tracker output,</span>
+<span class="sd">        and a new object with reid chain [6, 7] is created.</span>
+<span class="sd">        The new object&#39;s state can be:</span>
+<span class="sd">            - stable, if the tracker output is in the new reid chain</span>
+<span class="sd">            - switcher, if not</span>
+<span class="sd">            - nothing, if this is a singleton object, in which case the reid process is performed automatically.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_tracked_objects (List[&quot;TrackedObject&quot;]): List of all objects being tracked.</span>
+<span class="sd">            current_tracker_ids (List[Union[int, float]]): The current tracker IDs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: The corrected tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top_list_correction</span> <span class="o">=</span> <span class="n">get_top_list_correction</span><span class="p">(</span><span class="n">all_tracked_objects</span><span class="p">)</span>
+        <span class="n">to_correct</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">current_tracker_ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">top_list_correction</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">current_object</span> <span class="ow">in</span> <span class="n">to_correct</span><span class="p">:</span>
+            <span class="n">tracked_id</span> <span class="o">=</span> <span class="n">all_tracked_objects</span><span class="p">[</span><span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_object</span><span class="p">)]</span>
+            <span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tracked_id</span><span class="p">)</span>
+            <span class="n">new_object</span><span class="p">,</span> <span class="n">tracked_id</span> <span class="o">=</span> <span class="n">tracked_id</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">current_object</span><span class="p">)</span>
+
+            <span class="n">tracked_id</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span>
+            <span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tracked_id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">new_object</span> <span class="ow">in</span> <span class="n">current_tracker_ids</span><span class="p">:</span>
+                <span class="n">new_object</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">CANDIDATE</span>
+                <span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_object</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">new_object</span><span class="o">.</span><span class="n">nb_corrections</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">new_object</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">SWITCHER</span>
+                <span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_object</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_tracked_objects</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_process_matches</span><span class="p">(</span>
+        <span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+        <span class="n">matches</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">,</span> <span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Processes the matches.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_tracked_objects (List[&quot;TrackedObject&quot;]): List of all objects being tracked.</span>
+<span class="sd">            matches (Dict[&quot;TrackedObject&quot;, &quot;TrackedObject&quot;]): The matches.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: The processed tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+            <span class="n">candidate_match</span><span class="p">,</span> <span class="n">switcher_match</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+            <span class="n">switcher_match</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">candidate_match</span><span class="p">)</span>
+            <span class="n">switcher_match</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span>
+            <span class="n">all_tracked_objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">candidate_match</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">all_tracked_objects</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_update_switchers_states</span><span class="p">(</span>
+        <span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+        <span class="n">current_frame_tracked_objects</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span>
+        <span class="n">max_frames_to_rematch</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the state of switchers in the list of all tracked objects:</span>
+<span class="sd">            - If a switcher is lost for too long, it will be flaged as lost forever</span>
+<span class="sd">            - If a switcher reapears in the tracking output, it will be flaged as</span>
+<span class="sd">            a stable object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_tracked_objects (List[&quot;TrackedObject&quot;]): List of all objects being tracked.</span>
+<span class="sd">            current_frame_tracked_objects (Set[&quot;TrackedObject&quot;]): Set of currently tracked objects.</span>
+<span class="sd">            max_frames_to_rematch (int): Maximum number of frames to rematch.</span>
+<span class="sd">            frame_id (int): Current frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: Updated list of all tracked objects after state changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">switchers</span> <span class="o">=</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">SWITCHER</span><span class="p">,</span> <span class="n">exclusion</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">switchers_to_drop</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">switchers</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">current_frame_tracked_objects</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">switcher</span> <span class="ow">in</span> <span class="n">switchers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">switcher</span> <span class="ow">in</span> <span class="n">switchers_to_drop</span><span class="p">:</span>
+                <span class="n">switcher</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span>
+            <span class="k">elif</span> <span class="n">switcher</span><span class="o">.</span><span class="n">get_nb_frames_since_last_appearance</span><span class="p">(</span><span class="n">frame_id</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_frames_to_rematch</span><span class="p">:</span>
+                <span class="n">switcher</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">LOST_FOREVER</span>
+
+        <span class="k">return</span> <span class="n">all_tracked_objects</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_update_candidates_states</span><span class="p">(</span>
+        <span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">],</span> <span class="n">max_attempt_to_match</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;TrackedObject&quot;</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the state of candidates in the list of all tracked objects.</span>
+<span class="sd">        If a candidate has not been rematched despite max_attempt_to_match attempts,</span>
+<span class="sd">        if will be flaged as a stable object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            all_tracked_objects (List[&quot;TrackedObject&quot;]): List of all objects being tracked.</span>
+<span class="sd">            max_attempt_to_match (int): Maximum attempt to match a candidate.</span>
+<span class="sd">            frame_id (int): Current frame id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[&quot;TrackedObject&quot;]: Updated list of all tracked objects after state changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="n">filter_objects_by_state</span><span class="p">(</span>
+            <span class="n">tracked_objects</span><span class="o">=</span><span class="n">all_tracked_objects</span><span class="p">,</span>
+            <span class="n">states</span><span class="o">=</span><span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">CANDIDATE</span><span class="p">,</span>
+            <span class="n">exclusion</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">candidate</span><span class="o">.</span><span class="n">get_age</span><span class="p">(</span><span class="n">frame_id</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">max_attempt_to_match</span><span class="p">:</span>
+                <span class="n">candidate</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span>
+        <span class="k">return</span> <span class="n">all_tracked_objects</span>
+
+    <span class="k">def</span> <span class="nf">_postprocess</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">current_tracker_ids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Postprocesses the current tracker IDs.</span>
+<span class="sd">        It selects the stable TrackedObjects, and formats their datas in the output</span>
+<span class="sd">        to match requirements.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            current_tracker_ids (List[Union[int, float]]): The current tracker IDs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: The postprocessed output.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stable_objects</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">obj</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">==</span> <span class="n">reid_constants</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">STABLE</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">current_tracker_ids</span>
+        <span class="p">]</span>
+
+        <span class="n">reid_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">stable_objects</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_output_cols</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">stable_object</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">stable_objects</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">required_variable</span> <span class="ow">in</span> <span class="n">output_data_positions</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span>
+                    <span class="k">if</span> <span class="n">required_variable</span> <span class="o">==</span> <span class="s2">&quot;frame_id&quot;</span>
+                    <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stable_object</span><span class="p">,</span> <span class="n">required_variable</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Attribute </span><span class="si">{</span><span class="n">required_variable</span><span class="si">}</span><span class="s2"> not in TrackedObject. Check your required output names.&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">reid_output</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">output_data_positions</span><span class="p">,</span> <span class="n">required_variable</span><span class="p">)]</span> <span class="o">=</span> <span class="n">output</span>
+
+        <span class="k">return</span> <span class="n">reid_output</span>
+
+    <span class="k">def</span> <span class="nf">_save_results_to_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reid_output</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the reid_output to a txt file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path (str): The path to the txt file.</span>
+<span class="sd">            reid_output (np.ndarray): The output of _post_process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>  <span class="c1"># noqa: PTH123</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reid_output</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">is_integer</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;</span><span class="si">{:.6f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">row</span>
+                <span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the tracked objects to a dictionary.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict: The dictionary representation of the tracked objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">tracked_object</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">tracked_object</span><span class="o">.</span><span class="n">object_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">tracked_object</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">print_input_data_format_requirements</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Prints the input data format requirements.</span>
+
+<span class="sd">        All input data should be of numeric type, either integers or floats.</span>
+<span class="sd">        Here&#39;s an example of how the input data should look like based on the schema:</span>
+
+<span class="sd">        |    bbox (0-3)   | object_id (4) | category (5) | confidence (6) |</span>
+<span class="sd">        |-----------------|---------------|--------------|----------------|</span>
+<span class="sd">        | 50, 60, 120, 80 |       1       |       1      |       0.91     |</span>
+<span class="sd">        | 50, 60, 120, 80 |       2       |       0      |       0.54     |</span>
+
+<span class="sd">        Each row represents a detected object. The first four columns represent the bounding box coordinates</span>
+<span class="sd">        (x, y, width, height), the fifth column represents the object ID assigned by the tracker,</span>
+<span class="sd">        the sixth column represents the category of the detected object, and the seventh column represents</span>
+<span class="sd">        the confidence score of the detection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">input_schema</span> <span class="o">=</span> <span class="n">input_data_positions</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input Data Format Requirements:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">properties</span> <span class="ow">in</span> <span class="n">input_schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (position of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> in the input array must be): </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">print_output_data_format_information</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the output data format information.</span>
+
+<span class="sd">        Here&#39;s an example of how the output data looks like based on the schema:</span>
+
+<span class="sd">        | frame_id (0) | object_id (1) | category (2) | bbox (3-6) | confidence (7) | mean_confidence (8) | tracker_id (9) |</span>
+<span class="sd">        |--------------|---------------|--------------|------------|----------------|-------------------|------------------|</span>
+<span class="sd">        | 1            | 1             | 1            | 50,60,120,80 | 0.91         | 0.85              | 1                |</span>
+<span class="sd">        | 2            | 2             | 0            | 50,60,120,80 | 0.54         | 0.60              | 2                |</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+        <span class="n">output_schema</span> <span class="o">=</span> <span class="n">output_data_positions</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Output Data Format:&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">properties</span> <span class="ow">in</span> <span class="n">output_schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (position of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> in the output array will be): </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.corrected_objects" class="doc doc-heading">
+<code class=" language-python"><span class="n">corrected_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;TrackedObject&#39;</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns a list of tracked objects that have been corrected.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[TrackedObject]</code></td>
+      <td><p>List of corrected tracked objects.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.mean_nb_corrections" class="doc doc-heading">
+<code class=" language-python"><span class="n">mean_nb_corrections</span><span class="p">:</span> <span class="nb">float</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates and returns the mean number of corrections across all tracked objects.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>float</code></td>
+      <td><p>Mean number of corrections.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.nb_corrections" class="doc doc-heading">
+<code class=" language-python"><span class="n">nb_corrections</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates and returns the total number of corrections made across all tracked objects.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Total number of corrections.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.nb_tracker_ids" class="doc doc-heading">
+<code class=" language-python"><span class="n">nb_tracker_ids</span><span class="p">:</span> <span class="nb">int</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculates and returns the total number of tracker IDs across all tracked objects.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>int</code></td>
+      <td><p>Total number of tracker IDs.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.seen_objects" class="doc doc-heading">
+<code class=" language-python"><span class="n">seen_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;TrackedObject&#39;</span><span class="p">]</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-property"><code>property</code></small>
+      <small class="doc doc-property doc-property-readonly"><code>readonly</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns a list of tracked objects that have been seen, excluding those in the
+states TRACKER_OUTPUT and FILTERED_OUTPUT.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>List[TrackedObject]</code></td>
+      <td><p>List of seen tracked objects.</p></td>
+    </tr>
+  </tbody>
+</table>    </div>
+
+  </div>
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.print_input_data_format_requirements" class="doc doc-heading">
+<code class=" language-python"><span class="n">print_input_data_format_requirements</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Prints the input data format requirements.</p>
+<p>All input data should be of numeric type, either integers or floats.
+Here's an example of how the input data should look like based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>bbox (0-3)</th>
+<th>object_id (4)</th>
+<th>category (5)</th>
+<th>confidence (6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>1</td>
+<td>1</td>
+<td>0.91</td>
+</tr>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>2</td>
+<td>0</td>
+<td>0.54</td>
+</tr>
+</tbody>
+</table>
+<p>Each row represents a detected object. The first four columns represent the bounding box coordinates
+(x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+the sixth column represents the category of the detected object, and the seventh column represents
+the confidence score of the detection.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">print_input_data_format_requirements</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Prints the input data format requirements.</span>
+
+<span class="sd">    All input data should be of numeric type, either integers or floats.</span>
+<span class="sd">    Here&#39;s an example of how the input data should look like based on the schema:</span>
+
+<span class="sd">    |    bbox (0-3)   | object_id (4) | category (5) | confidence (6) |</span>
+<span class="sd">    |-----------------|---------------|--------------|----------------|</span>
+<span class="sd">    | 50, 60, 120, 80 |       1       |       1      |       0.91     |</span>
+<span class="sd">    | 50, 60, 120, 80 |       2       |       0      |       0.54     |</span>
+
+<span class="sd">    Each row represents a detected object. The first four columns represent the bounding box coordinates</span>
+<span class="sd">    (x, y, width, height), the fifth column represents the object ID assigned by the tracker,</span>
+<span class="sd">    the sixth column represents the category of the detected object, and the seventh column represents</span>
+<span class="sd">    the confidence score of the detection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">input_schema</span> <span class="o">=</span> <span class="n">input_data_positions</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input Data Format Requirements:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">properties</span> <span class="ow">in</span> <span class="n">input_schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (position of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> in the input array must be): </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.print_output_data_format_information" class="doc doc-heading">
+<code class=" language-python"><span class="n">print_output_data_format_information</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Prints the output data format information.</p>
+<p>Here's an example of how the output data looks like based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>frame_id (0)</th>
+<th>object_id (1)</th>
+<th>category (2)</th>
+<th>bbox (3-6)</th>
+<th>confidence (7)</th>
+<th>mean_confidence (8)</th>
+<th>tracker_id (9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>50,60,120,80</td>
+<td>0.91</td>
+<td>0.85</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>50,60,120,80</td>
+<td>0.54</td>
+<td>0.60</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">print_output_data_format_information</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prints the output data format information.</span>
+
+<span class="sd">    Here&#39;s an example of how the output data looks like based on the schema:</span>
+
+<span class="sd">    | frame_id (0) | object_id (1) | category (2) | bbox (3-6) | confidence (7) | mean_confidence (8) | tracker_id (9) |</span>
+<span class="sd">    |--------------|---------------|--------------|------------|----------------|-------------------|------------------|</span>
+<span class="sd">    | 1            | 1             | 1            | 50,60,120,80 | 0.91         | 0.85              | 1                |</span>
+<span class="sd">    | 2            | 2             | 0            | 50,60,120,80 | 0.54         | 0.60              | 2                |</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="n">output_schema</span> <span class="o">=</span> <span class="n">output_data_positions</span><span class="o">.</span><span class="n">model_json_schema</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Output Data Format:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">properties</span> <span class="ow">in</span> <span class="n">output_schema</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (position of </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> in the output array will be): </span><span class="si">{</span><span class="n">properties</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.reset" class="doc doc-heading">
+<code class=" language-python"><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Resets the ReID processor state for a new processing sequence.</p>
+<p>This method resets the frame counter to zero and clears all tracked objects
+and the last frame's tracked objects from memory, preparing the processor
+for a new sequence of frames.</p>
+
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resets the ReID processor state for a new processing sequence.</span>
+
+<span class="sd">    This method resets the frame counter to zero and clears all tracked objects</span>
+<span class="sd">    and the last frame&#39;s tracked objects from memory, preparing the processor</span>
+<span class="sd">    for a new sequence of frames.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">last_frame_tracked_objects</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">TrackedObject</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.set_file_path" class="doc doc-heading">
+<code class=" language-python"><span class="n">set_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file_path</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Sets a new file path for saving txt data.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>new_file_path</code></td>
+        <td><code>str</code></td>
+        <td><p>The new file path.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">set_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets a new file path for saving txt data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        new_file_path (str): The new file path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">new_file_path</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.to_dict" class="doc doc-heading">
+<code class=" language-python"><span class="n">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Converts the tracked objects to a dictionary.</p>
+
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Dict</code></td>
+      <td><p>The dictionary representation of the tracked objects.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts the tracked objects to a dictionary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict: The dictionary representation of the tracked objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">tracked_object</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">tracked_object</span><span class="o">.</span><span class="n">object_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">tracked_object</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">data</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="trackreid.reid_processor.ReidProcessor.update" class="doc doc-heading">
+<code class=" language-python"><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker_output</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Processes the tracker output and updates internal states.</p>
+<p>All input data should be of numeric type, either integers or floats.
+Here's an example of how the input data should look like based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>bbox (0-3)</th>
+<th>object_id (4)</th>
+<th>category (5)</th>
+<th>confidence (6)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>1</td>
+<td>1</td>
+<td>0.91</td>
+</tr>
+<tr>
+<td>50, 60, 120, 80</td>
+<td>2</td>
+<td>0</td>
+<td>0.54</td>
+</tr>
+</tbody>
+</table>
+<p>Each row represents a detected object. The first four columns represent the bounding box coordinates
+(x, y, width, height), the fifth column represents the object ID assigned by the tracker,
+the sixth column represents the category of the detected object, and the seventh column represents
+the confidence score of the detection.</p>
+<p>You can use ReidProcessor.print_input_data_requirements() for more insight.</p>
+<p>Here's an example of how the output data looks like based on the schema:</p>
+<table>
+<thead>
+<tr>
+<th>frame_id (0)</th>
+<th>object_id (1)</th>
+<th>category (2)</th>
+<th>bbox (3-6)</th>
+<th>confidence (7)</th>
+<th>mean_confidence (8)</th>
+<th>tracker_id (9)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>50, 60, 120, 80</td>
+<td>0.91</td>
+<td>0.85</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>0</td>
+<td>50, 60, 120, 80</td>
+<td>0.54</td>
+<td>0.60</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>You can use ReidProcessor.print_output_data_format_information() for more insight.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>tracker_output</code></td>
+        <td><code>np.ndarray</code></td>
+        <td><p>The tracker output.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>frame_id</code></td>
+        <td><code>int</code></td>
+        <td><p>The frame id.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>np.ndarray</code></td>
+      <td><p>The processed output.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>trackreid/reid_processor.py</code></summary>
+          <div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tracker_output</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">frame_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes the tracker output and updates internal states.</span>
+
+<span class="sd">    All input data should be of numeric type, either integers or floats.</span>
+<span class="sd">    Here&#39;s an example of how the input data should look like based on the schema:</span>
+
+<span class="sd">    | bbox (0-3)      | object_id (4) | category (5) | confidence (6) |</span>
+<span class="sd">    |-----------------|---------------|--------------|----------------|</span>
+<span class="sd">    | 50, 60, 120, 80 |       1       |       1      |       0.91     |</span>
+<span class="sd">    | 50, 60, 120, 80 |       2       |       0      |       0.54     |</span>
+
+<span class="sd">    Each row represents a detected object. The first four columns represent the bounding box coordinates</span>
+<span class="sd">    (x, y, width, height), the fifth column represents the object ID assigned by the tracker,</span>
+<span class="sd">    the sixth column represents the category of the detected object, and the seventh column represents</span>
+<span class="sd">    the confidence score of the detection.</span>
+
+<span class="sd">    You can use ReidProcessor.print_input_data_requirements() for more insight.</span>
+
+<span class="sd">    Here&#39;s an example of how the output data looks like based on the schema:</span>
+
+<span class="sd">    | frame_id (0) | object_id (1) | category (2) | bbox (3-6)      | confidence (7) | mean_confidence (8) | tracker_id (9) |</span>
+<span class="sd">    |--------------|---------------|--------------|-----------------|----------------|---------------------|----------------|</span>
+<span class="sd">    | 1            | 1             | 1            | 50, 60, 120, 80 | 0.91           | 0.85                | 1              |</span>
+<span class="sd">    | 2            | 2             | 0            | 50, 60, 120, 80 | 0.54           | 0.60                | 2              |</span>
+
+<span class="sd">    You can use ReidProcessor.print_output_data_format_information() for more insight.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tracker_output (np.ndarray): The tracker output.</span>
+<span class="sd">        frame_id (int): The frame id.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: The processed output.</span>
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+    <span class="k">if</span> <span class="n">tracker_output</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>  <span class="c1"># empty tracking</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_tracked_objects</span><span class="p">,</span> <span class="n">current_tracker_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocess</span><span class="p">(</span>
+            <span class="n">tracker_output</span><span class="o">=</span><span class="n">tracker_output</span><span class="p">,</span> <span class="n">frame_id</span><span class="o">=</span><span class="n">frame_id</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perform_reid_process</span><span class="p">(</span><span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span><span class="p">)</span>
+        <span class="n">reid_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_postprocess</span><span class="p">(</span><span class="n">current_tracker_ids</span><span class="o">=</span><span class="n">current_tracker_ids</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">reid_output</span> <span class="o">=</span> <span class="n">tracker_output</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_to_txt</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_results_to_txt</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="n">reid_output</span><span class="o">=</span><span class="n">reid_output</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">reid_output</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+    
+  </body>
+</html>
